@@ -354,8 +354,8 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 | **Phase 0** | Cấu hình hạ tầng, Gradle Libs & Packages | 🟢 **ĐÃ HOÀN TẤT** | Đã cấu hình `libs.versions.toml`, `app/build.gradle.kts`, tạo package structure, build thành công 100%. |
 | **Phase 1** | Foundation, Material Design 3, Sound & Haptics | 🟢 **ĐÃ HOÀN TẤT** | Áp dụng 100% chuẩn Material Design 3 (M3 Color Tokens, M3 Typography 15 cấp độ, M3PrimaryButton, M3ElevatedCard, M3IconButton, SoundManager SoundPool, HapticManager). Build pass 100%. |
 | **Phase 2** | Data Layer, DataStore, Models & GameViewModel | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `SkinItem.kt` (9 skins), `BadgeItem.kt` (8 badges), `GameStats.kt`, `GamePreferences.kt` (DataStore), `GameRepository.kt` và `GameViewModel.kt` (SPS calculation & debounced persistence). Build pass 100%. |
-| **Phase 3** | Core Gameplay, Canvas Cuộn Giấy & Overdrive Physics | 🟡 **TIẾP THEO (SẴN SÀNG)** | Bước tiếp theo: Xây dựng `ToiletPaperCanvas.kt`, `SpsGauge.kt`, `OverdriveEffect.kt` và `GameScreen.kt`. |
-| **Phase 4** | Hệ thống Tiến Hóa 9 Skin & Tủ Đồ Cabinet | ⚪ *Chờ thực thi* | Phụ thuộc Phase 3. |
+| **Phase 3** | Core Gameplay, Canvas Cuộn Giấy & Overdrive Physics | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `OdometerText.kt` (đồng hồ cơ học nhảy số), `SpsGauge.kt` (thanh năng lượng tốc độ), `OverdriveEffect.kt` (viền bốc lửa), `ToiletPaperCanvas.kt` (Compose Canvas + Drag/Fling physics) và `GameScreen.kt`. Build pass 100%. |
+| **Phase 4** | Hệ thống Tiến Hóa 9 Skin & Tủ Đồ Cabinet | 🟡 **TIẾP THEO (SẴN SÀNG)** | Bước tiếp theo: Xây dựng `SkinCard.kt`, `BadgeCard.kt`, `CabinetViewModel.kt` và `CabinetScreen.kt`. |
 | **Phase 5** | Bằng Khen Vô Tri & Trình Xuất Ảnh Share Story | ⚪ *Chờ thực thi* | Phụ thuộc Phase 4. |
 | **Phase 6** | Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia | ⚪ *Chờ thực thi* | Phụ thuộc Phase 5. |
 | **Phase 7** | App Navigation, Polishing & Build Xuất Xưởng | ⚪ *Chờ thực thi* | Phụ thuộc Phase 6. |
@@ -365,7 +365,7 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 ## 📝 NHẬT KÝ THỰC THI (EXECUTION CHANGELOG & AUDIT TRAIL)
 > **Mục này ghi lại lịch sử các bước đã làm để bất kỳ AI Agent nào tiếp quản dự án đều nắm rõ hiện trạng.**
 
-### 📌 [2026-08-19] - Hoàn Tất Phase 0, Phase 1 & Phase 2:
+### 📌 [2026-08-19] - Hoàn Tất Phase 0, Phase 1, Phase 2 & Phase 3:
 1. **Phase 0 (Infrastructure & Dependencies)**:
    - Thêm `androidx-navigation-compose` (2.8.8), `androidx-datastore-preferences` (1.1.3), `androidx-compose-material-icons-extended`, `androidx-lifecycle-viewmodel-compose` vào `gradle/libs.versions.toml` và `app/build.gradle.kts`.
    - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL**.
@@ -392,13 +392,23 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
    - `data/repository/GameRepository.kt`: Quản lý nghiệp vụ tự động mở khóa skin và badge khi đạt mốc mét.
    - `ui/game/GameViewModel.kt`: Quản lý StateFlow `uiState`, thuật toán cửa sổ trượt 1s tính SPS, kích hoạt Overdrive x1.5 và cơ chế ghi đệm DataStore định kỳ không nghẽn UI thread.
    - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
+   - Git Commit: `a443ee6` đã push lên branch `main`.
 
-4. **Hướng dẫn cho AI tiếp theo**:
-   - **Bước tiếp theo là Phase 3: Core Gameplay (Canvas Cuộn Giấy & Overdrive Physics)**:
-     - Tạo `ui/game/ToiletPaperCanvas.kt` (vẽ trục cuộn và dải giấy bằng Compose Canvas, nhận diện vuốt Drag/Fling).
-     - Tạo `ui/game/components/SpsGauge.kt` và `ui/game/components/OverdriveEffect.kt`.
-     - Ghép vào `ui/game/GameScreen.kt` kết nối `GameViewModel`.
-     - Xem chi tiết tại mục [PHASE 3](#phase-3-core-gameplay---canvas-cuộn-giấy--vật-lý-cuộn).
+4. **Phase 3 (Core Gameplay & Overdrive Physics)**:
+   - `ui/components/OdometerText.kt`: Đồng hồ số lật phong cách cơ học hiển thị tổng số mét/km mượt mà.
+   - `ui/game/components/SpsGauge.kt`: Thanh đo tốc độ vuốt thời gian thực đổi màu theo mức độ nhiệt huyết.
+   - `ui/game/components/OverdriveEffect.kt`: Hiệu ứng viền bốc lửa rực rỡ khi vào trạng thái Overdrive.
+   - `ui/game/ToiletPaperCanvas.kt`: Trái tim trò chơi! Vẽ trục cuộn kim loại, cuộn giấy hình trụ xoay tròn và dải giấy rủ xuống uốn lượn có đường xé đứt đoạn và hoa văn emoji. Bắt cử chỉ Drag 1:1 và Fling quán tính cực nhạy.
+   - `ui/game/GameScreen.kt`: Màn hình Game chính tích hợp Odometer, thanh tiến độ skin tiếp theo, SpsGauge, Canvas cuộn giấy, hiệu ứng Overdrive và Dialog chúc mừng khi mở khóa danh hiệu mới.
+   - `MainActivity.kt`: Gán `GameScreen()` làm màn hình chính của ứng dụng.
+   - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
+
+5. **Hướng dẫn cho AI tiếp theo**:
+   - **Bước tiếp theo là Phase 4: Hệ thống Tiến Hóa 9 Skin & Tủ Đồ (Skins & Badges Cabinet)**:
+     - Tạo `ui/cabinet/components/SkinCard.kt` (thẻ hiển thị skin 3 trạng thái: Đang Dùng, Sử Dụng, Đang Khóa kèm thanh % tiến độ).
+     - Tạo `ui/cabinet/components/BadgeCard.kt` (thẻ danh hiệu trào phúng).
+     - Tạo `ui/cabinet/CabinetViewModel.kt` và `ui/cabinet/CabinetScreen.kt`.
+     - Xem chi tiết tại mục [PHASE 4](#phase-4-hệ-thống-tiến-hóa-skin--tủ-đồ).
 
 ---
 *Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục thực hiện.*

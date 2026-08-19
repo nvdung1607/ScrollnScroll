@@ -5,10 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.trustmepro.scrollandscroll.ui.components.DesignSystemPreviewScreen
+import com.trustmepro.scrollandscroll.ui.game.GameScreen
 import com.trustmepro.scrollandscroll.ui.theme.ScrollAndScrollTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,12 +16,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ScrollAndScrollTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    androidx.compose.foundation.layout.Box(
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        DesignSystemPreviewScreen()
-                    }
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    GameScreen()
                 }
             }
         }
