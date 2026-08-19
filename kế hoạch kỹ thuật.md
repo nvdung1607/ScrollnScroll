@@ -358,30 +358,28 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 | **Phase 4** | Hệ thống Tiến Hóa 9 Skin & Tủ Đồ Cabinet | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `SkinCard.kt` (3 trạng thái Đang Dùng / Sử Dụng / Khóa kèm % tiến độ), `BadgeCard.kt`, `CabinetViewModel.kt` và `CabinetScreen.kt` (2 Tab chuyển đổi mượt mà). Build pass 100%. |
 | **Phase 5** | Bằng Khen Vô Tri & Trình Xuất Ảnh Share Story | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `CertificateDialog.kt`, `ShareHelper.kt` (render Bitmap 9:16 độ nét cao, đóng dấu đỏ "100% Vô Tri"), cấu hình FileProvider chia sẻ Story mạng xã hội. Build pass 100%. |
 | **Phase 6** | Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `LeaderboardUser.kt`, `LeaderboardRepository.kt` (Mock Data 3 bảng Hôm Nay / Toàn Cầu / Quốc Gia + Interface chuẩn bị kết nối Firebase Firestore), `LeaderboardViewModel.kt`, `LeaderboardScreen.kt`. Build pass 100%. |
-| **Phase 7** | App Navigation, Polishing & Build Xuất Xưởng | 🟡 **TIẾP THEO (SẴN SÀNG)** | Bước tiếp theo: Compose Navigation, Onboarding Nickname Dialog, Settings Dialog, Back Handler và Release Build. |
+| **Phase 7** | App Navigation, Polishing & Build Xuất Xưởng | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `Screen.kt`, `AppNavigation.kt` (Compose Navigation, hiệu ứng chuyển cảnh Spring Slide), `NicknameDialog.kt` (Onboarding xúc xắc 🎲), `SettingsDialog.kt`, BackHandler troll và `MainActivity.kt`. Build pass 100%. |
 
 ---
 
 ## 📝 NHẬT KÝ THỰC THI (EXECUTION CHANGELOG & AUDIT TRAIL)
 > **Mục này ghi lại lịch sử các bước đã làm để bất kỳ AI Agent nào tiếp quản dự án đều nắm rõ hiện trạng.**
 
-### 📌 [2026-08-19] - Hoàn Tất Phase 0 đến Phase 6:
+### 📌 [2026-08-19] - Hoàn Tất Toàn Diện Toàn Bộ 8 Giai Đoạn (Phase 0 -> Phase 7):
 1. **Phase 0, 1, 2, 3**: Đã hoàn tất và push lên Git.
 2. **Phase 4 (Hệ Thống Tiến Hóa 9 Skin & Màn Hình Tủ Đồ - ĐÃ HOÀN TẤT)**:
    - `ui/cabinet/components/SkinCard.kt`, `BadgeCard.kt`, `CabinetViewModel.kt`, `CabinetScreen.kt`.
 3. **Phase 5 (Bằng Khen Viral & Trình Xuất Ảnh Share Story - ĐÃ HOÀN TẤT)**:
    - `ui/components/CertificateDialog.kt`, `util/ShareHelper.kt`, `res/xml/file_paths.xml`, `AndroidManifest.xml`.
 4. **Phase 6 (Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia - ĐÃ HOÀN TẤT)**:
-   - `data/model/LeaderboardUser.kt`, `data/repository/LeaderboardRepository.kt` (Mock Data 3 bảng Hôm Nay / Toàn Cầu / Quốc Gia + Interface chuẩn bị kết nối Firebase Firestore), `ui/leaderboard/LeaderboardViewModel.kt`, `ui/leaderboard/LeaderboardScreen.kt`.
+   - `data/model/LeaderboardUser.kt`, `data/repository/LeaderboardRepository.kt`, `ui/leaderboard/LeaderboardViewModel.kt`, `ui/leaderboard/LeaderboardScreen.kt`.
+5. **Phase 7 (App Navigation, Polishing & Sẵn Sàng Xuất Xưởng - ĐÃ HOÀN TẤT)**:
+   - `ui/navigation/Screen.kt` & `ui/navigation/AppNavigation.kt`: Kết nối toàn bộ luồng điều hướng với hiệu ứng trượt ngang mượt mà, quản lý BackHandler (Toast hài hước troll người chơi).
+   - `ui/onboarding/NicknameDialog.kt`: Modal nhập tên tân thủ tích hợp bộ sinh tên ngẫu nhiên xúc xắc 🎲.
+   - `ui/settings/SettingsDialog.kt`: Cài đặt âm thanh ASMR, rung Haptic, đổi tên và thông tin phiên bản.
+   - `MainActivity.kt`: Khởi chạy Edge-to-Edge và gắn kết `AppNavigation()`.
    - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 5s (0 errors, 0 warnings)**.
 
-5. **Hướng dẫn cho AI tiếp theo**:
-   - **Bước tiếp theo là Phase 7: App Navigation, Polishing & Build Release**:
-     - Tạo `ui/navigation/Screen.kt` và `ui/navigation/AppNavigation.kt`.
-     - Tạo `ui/onboarding/NicknameDialog.kt` và `ui/settings/SettingsDialog.kt`.
-     - Cập nhật `MainActivity.kt` để kết nối toàn bộ flow điều hướng và xử lý nút Back thoát app.
-     - Xem chi tiết tại mục [PHASE 7](#phase-7-navigation-polishing--build-release).
-
 ---
-*Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục thực hiện.*
+*Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục phát triển.*
 

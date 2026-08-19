@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.trustmepro.scrollandscroll.ui.game.GameScreen
+import com.trustmepro.scrollandscroll.ui.navigation.AppNavigation
 import com.trustmepro.scrollandscroll.ui.theme.ScrollAndScrollTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ScrollAndScrollTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    GameScreen()
+                    AppNavigation()
                 }
             }
         }
