@@ -62,6 +62,7 @@ class CabinetViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun equipSkin(skin: SkinType) {
+        _uiState.update { it.copy(selectedSkin = skin) }
         viewModelScope.launch {
             repository.selectSkin(skin.id)
             hapticManager.click()

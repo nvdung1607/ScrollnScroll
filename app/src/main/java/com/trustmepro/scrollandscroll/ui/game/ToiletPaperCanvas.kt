@@ -1,6 +1,7 @@
 package com.trustmepro.scrollandscroll.ui.game
 
 import android.graphics.Paint as AndroidPaint
+import android.graphics.Typeface
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -44,10 +45,10 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ToiletPaperCanvas — Màn hình cuộn giấy 3D Isometric & Dải giấy uốn lượn sống động
-// ─────────────────────────────────────────────────────────────────────────────
-
+/**
+ * ToiletPaperCanvas — Màn hình tương tác cuộn giấy 3D và dải giấy uốn lượn S-Curve.
+ * Áp dụng trọn vẹn màu sắc, hoạt ảnh xoay, và con dấu họa tiết đặc trưng của từng loại Skin.
+ */
 @Composable
 fun ToiletPaperCanvas(
     skin: SkinType,
@@ -132,7 +133,7 @@ fun ToiletPaperCanvas(
             modifier = Modifier.fillMaxSize()
         )
 
-        // 2. Lớp Canvas tương tác vẽ Cuộn giấy 3D + Dải giấy S-Curve uốn lượn
+        // 2. Lớp Canvas tương tác vẽ Cuộn giấy 3D + Dải giấy S-Curve theo từng Skin
         Canvas(modifier = Modifier.fillMaxSize()) {
             val canvasW = size.width
             val canvasH = size.height
@@ -146,7 +147,7 @@ fun ToiletPaperCanvas(
             val leftCapRx = canvasW * 0.088f
             val leftCapRy = canvasW * 0.118f
 
-            // A. Vẽ dải giấy S-Curve uốn lượn liên tục, mềm mại, trắng đặc chuẩn Ảnh 2
+            // A. Vẽ dải giấy S-Curve uốn lượn liên tục theo màu Skin và họa tiết Emoji trôi nổi
             drawContinuousSmoothPaperRibbon(
                 canvasW = canvasW,
                 canvasH = canvasH,
@@ -173,7 +174,7 @@ fun ToiletPaperCanvas(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Vẽ Cuộn Giấy 3D Khớp Hoàn Hảo Với Khung Gỗ (Đường Kẻ Cong Elip Mặt Trụ Chuẩn)
+// Vẽ Cuộn Giấy 3D Khớp Hoàn Hảo Với Khung Gỗ Và Áp Dụng Skin
 // ─────────────────────────────────────────────────────────────────────────────
 
 private fun DrawScope.drawFrameFittedPaperRoll(
@@ -186,6 +187,9 @@ private fun DrawScope.drawFrameFittedPaperRoll(
     rotationOffset: Float,
     skin: SkinType
 ) {
+    val isDarkSkin = skin == SkinType.SPACE_GALAXY
+    val inkColor = if (isDarkSkin) Color(0xFFE0E0E0) else ComicInkBlack
+
     // 1. Bóng đổ mềm dưới cuộn giấy lên tường gạch
     val shadowPath = Path().apply {
         moveTo(leftCenter.x - leftRx + 4f, leftCenter.y + 6f)
@@ -196,7 +200,7 @@ private fun DrawScope.drawFrameFittedPaperRoll(
     }
     drawPath(shadowPath, color = ComicInkBlack.copy(alpha = 0.22f))
 
-    // 2. Thân cuộn giấy hình trụ 3D trắng đục đặc (Cylinder Body)
+    // 2. Thân cuộn giấy hình trụ 3D nhuộm màu Skin
     val bodyPath = Path().apply {
         moveTo(leftCenter.x, leftCenter.y - leftRy)
         lineTo(rightCenter.x, rightCenter.y - rightRy)
@@ -216,10 +220,10 @@ private fun DrawScope.drawFrameFittedPaperRoll(
 
     val bodyBrush = Brush.verticalGradient(
         colors = listOf(
-            Color.White,
-            Color(0xFFFCFCFC),
-            Color(0xFFF0F0F0),
-            Color(0xFFE2E2E2)
+            skin.primaryColor,
+            skin.primaryColor.copy(alpha = 0.95f),
+            skin.accentColor.copy(alpha = 0.85f),
+            skin.accentColor
         ),
         startY = leftCenter.y - leftRy,
         endY = leftCenter.y + leftRy
@@ -251,9 +255,26 @@ private fun DrawScope.drawFrameFittedPaperRoll(
             }
             drawPath(
                 path = arcPath,
-                color = ComicInkBlack.copy(alpha = 0.55f),
+                color = inkColor.copy(alpha = 0.50f),
                 style = Stroke(width = 3.2f, pathEffect = dashEffect)
             )
+
+            // In họa tiết Skin xoay tròn trên mặt cuộn giấy
+            if (frac in 0.20f..0.80f && skin != SkinType.SCHOOL_CANTEEN) {
+                drawIntoCanvas { canvas ->
+                    val paint = AndroidPaint().apply {
+                        textSize = 28f
+                        textAlign = AndroidPaint.Align.CENTER
+                        isAntiAlias = true
+                    }
+                    canvas.nativeCanvas.drawText(
+                        skin.patternEmoji,
+                        cx - curRx * 0.4f,
+                        cy + 8f,
+                        paint
+                    )
+                }
+            }
         }
     }
 
@@ -297,9 +318,9 @@ private fun DrawScope.drawFrameFittedPaperRoll(
         path = rightCapPath,
         brush = Brush.radialGradient(
             colors = listOf(
-                Color.White,
-                Color(0xFFEEEEEE),
-                Color(0xFFE0E0E0)
+                skin.primaryColor,
+                skin.primaryColor.copy(alpha = 0.9f),
+                skin.accentColor
             ),
             center = rightCenter,
             radius = rightRy
@@ -328,7 +349,7 @@ private fun DrawScope.drawFrameFittedPaperRoll(
         }
         drawPath(
             path = ringPath,
-            color = ComicInkBlack.copy(alpha = 0.35f),
+            color = inkColor.copy(alpha = 0.35f),
             style = Stroke(width = 2.0f)
         )
     }
@@ -360,7 +381,7 @@ private fun DrawScope.drawFrameFittedPaperRoll(
     )
     drawPath(path = corePath, color = ComicInkBlack, style = Stroke(width = 3.5f))
 
-    // C. Lỗ rỗng đen sâu ở giữa ống carton nơi trục gỗ luồn qua
+    // C. Lỗ rỗng đen sâu ở giữa ống carton
     val holeRx = coreRx * 0.55f
     val holeRy = coreRy * 0.55f
     val holePath = Path().apply {
@@ -447,7 +468,7 @@ private fun DrawScope.drawActionDropsAndLines(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Vẽ Dải Giấy Uốn Lượn 3D Mềm Mại Xếp Lớp (Chuẩn Tuyệt Đối Theo Ảnh 2)
+// Vẽ Dải Giấy Uốn Lượn S-Curve Mềm Mại Xếp Lớp Nhuộm Màu Skin & Họa Tiết Trôi Nổi
 // ─────────────────────────────────────────────────────────────────────────────
 
 private fun DrawScope.drawContinuousSmoothPaperRibbon(
@@ -465,8 +486,11 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
 
     val strokeWidth = 4.5f
     val dashEffect = PathEffect.dashPathEffect(floatArrayOf(12f, 9f), 0f)
-    val paperColor = Color.White
-    val foldColor = if (isOverdrive) Color(0xFFFFE082) else Color(0xFFF2F4F7)
+
+    val isDarkSkin = skin == SkinType.SPACE_GALAXY
+    val paperColor = skin.primaryColor
+    val foldColor = if (isOverdrive) Color(0xFFFFE082) else skin.accentColor
+    val inkColor = if (isDarkSkin) Color(0xFFE0E0E0) else ComicInkBlack
 
     // ── CÁC TỌA ĐỘ ĐIỂM CHỐT LIỀN MẠCH GIỮA 3 ĐOẠN ──
     val p0_L = Offset(canvasW * 0.44f, canvasH * 0.445f)
@@ -506,7 +530,7 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
     drawPath(seg3Path, color = paperColor)
     drawPath(seg3Path, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round, cap = StrokeCap.Round))
 
-    // Đường nét đứt chia đều đoạn 3
+    // Đường nét đứt & họa tiết đoạn 3
     val seg3Dash = (scrollOffset % 120f) / 120f
     for (k in 0..1) {
         val t = (seg3Dash + k * 0.50f) % 1.0f
@@ -516,17 +540,30 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
             val rx = p2_top.x + (p3_top.x - p2_top.x) * t
             val ry = p2_top.y + (p3_top.y - p2_top.y) * t
             drawLine(
-                color = ComicInkBlack.copy(alpha = 0.65f),
+                color = inkColor.copy(alpha = 0.55f),
                 start = Offset(lx, ly),
                 end = Offset(rx, ry),
                 strokeWidth = 3f,
                 pathEffect = dashEffect
             )
+
+            // Con dấu Skin ở giữa đoạn giấy
+            if (skin != SkinType.SCHOOL_CANTEEN) {
+                drawIntoCanvas { canvas ->
+                    val paint = AndroidPaint().apply {
+                        textSize = 36f
+                        textAlign = AndroidPaint.Align.CENTER
+                        isAntiAlias = true
+                    }
+                    val mx = (lx + rx) / 2f
+                    val my = (ly + ry) / 2f
+                    canvas.nativeCanvas.drawText(skin.patternEmoji, mx, my + 10f, paint)
+                }
+            }
         }
     }
 
     // ── 2. ĐOẠN 2 (LỚP GIỮA: TỪ KHÚC UỐN TRÁI QUÉT QUA KHÚC UỐN PHẢI) ──
-    // Khúc bo tròn U-turn bên phải mềm mại (Right Loop Turnaround)
     val rightLoop = Path().apply {
         moveTo(p2_top.x, p2_top.y)
         cubicTo(
@@ -544,7 +581,6 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
     drawPath(rightLoop, color = foldColor)
     drawPath(rightLoop, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round))
 
-    // Bóng đổ đoạn 2
     val shadow2 = Path().apply {
         moveTo(p1_top.x + 8f, p1_top.y + 10f)
         cubicTo(canvasW * 0.50f + 8f, canvasH * 0.57f + 10f, canvasW * 0.62f + 8f, canvasH * 0.59f + 10f, p2_top.x + 8f, p2_top.y + 10f)
@@ -554,7 +590,6 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
     }
     drawPath(shadow2, color = ComicInkBlack.copy(alpha = 0.14f))
 
-    // Thân đoạn 2
     val seg2Path = Path().apply {
         moveTo(p1_top.x, p1_top.y)
         cubicTo(canvasW * 0.50f + wave2, canvasH * 0.575f, canvasW * 0.62f + wave2, canvasH * 0.595f, p2_top.x, p2_top.y)
@@ -574,7 +609,7 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
     drawPath(seg2Path, color = paperColor)
     drawPath(seg2Path, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round, cap = StrokeCap.Round))
 
-    // Đường nét đứt chia đều đoạn 2
+    // Đường nét đứt & họa tiết đoạn 2
     val seg2Dash = ((scrollOffset + 60f) % 130f) / 130f
     for (k in 0..1) {
         val t = (seg2Dash + k * 0.50f) % 1.0f
@@ -584,17 +619,29 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
             val rx = p1_top.x + (p2_top.x - p1_top.x) * t
             val ry = p1_top.y + (p2_top.y - p1_top.y) * t
             drawLine(
-                color = ComicInkBlack.copy(alpha = 0.65f),
+                color = inkColor.copy(alpha = 0.55f),
                 start = Offset(lx, ly),
                 end = Offset(rx, ry),
                 strokeWidth = 3f,
                 pathEffect = dashEffect
             )
+
+            if (skin != SkinType.SCHOOL_CANTEEN) {
+                drawIntoCanvas { canvas ->
+                    val paint = AndroidPaint().apply {
+                        textSize = 38f
+                        textAlign = AndroidPaint.Align.CENTER
+                        isAntiAlias = true
+                    }
+                    val mx = (lx + rx) / 2f
+                    val my = (ly + ry) / 2f
+                    canvas.nativeCanvas.drawText(skin.patternEmoji, mx, my + 12f, paint)
+                }
+            }
         }
     }
 
     // ── 3. ĐOẠN 1 (LỚP ĐỈNH: TỪ CUỘN GIẤY TRÊN GIÁ ĐỔ XUỐNG BÊN TRÁI) ──
-    // Khúc bo tròn U-turn bên trái mềm mại (Left Loop Turnaround)
     val leftLoop = Path().apply {
         moveTo(p1_top.x, p1_top.y)
         cubicTo(
@@ -612,7 +659,6 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
     drawPath(leftLoop, color = foldColor)
     drawPath(leftLoop, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round))
 
-    // Bóng đổ đoạn 1
     val shadow1 = Path().apply {
         moveTo(p0_L.x + 8f, p0_L.y + 10f)
         cubicTo(canvasW * 0.30f + 8f, canvasH * 0.48f + 10f, canvasW * 0.18f + 8f, canvasH * 0.54f + 10f, p1_bot.x + 8f, p1_bot.y + 10f)
@@ -622,7 +668,6 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
     }
     drawPath(shadow1, color = ComicInkBlack.copy(alpha = 0.14f))
 
-    // Thân đoạn 1
     val seg1Path = Path().apply {
         moveTo(p0_L.x, p0_L.y)
         cubicTo(canvasW * 0.30f, canvasH * 0.485f, canvasW * 0.18f + wave1, canvasH * 0.545f, p1_bot.x, p1_bot.y)
@@ -637,7 +682,7 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
     drawPath(seg1Path, color = paperColor)
     drawPath(seg1Path, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round, cap = StrokeCap.Round))
 
-    // Đường nét đứt chia đều đoạn 1
+    // Đường nét đứt & họa tiết đoạn 1
     val seg1Dash = ((scrollOffset + 120f) % 120f) / 120f
     for (k in 0..1) {
         val t = (seg1Dash + k * 0.50f) % 1.0f
@@ -647,12 +692,25 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
             val rx = p0_R.x + (p1_top.x - p0_R.x) * t
             val ry = p0_R.y + (p1_top.y - p0_R.y) * t
             drawLine(
-                color = ComicInkBlack.copy(alpha = 0.65f),
+                color = inkColor.copy(alpha = 0.55f),
                 start = Offset(lx, ly),
                 end = Offset(rx, ry),
                 strokeWidth = 3f,
                 pathEffect = dashEffect
             )
+
+            if (skin != SkinType.SCHOOL_CANTEEN) {
+                drawIntoCanvas { canvas ->
+                    val paint = AndroidPaint().apply {
+                        textSize = 38f
+                        textAlign = AndroidPaint.Align.CENTER
+                        isAntiAlias = true
+                    }
+                    val mx = (lx + rx) / 2f
+                    val my = (ly + ry) / 2f
+                    canvas.nativeCanvas.drawText(skin.patternEmoji, mx, my + 12f, paint)
+                }
+            }
         }
     }
 }
