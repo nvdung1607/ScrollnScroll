@@ -28,15 +28,15 @@ enum class SkinType(
         patternEmoji = "🧻",
         bannerText = "1-PLY"
     ),
-    ROSE_PETAL(
-        id = "ROSE_PETAL",
-        displayName = "Giấy Hoa Hồng Thơm Ngát",
-        description = "Màu hồng phấn êm dịu, in họa tiết cánh hoa rơi",
-        requiredMeters = 36.0, // Meme Mốc 1: 36 Quê Tôi
-        primaryColor = Color(0xFFFFE4E9),
-        accentColor = Color(0xFFFFB2C9),
-        patternEmoji = "🌸",
-        bannerText = "ROSE"
+    RAU_MA_36(
+        id = "RAU_MA_36",
+        displayName = "Giấy Chiết Xuất Rau Má 36",
+        description = "Chiết xuất 100% rau má tươi mát thanh nhiệt, đặc sản 36 trứ danh",
+        requiredMeters = 36.0, // Meme Mốc 1: 36 Rau Má Quê Tôi
+        primaryColor = Color(0xFFE8F5E9),
+        accentColor = Color(0xFFA5D6A7),
+        patternEmoji = "🍃",
+        bannerText = "RAU MÁ 36"
     ),
     COMIC_STRIP(
         id = "COMIC_STRIP",

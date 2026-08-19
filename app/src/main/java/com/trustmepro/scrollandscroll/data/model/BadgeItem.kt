@@ -12,10 +12,10 @@ enum class BadgeType(
 ) {
     BEGINNER_36(
         id = "BEGINNER_36",
-        title = "Tân Binh 36 Quê Tôi",
-        description = "Mới vuốt được 36m đã tưởng mình là chiến thần!",
+        title = "Chiến Thần Rau Má 36",
+        description = "Mới vuốt 36m đã đòi uống sinh tố rau má đậu xanh mát lạnh!",
         requiredMeters = 36.0,
-        badgeEmoji = "👶"
+        badgeEmoji = "🍃"
     ),
     MASTER_69(
         id = "MASTER_69",

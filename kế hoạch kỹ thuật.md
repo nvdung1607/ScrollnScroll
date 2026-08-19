@@ -380,7 +380,7 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
    - `MainActivity.kt`: Khởi chạy Edge-to-Edge và gắn kết `AppNavigation()`.
 6. **Nâng Cấp Gameplay Vuốt Đa Hướng, Mũi Tên Chỉ Dẫn Tinh Tế & Hệ Thống Mốc Meme 1-to-1**:
    - **8 Mốc Mét Meme Đồng Bộ Giữa 8 Bằng Khen & 8 Skin Mở Khóa**:
-     1. **36m** (*36 Quê Tôi*): Bằng Khen `Tân Binh 36 Quê Tôi 👶` + Skin `Hoa Hồng Thơm Ngát 🌸`
+     1. **36m** (*36 Rau Má Quê Tôi*): Bằng Khen `Chiến Thần Rau Má 36 🍃` + Skin `Giấy Chiết Xuất Rau Má 36 🍃`
      2. **69m** (*69 Tinh Tế*): Bằng Khen `Chiến Thần Giác Ngộ 69 😏` + Skin `Truyện Tranh 4 Khung 📰`
      3. **168m** (*Nhất Lộc Phát 168*): Bằng Khen `Thần Tài Nhất Lộc Phát 168 👑` + Skin `Dát Vàng 24K 👑`
      4. **420m** (*420 Siêu Chill*): Bằng Khen `Chúa Tể 420 Siêu Chill 🍜` + Skin `Tô Bún Riêu Cua 🍜`
