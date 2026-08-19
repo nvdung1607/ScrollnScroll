@@ -91,6 +91,36 @@ app/src/main/java/com/trustmepro/scrollandscroll/
 └── MainActivity.kt
 ```
 
+### 3. Cấu Hình Dependencies Cần Thiết (Gradle & Libs)
+Các thư viện cần khai báo thêm vào `gradle/libs.versions.toml` và `app/build.gradle.kts`:
+- **AndroidX Navigation Compose**: Điều hướng màn hình
+- **AndroidX DataStore Preferences**: Lưu trữ dữ liệu ngoại tuyến
+- **Compose Material Icons Extended**: Bộ icon mở rộng cho Game UI
+- **Lifecycle ViewModel Compose**: Quản lý StateFlow trong Compose
+
+### 📋 Checklist Kiểm thử Phase 0 (Verification):
+- [ ] File `libs.versions.toml` và `app/build.gradle.kts` đồng bộ không lỗi dependency.
+- [ ] Chạy `./gradlew tasks` hoặc `./gradlew assembleDebug` thành công.
+- [ ] Cấu trúc thư mục gói (package structure) được tạo đầy đủ.
+
+---
+
+### 🤖 PROMPT MẪU CHO AI THỰC HIỆN PHASE 0:
+```markdown
+Bạn là Senior Android Developer. Hãy đọc file `kế hoạch kỹ thuật.md` và thực hiện PHASE 0: CẤU HÌNH HẠ TẦNG & DEPENDENCIES cho dự án Scroll & Scroll:
+1. Cập nhật `gradle/libs.versions.toml` để thêm các thư viện:
+   - `androidx-navigation-compose`
+   - `androidx-datastore-preferences`
+   - `androidx-compose-material-icons-extended`
+   - `androidx-lifecycle-viewmodel-compose`
+2. Cập nhật `app/build.gradle.kts` để import các dependencies trên.
+3. Tạo khung các thư mục package trống theo đúng cây thư mục Phase 0:
+   - `audio`, `data/model`, `data/preference`, `data/repository`
+   - `ui/cabinet/components`, `ui/components`, `ui/game/components`, `ui/leaderboard`, `ui/navigation`, `ui/onboarding`, `ui/settings`, `ui/theme`
+   - `util`
+4. Kiểm tra Gradle sync và đảm bảo dự án build thành công không lỗi syntax/dependency.
+```
+
 ---
 
 ## PHASE 1: FOUNDATION & DESIGN SYSTEM
