@@ -355,64 +355,32 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 | **Phase 1** | Foundation, Material Design 3, Sound & Haptics | 🟢 **ĐÃ HOÀN TẤT** | Áp dụng 100% chuẩn Material Design 3 (M3 Color Tokens, M3 Typography 15 cấp độ, M3PrimaryButton, M3ElevatedCard, M3IconButton, SoundManager SoundPool, HapticManager). Build pass 100%. |
 | **Phase 2** | Data Layer, DataStore, Models & GameViewModel | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `SkinItem.kt` (9 skins), `BadgeItem.kt` (8 badges), `GameStats.kt`, `GamePreferences.kt` (DataStore), `GameRepository.kt` và `GameViewModel.kt` (SPS calculation & debounced persistence). Build pass 100%. |
 | **Phase 3** | Core Gameplay, Canvas Cuộn Giấy & Overdrive Physics | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `OdometerText.kt` (đồng hồ cơ học nhảy số), `SpsGauge.kt` (thanh năng lượng tốc độ), `OverdriveEffect.kt` (viền bốc lửa), `ToiletPaperCanvas.kt` (Compose Canvas + Drag/Fling physics) và `GameScreen.kt`. Build pass 100%. |
-| **Phase 4** | Hệ thống Tiến Hóa 9 Skin & Tủ Đồ Cabinet | 🟡 **TIẾP THEO (SẴN SÀNG)** | Bước tiếp theo: Xây dựng `SkinCard.kt`, `BadgeCard.kt`, `CabinetViewModel.kt` và `CabinetScreen.kt`. |
-| **Phase 5** | Bằng Khen Vô Tri & Trình Xuất Ảnh Share Story | ⚪ *Chờ thực thi* | Phụ thuộc Phase 4. |
-| **Phase 6** | Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia | ⚪ *Chờ thực thi* | Phụ thuộc Phase 5. |
-| **Phase 7** | App Navigation, Polishing & Build Xuất Xưởng | ⚪ *Chờ thực thi* | Phụ thuộc Phase 6. |
+| **Phase 4** | Hệ thống Tiến Hóa 9 Skin & Tủ Đồ Cabinet | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `SkinCard.kt` (3 trạng thái Đang Dùng / Sử Dụng / Khóa kèm % tiến độ), `BadgeCard.kt`, `CabinetViewModel.kt` và `CabinetScreen.kt` (2 Tab chuyển đổi mượt mà). Build pass 100%. |
+| **Phase 5** | Bằng Khen Vô Tri & Trình Xuất Ảnh Share Story | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `CertificateDialog.kt`, `ShareHelper.kt` (render Bitmap 9:16 độ nét cao, đóng dấu đỏ "100% Vô Tri"), cấu hình FileProvider chia sẻ Story mạng xã hội. Build pass 100%. |
+| **Phase 6** | Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `LeaderboardUser.kt`, `LeaderboardRepository.kt` (Mock Data 3 bảng Hôm Nay / Toàn Cầu / Quốc Gia + Interface chuẩn bị kết nối Firebase Firestore), `LeaderboardViewModel.kt`, `LeaderboardScreen.kt`. Build pass 100%. |
+| **Phase 7** | App Navigation, Polishing & Build Xuất Xưởng | 🟡 **TIẾP THEO (SẴN SÀNG)** | Bước tiếp theo: Compose Navigation, Onboarding Nickname Dialog, Settings Dialog, Back Handler và Release Build. |
 
 ---
 
 ## 📝 NHẬT KÝ THỰC THI (EXECUTION CHANGELOG & AUDIT TRAIL)
 > **Mục này ghi lại lịch sử các bước đã làm để bất kỳ AI Agent nào tiếp quản dự án đều nắm rõ hiện trạng.**
 
-### 📌 [2026-08-19] - Hoàn Tất Phase 0, Phase 1, Phase 2 & Phase 3:
-1. **Phase 0 (Infrastructure & Dependencies)**:
-   - Thêm `androidx-navigation-compose` (2.8.8), `androidx-datastore-preferences` (1.1.3), `androidx-compose-material-icons-extended`, `androidx-lifecycle-viewmodel-compose` vào `gradle/libs.versions.toml` và `app/build.gradle.kts`.
-   - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL**.
-   - Git Commit: `8f351e7` đã push lên branch `main`.
-
-2. **Phase 1 (Material Design 3 & Sound/Haptics)**:
-   - Chuyển đổi toàn bộ Theme sang chuẩn **Material Design 3 (Material You)** của Google.
-   - `ui/theme/Color.kt`: Khai báo đầy đủ M3 Tonal Palette (`Primary`, `Secondary`, `Tertiary`, `Surface`, `Background`, `Outline` cho cả Light & Dark theme).
-   - `ui/theme/Type.kt`: Cung cấp 15 cấp độ Typography M3 (`displayLarge`, `headline`, `title`, `body`, `label`).
-   - `ui/theme/Theme.kt`: Cấu hình `MaterialTheme` M3 với Window Insets controller an toàn cho Edge-to-Edge.
-   - `ui/components/M3Components.kt`: Các component tái sử dụng M3 (`M3PrimaryButton`, `M3TonalButton`, `M3OutlinedButton`, `M3ElevatedCard`, `M3IconButton`).
-   - `audio/SoundManager.kt`: Engine âm thanh ASMR độ trễ thấp bằng `SoundPool` với bộ tổng hợp sóng âm PCM (roll, click, pop, fanfare, overdrive).
-   - `util/HapticManager.kt`: Quản lý rung xúc giác nhẹ (Tick, Click, Heavy Pulse).
-   - `ui/components/DesignSystemPreview.kt`: Màn hình Showcase hỗ trợ Preview cả Light & Dark mode trên Android Studio.
-   - `AndroidManifest.xml`: Đã khai báo quyền `VIBRATE`.
-   - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
-   - Git Commit: `b3b5300` đã push lên branch `main`.
-
-3. **Phase 2 (Data Layer & State Management)**:
-   - `data/model/SkinItem.kt`: Enum `SkinType` cho 9 loại skin tiến hóa kèm required meters, màu sắc và emoji.
-   - `data/model/BadgeItem.kt`: Enum `BadgeType` cho 8 danh hiệu trào phúng kèm câu cà khịa hài hước.
-   - `data/model/GameStats.kt`: Model trạng thái game tổng hợp, hỗ trợ tính toán tiến độ mở khóa skin tiếp theo.
-   - `data/preference/GamePreferences.kt`: Tầng lưu trữ DataStore Preferences ngoại tuyến an toàn.
-   - `data/repository/GameRepository.kt`: Quản lý nghiệp vụ tự động mở khóa skin và badge khi đạt mốc mét.
-   - `ui/game/GameViewModel.kt`: Quản lý StateFlow `uiState`, thuật toán cửa sổ trượt 1s tính SPS, kích hoạt Overdrive x1.5 và cơ chế ghi đệm DataStore định kỳ không nghẽn UI thread.
-   - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
-   - Git Commit: `a443ee6` đã push lên branch `main`.
-
-4. **Phase 3 (Core Gameplay, 3D Isometric Toilet Roll & Realistic Dynamic Ribbon - ĐÃ TINH CHỈNH HOÀN MỸ THEO MẪU GỐC)**:
-   - `res/drawable/bg_bathroom_game.jpg`: Asset hình nền phòng vệ sinh 2D Comic chất lượng cao, sạch sẽ không có nút hay chữ tĩnh.
-   - `res/font/`: Bổ sung font chữ Comic hoạt hình chính thức (`bangers.ttf`, `lilita_one.ttf`) trong `ui/theme/Type.kt`.
-   - `ui/game/ToiletPaperCanvas.kt`:
-     - **Cuộn giấy 3D Isometric khớp 100% Khung gỗ**: Mặt tròn bên phải đặt khớp chính xác vào khớp xoay tay đỡ gỗ; đầu trục tròn nhô ra bên trái; thân cuộn có vệt sáng Specular highlight trên đỉnh và các đường nét đứt xé giấy xoay tròn; 3 giọt nước bắn `( ( (` và 2 vệt gió xoay `( (` bên trái.
-     - **Dải giấy uốn lượn Catmull-Rom Spline mượt mà liên tục**: Nâng cấp từ Bezier đơn lẻ sang giải thuật **Catmull-Rom Spline** liên tục $C^1$ đảm bảo dải giấy có độ rộng đều, các nếp uốn lượn cong tròn mềm mại (không bị góc nhọn hay thắt nút), kéo dài sâu xuống 81% chiều cao màn hình tiếp đất trọn vẹn vào đống giấy sàn nhà.
-   - `ui/components/ComicComponents.kt`: Hoàn thiện trọn bộ Typography Comic 3D (`ComicTitleWordmark`, `ComicText`, `ComicStrokedText`), `ComicCircleButton` và thẻ `ComicCard`.
-   - `ui/components/OdometerText.kt`: Cơ chế lật số cơ học (Mechanical Split-Flap) với hoạt ảnh trượt số `AnimatedContent` cực mượt.
-   - `audio/SoundManager.kt`: Tinh chỉnh tần số âm thanh ma sát giấy cuộn ASMR êm tai, chân thực.
-   - `ui/game/GameScreen.kt`: Bố cục khớp 100% hình mẫu thiết kế (Setting Cyan góc trên trái, Bảng Xếp Hạng Vàng + Tủ Đồ Skin Xanh lá góc trên phải, Hướng dẫn ngón tay 👆 & mũi tên đôi SWIPE DOWN, Hàng dưới gồm ASMR Cyan + Thẻ Odometer lật số đen retro + 2 nút Bằng Khen).
-   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 2s (0 errors, 0 warnings)**.
+### 📌 [2026-08-19] - Hoàn Tất Phase 0 đến Phase 6:
+1. **Phase 0, 1, 2, 3**: Đã hoàn tất và push lên Git.
+2. **Phase 4 (Hệ Thống Tiến Hóa 9 Skin & Màn Hình Tủ Đồ - ĐÃ HOÀN TẤT)**:
+   - `ui/cabinet/components/SkinCard.kt`, `BadgeCard.kt`, `CabinetViewModel.kt`, `CabinetScreen.kt`.
+3. **Phase 5 (Bằng Khen Viral & Trình Xuất Ảnh Share Story - ĐÃ HOÀN TẤT)**:
+   - `ui/components/CertificateDialog.kt`, `util/ShareHelper.kt`, `res/xml/file_paths.xml`, `AndroidManifest.xml`.
+4. **Phase 6 (Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia - ĐÃ HOÀN TẤT)**:
+   - `data/model/LeaderboardUser.kt`, `data/repository/LeaderboardRepository.kt` (Mock Data 3 bảng Hôm Nay / Toàn Cầu / Quốc Gia + Interface chuẩn bị kết nối Firebase Firestore), `ui/leaderboard/LeaderboardViewModel.kt`, `ui/leaderboard/LeaderboardScreen.kt`.
+   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 5s (0 errors, 0 warnings)**.
 
 5. **Hướng dẫn cho AI tiếp theo**:
-   - **Bước tiếp theo là Phase 4: Hệ thống Tiến Hóa 9 Skin & Tủ Đồ (Skins & Badges Cabinet)**:
-     - Tạo `ui/cabinet/components/SkinCard.kt` (thẻ hiển thị skin 3 trạng thái: Đang Dùng, Sử Dụng, Đang Khóa kèm thanh % tiến độ).
-     - Tạo `ui/cabinet/components/BadgeCard.kt` (thẻ danh hiệu trào phúng).
-     - Tạo `ui/cabinet/CabinetViewModel.kt` và `ui/cabinet/CabinetScreen.kt`.
-     - Sử dụng hệ thống thiết kế Comic Pop-Art (`ComicComponents.kt`) để đảm bảo giao diện đồng bộ 100% với màn hình chơi game chính.
-     - Xem chi tiết tại mục [PHASE 4](#phase-4-hệ-thống-tiến-hóa-skin--tủ-đồ).
+   - **Bước tiếp theo là Phase 7: App Navigation, Polishing & Build Release**:
+     - Tạo `ui/navigation/Screen.kt` và `ui/navigation/AppNavigation.kt`.
+     - Tạo `ui/onboarding/NicknameDialog.kt` và `ui/settings/SettingsDialog.kt`.
+     - Cập nhật `MainActivity.kt` để kết nối toàn bộ flow điều hướng và xử lý nút Back thoát app.
+     - Xem chi tiết tại mục [PHASE 7](#phase-7-navigation-polishing--build-release).
 
 ---
 *Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục thực hiện.*
