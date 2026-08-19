@@ -394,15 +394,14 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
    - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
    - Git Commit: `a443ee6` đã push lên branch `main`.
 
-4. **Phase 3 (Core Gameplay, 3D Isometric Toilet Roll & Realistic Dynamic Ribbon - ĐÃ HOÀN THIỆN)**:
-   - `res/drawable/bg_bathroom_game.jpg`: Asset hình nền phòng vệ sinh hoạt hình 2D Comic chất lượng cao, sạch sẽ không có nút hay chữ tĩnh.
+4. **Phase 3 (Core Gameplay, 3D Isometric Toilet Roll & Realistic Dynamic Ribbon - ĐÃ TINH CHỈNH HOÀN MỸ THEO MẪU GỐC)**:
+   - `res/drawable/bg_bathroom_game.jpg`: Asset hình nền phòng vệ sinh 2D Comic chất lượng cao, sạch sẽ không có nút hay chữ tĩnh.
    - `ui/game/ToiletPaperCanvas.kt`:
-     - **Cuộn giấy 3D Isometric**: Dựng hình trụ đa chiều nhìn nghiêng (isometric cylinder) với mặt bên trái hình elip gồm các vòng xoắn lớp giấy đồng tâm, ống lõi carton màu nâu và lỗ rỗng sâu ở giữa khớp trục gỗ; vệt sáng Specular highlight trên đỉnh; các đường nét đứt chia tờ xoay tròn sinh động theo cử chỉ vuốt; hiệu ứng hoạt hình giọt nước bắn và vệt gió xoay `) )` khi cuộn.
-     - **Dải giấy uốn lượn S-Curve mềm mại tự nhiên**: Dựng trên đường cong Cubic Bezier với vector pháp tuyến đa giác ribbon, hiệu ứng bóng nếp gấp nội khối (crease shading), nhịp rung vẫy tự nhiên trong không khí `paperFlutter` theo tốc độ vuốt (`currentVelocity`), và họa tiết Emoji của Skin được xoay đúng góc nghiêng tiếp tuyến của đường cong.
-     - **Cử chỉ mượt mà**: Nhận diện vuốt Drag $1:1$ và Fling quán tính giảm tốc có ma sát chân thực.
-   - `ui/game/GameScreen.kt`: Bố cục thống nhất chuẩn Comic Pop-Art (Tiêu đề 3D "SCROLL & SCROLL", cụm nút tròn 4 góc, thẻ HUD Odometer cơ học, thanh SPS và hướng dẫn vuốt cho tân thủ).
-   - `ui/components/ComicComponents.kt`: Design system đồng bộ cho toàn bộ ứng dụng.
-   - Kết quả biên dịch: `./gradlew compileDebugKotlin` $\rightarrow$ **BUILD SUCCESSFUL in 3s (0 errors, 0 warnings)**.
+     - **Cuộn giấy 3D Isometric khớp 100% Khung gỗ**: Mặt tròn bên phải đặt khớp chính xác vào khớp xoay tay đỡ gỗ; đầu trục tròn nhô ra bên trái; thân cuộn có vệt sáng Specular highlight trên đỉnh và các đường nét đứt xé giấy xoay tròn; 3 giọt nước bắn `( ( (` và 2 vệt gió xoay `( (` bên trái.
+     - **Dải giấy uốn lượn Catmull-Rom Spline mượt mà liên tục**: Nâng cấp từ Bezier đơn lẻ sang giải thuật **Catmull-Rom Spline** liên tục $C^1$ đảm bảo dải giấy có độ rộng đều, các nếp uốn lượn cong tròn mềm mại (không bị góc nhọn hay thắt nút), kéo dài sâu xuống 81% chiều cao màn hình tiếp đất trọn vẹn vào đống giấy sàn nhà.
+   - `ui/components/ComicComponents.kt`: Component `Comic3DWordmark` (tiêu đề 3D "SCROLL & SCROLL" với chữ "&" tròn lồng ở giữa), `ComicCircleButton` (viền đen 3dp, bóng đổ, nhãn chữ viền kép tương phản) và thẻ `ComicCard`.
+   - `ui/game/GameScreen.kt`: Bố cục khớp 100% hình mẫu thiết kế (Setting Cyan góc trên trái, Bảng Xếp Hạng Vàng + Tủ Đồ Skin Xanh lá góc trên phải, Hướng dẫn ngón tay 👆 & mũi tên đôi SWIPE DOWN, Hàng dưới gồm ASMR Cyan + Thẻ Odometer lật số đen retro + 2 nút Bằng Khen).
+   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 3s (0 errors, 0 warnings)**.
 
 5. **Hướng dẫn cho AI tiếp theo**:
    - **Bước tiếp theo là Phase 4: Hệ thống Tiến Hóa 9 Skin & Tủ Đồ (Skins & Badges Cabinet)**:

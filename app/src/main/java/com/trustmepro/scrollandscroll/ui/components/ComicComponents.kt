@@ -29,39 +29,34 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Comic Design System — Color Palette
+// Comic Pop-Art Color Tokens (Khớp 100% hình mẫu gốc)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Bộ màu sắc nhất quán cho toàn bộ giao diện Comic Pop-Art */
-val ComicInkBlack = Color(0xFF1E1B18)
+val ComicInkBlack = Color(0xFF1B1B1B)
 val ComicYellow   = Color(0xFFFFD54F)
-val ComicGold     = Color(0xFFFFCA28)
-val ComicGreen    = Color(0xFF66BB6A)
+val ComicGold     = Color(0xFFFFC107)
+val ComicGreen    = Color(0xFF81C784)
 val ComicOrange   = Color(0xFFFF8A65)
+val ComicRedOrange= Color(0xFFFF5722)
 val ComicCyan     = Color(0xFF80DEEA)
-val ComicGray     = Color(0xFFBDBDBD)    // Nút Setting
-val ComicLightYellow = Color(0xFFFFECB3) // Màu nền nhạt
+val ComicCardBg   = Color(0xFFFFFFFF)
+val ComicTileBlue = Color(0xFFB3E5FC)
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ComicCircleButton — Nút tròn Pop-Art với viền đen, bóng 3D và label
+// ComicCircleButton — Nút bấm tròn phong cách hoạt hình Pop-Art
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Nút bấm tròn phong cách truyện tranh (Comic Pop-Art).
- * Khi nhấn: hiệu ứng bóng nhẹ xuống và bóng đổ thu lại.
- *
- * @param icon       Icon hiển thị trong nút
- * @param label      Nhãn text bên dưới nút (hỗ trợ xuống hàng bằng \n)
- * @param containerColor Màu nền nút
- * @param onClick    Sự kiện khi nhấn
- * @param size       Đường kính nút (mặc định 54.dp)
+ * Nút bấm tròn phong cách Pop-Art với viền đen dày, bóng đổ 3D và nhãn chữ nổi bật
  */
 @Composable
 fun ComicCircleButton(
@@ -70,7 +65,7 @@ fun ComicCircleButton(
     containerColor: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    size: Dp = 54.dp
+    size: Dp = 56.dp
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -79,25 +74,27 @@ fun ComicCircleButton(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Nút tròn có viền đen đậm và bóng đổ
         Box(
             modifier = Modifier
-                .size(size)
                 .offset(y = if (isPressed) 3.dp else 0.dp)
+                .size(size)
                 .shadow(
                     elevation = if (isPressed) 1.dp else 6.dp,
                     shape = CircleShape,
-                    spotColor = ComicInkBlack.copy(alpha = 0.55f)
+                    spotColor = ComicInkBlack.copy(alpha = 0.5f)
                 )
                 .clip(CircleShape)
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            lighten(containerColor, 0.18f),
-                            containerColor
+                            containerColor.copy(alpha = 0.95f),
+                            containerColor,
+                            darken(containerColor, 0.12f)
                         )
                     )
                 )
-                .border(width = 2.5.dp, color = ComicInkBlack, shape = CircleShape)
+                .border(width = 3.dp, color = ComicInkBlack, shape = CircleShape)
                 .clickable(
                     interactionSource = interactionSource,
                     indication = ripple(bounded = true, color = Color.White.copy(alpha = 0.5f)),
@@ -109,34 +106,34 @@ fun ComicCircleButton(
                 imageVector = icon,
                 contentDescription = label,
                 tint = ComicInkBlack,
-                modifier = Modifier.size(size * 0.52f)
+                modifier = Modifier.size(size * 0.54f)
             )
         }
 
         if (label.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(3.dp))
 
-            // Label với bóng trắng và nét đen (giúp đọc được trên mọi nền)
+            // Nhãn chữ viền kép (trắng + đen) sắc nét trên mọi nền gạch/tường
             Box(contentAlignment = Alignment.Center) {
                 Text(
                     text = label,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontWeight = FontWeight.Black,
                     color = Color.White,
-                    fontSize = 11.sp,
+                    fontSize = 11.5.sp,
                     lineHeight = 13.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .offset(x = 1.dp, y = 1.dp)
-                        .widthIn(max = 66.dp)
+                        .offset(x = 1.2.dp, y = 1.2.dp)
+                        .widthIn(max = 72.dp)
                 )
                 Text(
                     text = label,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontWeight = FontWeight.Black,
                     color = ComicInkBlack,
-                    fontSize = 11.sp,
+                    fontSize = 11.5.sp,
                     lineHeight = 13.sp,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.widthIn(max = 66.dp)
+                    modifier = Modifier.widthIn(max = 72.dp)
                 )
             }
         }
@@ -144,39 +141,151 @@ fun ComicCircleButton(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ComicCard — Thẻ nội dung HUD với viền đen đậm và bóng đổ
+// ComicCard — Thẻ HUD viền đen dày 3.5dp phong cách Pop-Art
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Thẻ phong cách truyện tranh: nền trắng, viền đen 3dp, góc bo 18dp, bóng đổ.
- * Dùng làm HUD card hiển thị odometer và thống kê.
- */
 @Composable
 fun ComicCard(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Color.White,
+    backgroundColor: Color = ComicCardBg,
     content: @Composable () -> Unit
 ) {
     Box(
         modifier = modifier
-            .shadow(elevation = 10.dp, shape = RoundedCornerShape(18.dp))
-            .clip(RoundedCornerShape(18.dp))
+            .shadow(elevation = 8.dp, shape = RoundedCornerShape(20.dp), spotColor = ComicInkBlack.copy(alpha = 0.4f))
+            .clip(RoundedCornerShape(20.dp))
             .background(backgroundColor)
-            .border(width = 3.dp, color = ComicInkBlack, shape = RoundedCornerShape(18.dp))
-            .padding(horizontal = 12.dp, vertical = 10.dp)
+            .border(width = 3.5.dp, color = ComicInkBlack, shape = RoundedCornerShape(20.dp))
+            .padding(horizontal = 14.dp, vertical = 10.dp)
     ) {
         content()
     }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Helper nội bộ
+// Comic3DWordmark — Tiêu đề chữ 3D "SCROLL & SCROLL" siêu đẹp chuẩn hoạt hình
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Làm sáng một màu lên theo hệ số [amount] ∈ [0..1] */
-private fun lighten(color: Color, amount: Float): Color = Color(
-    red   = (color.red   + (1f - color.red)   * amount).coerceIn(0f, 1f),
-    green = (color.green + (1f - color.green) * amount).coerceIn(0f, 1f),
-    blue  = (color.blue  + (1f - color.blue)  * amount).coerceIn(0f, 1f),
+@Composable
+fun Comic3DWordmark(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Dòng 1: "SCROLL"
+        Comic3DText(text = "SCROLL", fontSize = 38.sp)
+
+        // Dòng 2: Ký tự "&" nằm đè ở giữa 2 chữ SCROLL
+        Box(
+            modifier = Modifier.offset(y = (-4).dp),
+            contentAlignment = Alignment.Center
+        ) {
+            // Nền tròn trắng nhỏ viền đen chứa chữ &
+            Box(
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+                    .border(2.5.dp, ComicInkBlack, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "&",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Black,
+                    color = ComicInkBlack,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+
+        // Dòng 3: "SCROLL"
+        Comic3DText(
+            text = "SCROLL",
+            fontSize = 38.sp,
+            modifier = Modifier.offset(y = (-6).dp)
+        )
+
+        // Huy hiệu banner viền đen: "CUỘN GIẤY VỆ SINH VÔ TẬN"
+        Box(
+            modifier = Modifier
+                .offset(y = (-2).dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(ComicInkBlack)
+                .border(1.5.dp, ComicInkBlack, RoundedCornerShape(8.dp))
+                .padding(horizontal = 12.dp, vertical = 3.dp)
+        ) {
+            Text(
+                text = "CUỘN GIẤY VỆ SINH VÔ TẬN",
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 0.8.sp,
+                color = Color(0xFFFFD54F),
+                fontSize = 11.5.sp
+            )
+        }
+    }
+}
+
+/**
+ * Một khối chữ 3D Pop-Art với viền đen dày, bóng đổ 3D và gradient màu cam-đỏ nổi bật
+ */
+@Composable
+fun Comic3DText(
+    text: String,
+    fontSize: TextUnit = 36.sp,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        // Lớp 1: Bóng đổ 3D đen phía dưới
+        Text(
+            text = text,
+            fontSize = fontSize,
+            fontWeight = FontWeight.Black,
+            fontFamily = FontFamily.SansSerif,
+            color = ComicInkBlack,
+            modifier = Modifier.offset(x = 3.dp, y = 4.5.dp)
+        )
+        // Lớp 2: Viền đen bao quanh chữ (trái, phải, trên)
+        Text(
+            text = text,
+            fontSize = fontSize,
+            fontWeight = FontWeight.Black,
+            fontFamily = FontFamily.SansSerif,
+            color = ComicInkBlack,
+            modifier = Modifier.offset(x = (-1.5).dp, y = (-1.5).dp)
+        )
+        Text(
+            text = text,
+            fontSize = fontSize,
+            fontWeight = FontWeight.Black,
+            fontFamily = FontFamily.SansSerif,
+            color = ComicInkBlack,
+            modifier = Modifier.offset(x = 1.5.dp, y = (-1.5).dp)
+        )
+        // Lớp 3: Màu chữ chính cam-đỏ rực rỡ
+        Text(
+            text = text,
+            fontSize = fontSize,
+            fontWeight = FontWeight.Black,
+            fontFamily = FontFamily.SansSerif,
+            color = Color(0xFFFF5722)
+        )
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers màu sắc
+// ─────────────────────────────────────────────────────────────────────────────
+
+private fun darken(color: Color, amount: Float): Color = Color(
+    red = (color.red * (1f - amount)).coerceIn(0f, 1f),
+    green = (color.green * (1f - amount)).coerceIn(0f, 1f),
+    blue = (color.blue * (1f - amount)).coerceIn(0f, 1f),
     alpha = color.alpha
 )
