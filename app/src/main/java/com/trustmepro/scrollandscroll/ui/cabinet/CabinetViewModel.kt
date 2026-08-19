@@ -23,6 +23,7 @@ data class CabinetUiState(
     val selectedTab: CabinetTab = CabinetTab.SKINS,
     val selectedSkin: SkinType = SkinType.SCHOOL_CANTEEN,
     val totalMeters: Double = 0.0,
+    val nickname: String = "",
     val unlockedSkinIds: Set<String> = emptySet(),
     val unlockedBadgeIds: Set<String> = emptySet(),
     val selectedBadgeForCertificate: BadgeType? = null
@@ -43,6 +44,7 @@ class CabinetViewModel(application: Application) : AndroidViewModel(application)
                     current.copy(
                         selectedSkin = stats.selectedSkin,
                         totalMeters = stats.totalMeters,
+                        nickname = stats.nickname,
                         unlockedSkinIds = SkinType.entries
                             .filter { stats.totalMeters >= it.requiredMeters }
                             .map { it.id }

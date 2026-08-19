@@ -194,6 +194,16 @@ fun CabinetScreen(
                 }
             }
         }
+
+        // ── 4. Modal Bằng Khen Danh Dự khi bấm Xem Bằng Khen ────────────
+        uiState.selectedBadgeForCertificate?.let { badge ->
+            com.trustmepro.scrollandscroll.ui.components.CertificateDialog(
+                badge = badge,
+                nickname = uiState.nickname,
+                totalMeters = uiState.totalMeters,
+                onDismiss = { viewModel.dismissCertificate() }
+            )
+        }
     }
 }
 

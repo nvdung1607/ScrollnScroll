@@ -198,10 +198,12 @@ fun GameScreen(
         // ── 7. Hiệu ứng viền lửa rực rỡ khi vào chế độ Overdrive ───────────
         OverdriveEffect(isOverdrive = ui.isOverdrive)
 
-        // ── 8. Dialog chúc mừng khi mở khóa Bằng Khen danh hiệu mới ───────
+        // ── 8. Modal Bằng Khen Danh Dự Vô Tri khi chạm mốc mới ───────────
         ui.newlyUnlockedBadge?.let { badge ->
-            BadgeUnlockDialog(
+            com.trustmepro.scrollandscroll.ui.components.CertificateDialog(
                 badge = badge,
+                nickname = ui.nickname,
+                totalMeters = ui.totalMeters,
                 onDismiss = { viewModel.dismissBadgeDialog() }
             )
         }
