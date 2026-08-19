@@ -353,8 +353,8 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 | :--- | :--- | :--- | :--- |
 | **Phase 0** | Cấu hình hạ tầng, Gradle Libs & Packages | 🟢 **ĐÃ HOÀN TẤT** | Đã cấu hình `libs.versions.toml`, `app/build.gradle.kts`, tạo package structure, build thành công 100%. |
 | **Phase 1** | Foundation, Material Design 3, Sound & Haptics | 🟢 **ĐÃ HOÀN TẤT** | Áp dụng 100% chuẩn Material Design 3 (M3 Color Tokens, M3 Typography 15 cấp độ, M3PrimaryButton, M3ElevatedCard, M3IconButton, SoundManager SoundPool, HapticManager). Build pass 100%. |
-| **Phase 2** | Data Layer, DataStore, Models & GameViewModel | 🟡 **TIẾP THEO (SẴN SÀNG)** | Bước tiếp theo cần triển khai. |
-| **Phase 3** | Core Gameplay, Canvas Cuộn Giấy & Overdrive Physics | ⚪ *Chờ thực thi* | Phụ thuộc Phase 2. |
+| **Phase 2** | Data Layer, DataStore, Models & GameViewModel | 🟢 **ĐÃ HOÀN TẤT** | Hoàn thành `SkinItem.kt` (9 skins), `BadgeItem.kt` (8 badges), `GameStats.kt`, `GamePreferences.kt` (DataStore), `GameRepository.kt` và `GameViewModel.kt` (SPS calculation & debounced persistence). Build pass 100%. |
+| **Phase 3** | Core Gameplay, Canvas Cuộn Giấy & Overdrive Physics | 🟡 **TIẾP THEO (SẴN SÀNG)** | Bước tiếp theo: Xây dựng `ToiletPaperCanvas.kt`, `SpsGauge.kt`, `OverdriveEffect.kt` và `GameScreen.kt`. |
 | **Phase 4** | Hệ thống Tiến Hóa 9 Skin & Tủ Đồ Cabinet | ⚪ *Chờ thực thi* | Phụ thuộc Phase 3. |
 | **Phase 5** | Bằng Khen Vô Tri & Trình Xuất Ảnh Share Story | ⚪ *Chờ thực thi* | Phụ thuộc Phase 4. |
 | **Phase 6** | Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia | ⚪ *Chờ thực thi* | Phụ thuộc Phase 5. |
@@ -365,7 +365,7 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 ## 📝 NHẬT KÝ THỰC THI (EXECUTION CHANGELOG & AUDIT TRAIL)
 > **Mục này ghi lại lịch sử các bước đã làm để bất kỳ AI Agent nào tiếp quản dự án đều nắm rõ hiện trạng.**
 
-### 📌 [2026-08-19] - Hoàn Tất Phase 0 & Phase 1:
+### 📌 [2026-08-19] - Hoàn Tất Phase 0, Phase 1 & Phase 2:
 1. **Phase 0 (Infrastructure & Dependencies)**:
    - Thêm `androidx-navigation-compose` (2.8.8), `androidx-datastore-preferences` (1.1.3), `androidx-compose-material-icons-extended`, `androidx-lifecycle-viewmodel-compose` vào `gradle/libs.versions.toml` và `app/build.gradle.kts`.
    - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL**.
@@ -382,9 +382,23 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
    - `ui/components/DesignSystemPreview.kt`: Màn hình Showcase hỗ trợ Preview cả Light & Dark mode trên Android Studio.
    - `AndroidManifest.xml`: Đã khai báo quyền `VIBRATE`.
    - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
+   - Git Commit: `b3b5300` đã push lên branch `main`.
 
-3. **Hướng dẫn cho AI tiếp theo**:
-   - **Bước tiếp theo là Phase 2**: Tạo các Data Model trong `data/model/`, DataStore Preferences trong `data/preference/GamePreferences.kt`, `data/repository/GameRepository.kt`, và `ui/game/GameViewModel.kt`. Xem chi tiết tại mục [PHASE 2](#phase-2-data-layer--state-management).
+3. **Phase 2 (Data Layer & State Management)**:
+   - `data/model/SkinItem.kt`: Enum `SkinType` cho 9 loại skin tiến hóa kèm required meters, màu sắc và emoji.
+   - `data/model/BadgeItem.kt`: Enum `BadgeType` cho 8 danh hiệu trào phúng kèm câu cà khịa hài hước.
+   - `data/model/GameStats.kt`: Model trạng thái game tổng hợp, hỗ trợ tính toán tiến độ mở khóa skin tiếp theo.
+   - `data/preference/GamePreferences.kt`: Tầng lưu trữ DataStore Preferences ngoại tuyến an toàn.
+   - `data/repository/GameRepository.kt`: Quản lý nghiệp vụ tự động mở khóa skin và badge khi đạt mốc mét.
+   - `ui/game/GameViewModel.kt`: Quản lý StateFlow `uiState`, thuật toán cửa sổ trượt 1s tính SPS, kích hoạt Overdrive x1.5 và cơ chế ghi đệm DataStore định kỳ không nghẽn UI thread.
+   - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
+
+4. **Hướng dẫn cho AI tiếp theo**:
+   - **Bước tiếp theo là Phase 3: Core Gameplay (Canvas Cuộn Giấy & Overdrive Physics)**:
+     - Tạo `ui/game/ToiletPaperCanvas.kt` (vẽ trục cuộn và dải giấy bằng Compose Canvas, nhận diện vuốt Drag/Fling).
+     - Tạo `ui/game/components/SpsGauge.kt` và `ui/game/components/OverdriveEffect.kt`.
+     - Ghép vào `ui/game/GameScreen.kt` kết nối `GameViewModel`.
+     - Xem chi tiết tại mục [PHASE 3](#phase-3-core-gameplay---canvas-cuộn-giấy--vật-lý-cuộn).
 
 ---
 *Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục thực hiện.*
