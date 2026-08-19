@@ -257,28 +257,48 @@ fun CertificateDialog(
                 }
             }
 
-            Spacer(Modifier.height(14.dp))
-
             // ── Các Nút Hành Động ───────────────────────────────────────────
-            M3PrimaryButton(
-                onClick = {
-                    ShareHelper.shareCertificate(context, badge, nickname, totalMeters)
-                },
-                containerColor = Color(0xFFD32F2F),
-                contentColor = Color.White,
-                modifier = Modifier.fillMaxWidth()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(Modifier.width(8.dp))
-                Text(
-                    text = "📲 CHIA SẺ GIẤY KHEN LÊN STORY",
-                    fontFamily = ComicFontFamily,
-                    fontSize = 15.sp
-                )
+                // Nút Chia Sẻ Story
+                M3PrimaryButton(
+                    onClick = {
+                        ShareHelper.shareCertificate(context, badge, nickname, totalMeters)
+                    },
+                    containerColor = Color(0xFFD32F2F),
+                    contentColor = Color.White,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        text = "📲 CHIA SẺ",
+                        fontFamily = ComicFontFamily,
+                        fontSize = 13.sp
+                    )
+                }
+
+                // Nút Tải Về Thư Viện
+                M3PrimaryButton(
+                    onClick = {
+                        ShareHelper.downloadCertificateToGallery(context, badge, nickname, totalMeters)
+                    },
+                    containerColor = ComicYellow,
+                    contentColor = ComicInkBlack,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = "💾 TẢI VỀ ẢNH",
+                        fontFamily = ComicFontFamily,
+                        fontSize = 13.sp
+                    )
+                }
             }
 
             Spacer(Modifier.height(8.dp))

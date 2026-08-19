@@ -1,14 +1,18 @@
 package com.trustmepro.scrollandscroll.util
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.RectF
 import android.graphics.Typeface
+import android.media.MediaScannerConnection
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.trustmepro.scrollandscroll.R
 import com.trustmepro.scrollandscroll.data.model.BadgeType
@@ -43,6 +47,60 @@ object ShareHelper {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(chooser)
+    }
+
+    /**
+     * Tải Giấy Khen lưu trực tiếp vào Thư Viện Ảnh (Gallery / Pictures / ScrollAndScroll)
+     */
+    fun downloadCertificateToGallery(
+        context: Context,
+        badge: BadgeType,
+        nickname: String,
+        totalMeters: Double
+    ) {
+        try {
+            val bitmap = generateCertificateBitmap(context, badge, nickname, totalMeters)
+            val filename = "GiayKhen_${badge.id}_${System.currentTimeMillis()}.png"
+            var success = false
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/ScrollAndScroll")
+                    put(MediaStore.MediaColumns.IS_PENDING, 1)
+                }
+                val contentResolver = context.contentResolver
+                val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                if (uri != null) {
+                    contentResolver.openOutputStream(uri)?.use { out ->
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                    }
+                    contentValues.clear()
+                    contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+                    contentResolver.update(uri, contentValues, null, null)
+                    success = true
+                }
+            } else {
+                val picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                val appDir = File(picturesDir, "ScrollAndScroll").apply { mkdirs() }
+                val file = File(appDir, filename)
+                val out = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                out.close()
+                MediaScannerConnection.scanFile(context, arrayOf(file.absolutePath), arrayOf("image/png"), null)
+                success = true
+            }
+
+            if (success) {
+                Toast.makeText(context, "💾 Đã tải Giấy Khen về Thư Viện Ảnh thành công!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "❌ Không thể lưu ảnh vào thư viện!", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "❌ Lỗi khi tải ảnh: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun generateCertificateBitmap(
