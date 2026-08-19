@@ -135,7 +135,7 @@ object ShareHelper {
         val goldBorderPaint = Paint().apply {
             color = goldColor
             style = Paint.Style.STROKE
-            strokeWidth = 24f
+            strokeWidth = 22f
             isAntiAlias = true
         }
         canvas.drawRect(RectF(38f, 38f, width - 38f, height - 38f), goldBorderPaint)
@@ -147,7 +147,7 @@ object ShareHelper {
             strokeWidth = 6f
             isAntiAlias = true
         }
-        canvas.drawRect(RectF(60f, 60f, width - 60f, height - 60f), innerBorderPaint)
+        canvas.drawRect(RectF(58f, 58f, width - 58f, height - 58f), innerBorderPaint)
 
         // 5. Vẽ 4 góc hoa văn góc vuông cổ điển (Chữ Vạn cách điệu)
         val cornerPaint = Paint().apply {
@@ -156,12 +156,12 @@ object ShareHelper {
             strokeWidth = 8f
             isAntiAlias = true
         }
-        val cornerLen = 100f
+        val cornerLen = 96f
         val corners = listOf(
-            (60f to 60f) to (1f to 1f),
-            (width - 60f to 60f) to (-1f to 1f),
-            (60f to height - 60f) to (1f to -1f),
-            (width - 60f to height - 60f) to (-1f to -1f)
+            (58f to 58f) to (1f to 1f),
+            (width - 58f to 58f) to (-1f to 1f),
+            (58f to height - 58f) to (1f to -1f),
+            (width - 58f to height - 58f) to (-1f to -1f)
         )
         corners.forEach { (pos, dir) ->
             val (px, py) = pos
@@ -170,50 +170,56 @@ object ShareHelper {
                 moveTo(px, py + dy * cornerLen)
                 lineTo(px, py)
                 lineTo(px + dx * cornerLen, py)
-                moveTo(px + dx * 28f, py + dy * cornerLen * 0.7f)
-                lineTo(px + dx * 28f, py + dy * 28f)
-                lineTo(px + dx * cornerLen * 0.7f, py + dy * 28f)
+                moveTo(px + dx * 26f, py + dy * cornerLen * 0.7f)
+                lineTo(px + dx * 26f, py + dy * 26f)
+                lineTo(px + dx * cornerLen * 0.7f, py + dy * 26f)
             }
             canvas.drawPath(path, cornerPaint)
         }
 
-        // 6. Huy hiệu Quốc Huy / Cờ đỏ sao vàng ở đỉnh trên giữa
+        // 6. Cụm Huy hiệu Cờ Đỏ Sao Vàng xòe quạt chuẩn mẫu
         val emblemCenterX = width / 2f
-        val emblemCenterY = 48f
-        val emblemRadius = 45f
+        val emblemCenterY = 46f
+        val emblemRadius = 42f
 
         val flagPaint = Paint().apply {
             color = redColor
             style = Paint.Style.FILL
             isAntiAlias = true
         }
-        val flagPath = Path().apply {
-            moveTo(emblemCenterX - 130f, 65f)
-            lineTo(emblemCenterX - emblemRadius, 30f)
-            lineTo(emblemCenterX + emblemRadius, 30f)
-            lineTo(emblemCenterX + 130f, 65f)
-            lineTo(emblemCenterX + 105f, 90f)
-            lineTo(emblemCenterX - 105f, 90f)
+        val leftFlagPath = Path().apply {
+            moveTo(emblemCenterX - 140f, 60f)
+            lineTo(emblemCenterX - emblemRadius, 28f)
+            lineTo(emblemCenterX - emblemRadius, 72f)
+            lineTo(emblemCenterX - 120f, 82f)
             close()
         }
-        canvas.drawPath(flagPath, flagPaint)
+        val rightFlagPath = Path().apply {
+            moveTo(emblemCenterX + 140f, 60f)
+            lineTo(emblemCenterX + emblemRadius, 28f)
+            lineTo(emblemCenterX + emblemRadius, 72f)
+            lineTo(emblemCenterX + 120f, 82f)
+            close()
+        }
+        canvas.drawPath(leftFlagPath, flagPaint)
+        canvas.drawPath(rightFlagPath, flagPaint)
 
-        canvas.drawCircle(emblemCenterX, emblemCenterY + 16f, emblemRadius, flagPaint)
+        canvas.drawCircle(emblemCenterX, emblemCenterY + 12f, emblemRadius, flagPaint)
         val emblemBorderPaint = Paint().apply {
             color = goldDark
             style = Paint.Style.STROKE
             strokeWidth = 6f
             isAntiAlias = true
         }
-        canvas.drawCircle(emblemCenterX, emblemCenterY + 16f, emblemRadius, emblemBorderPaint)
+        canvas.drawCircle(emblemCenterX, emblemCenterY + 12f, emblemRadius, emblemBorderPaint)
 
-        // Ngôi sao vàng 5 cánh ở giữa
+        // Ngôi sao vàng ở giữa
         val starPaint = Paint().apply {
             color = goldColor
             style = Paint.Style.FILL
             isAntiAlias = true
         }
-        canvas.drawCircle(emblemCenterX, emblemCenterY + 16f, 18f, starPaint)
+        canvas.drawCircle(emblemCenterX, emblemCenterY + 12f, 16f, starPaint)
 
         // 7. Hoa sen chìm mờ ở tâm nền
         val watermarkPaint = Paint().apply {
@@ -235,7 +241,7 @@ object ShareHelper {
         val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
         val displayName = if (nickname.isBlank()) "Chiến Thần Giấu Tên" else nickname
 
-        // 8. Quốc Hiệu & Tiêu Ngữ
+        // 8. Quốc Hiệu & Tiêu Ngữ Hài Hước Lái Đi
         val countryPaint = Paint().apply {
             color = inkBlack
             textSize = 34f
@@ -243,7 +249,7 @@ object ShareHelper {
             typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
             isAntiAlias = true
         }
-        canvas.drawText("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", width / 2f, 175f, countryPaint)
+        canvas.drawText("CỘNG HÒA VÔ TRI CHIẾN THẦN VIỆT NAM", width / 2f, 165f, countryPaint)
 
         val mottoPaint = Paint().apply {
             color = inkBlack
@@ -252,7 +258,7 @@ object ShareHelper {
             typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
             isAntiAlias = true
         }
-        canvas.drawText("Độc lập – Tự do – Hạnh phúc", width / 2f, 225f, mottoPaint)
+        canvas.drawText("Độc cuộn – Tự do – Hết giấy", width / 2f, 215f, mottoPaint)
 
         val sepPaint = Paint().apply {
             color = android.graphics.Color.parseColor("#666666")
@@ -261,18 +267,18 @@ object ShareHelper {
             typeface = Typeface.create(Typeface.SERIF, Typeface.NORMAL)
             isAntiAlias = true
         }
-        canvas.drawText("----------o0o----------", width / 2f, 265f, sepPaint)
+        canvas.drawText("----------~ 🧻 ~----------", width / 2f, 255f, sepPaint)
 
         // 9. Tiêu đề lớn GIẤY KHEN
         val titlePaint = Paint().apply {
             color = redColor
-            textSize = 88f
+            textSize = 90f
             textAlign = Paint.Align.CENTER
             typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
             letterSpacing = 0.12f
             isAntiAlias = true
         }
-        canvas.drawText("GIẤY KHEN", width / 2f, 385f, titlePaint)
+        canvas.drawText("GIẤY KHEN", width / 2f, 375f, titlePaint)
 
         // 10. Dòng thẩm quyền ban hành
         val authorityPaint = Paint().apply {
@@ -280,12 +286,12 @@ object ShareHelper {
             textSize = 38f
             textAlign = Paint.Align.CENTER
             typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
-            letterSpacing = 0.05f
+            letterSpacing = 0.04f
             isAntiAlias = true
         }
-        canvas.drawText("VIỆN TRƯỞNG VIỆN KHOA HỌC VÔ TRI", width / 2f, 465f, authorityPaint)
+        canvas.drawText("VIỆN TRƯỞNG VIỆN KHOA HỌC VÔ TRI", width / 2f, 455f, authorityPaint)
 
-        // 11. Khen tặng Chiến Thần
+        // 11. Khen tặng Chiến Thần (Bỏ lớp)
         val recipientPaint = Paint().apply {
             color = inkBlack
             textSize = 38f
@@ -293,7 +299,14 @@ object ShareHelper {
             typeface = Typeface.create(Typeface.SERIF, Typeface.NORMAL)
             isAntiAlias = true
         }
-        canvas.drawText("Khen tặng: $displayName    -    Lớp: Hội Vô Tri Toàn Cầu", width / 2f, 555f, recipientPaint)
+        val redHighlightPaint = Paint().apply {
+            color = redColor
+            textSize = 42f
+            textAlign = Paint.Align.CENTER
+            typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
+            isAntiAlias = true
+        }
+        canvas.drawText("Khen tặng Chiến Thần: $displayName", width / 2f, 545f, redHighlightPaint)
 
         // 12. Đạt danh hiệu
         val badgeTitlePaint = Paint().apply {
@@ -303,7 +316,7 @@ object ShareHelper {
             typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
             isAntiAlias = true
         }
-        canvas.drawText("Đạt danh hiệu: ${badge.title} ${badge.badgeEmoji}", width / 2f, 635f, badgeTitlePaint)
+        canvas.drawText("Đạt danh hiệu: ${badge.title} ${badge.badgeEmoji}", width / 2f, 625f, badgeTitlePaint)
 
         // 13. Thành tích số mét cuộn
         val statsPaint = Paint().apply {
@@ -313,7 +326,7 @@ object ShareHelper {
             typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
             isAntiAlias = true
         }
-        canvas.drawText("Thành tích: Đã cuộn ${String.format(Locale.US, "%,.1f", totalMeters)} mét giấy vệ sinh vô tận", width / 2f, 715f, statsPaint)
+        canvas.drawText("Đã xuất sắc cuộn được: ${String.format(Locale.US, "%,.1f", totalMeters)} mét giấy", width / 2f, 705f, statsPaint)
 
         // 14. Lời phê / Lời cà khịa
         val quotePaint = Paint().apply {
@@ -323,7 +336,7 @@ object ShareHelper {
             typeface = Typeface.create(Typeface.SERIF, Typeface.ITALIC)
             isAntiAlias = true
         }
-        canvas.drawText("\"${badge.description}\"", width / 2f, 785f, quotePaint)
+        canvas.drawText("\"${badge.description}\"", width / 2f, 775f, quotePaint)
 
         // 15. Góc dưới bên trái: Vào sổ khen thưởng
         val recordPaint = Paint().apply {
@@ -333,7 +346,7 @@ object ShareHelper {
             typeface = Typeface.create(Typeface.SERIF, Typeface.ITALIC)
             isAntiAlias = true
         }
-        canvas.drawText("Vào sổ khen thưởng: Số 3669/QĐ-VOTRI", 140f, 920f, recordPaint)
+        canvas.drawText("Vào sổ: Số 3669/QĐ-VOTRI", 140f, 920f, recordPaint)
         canvas.drawText("Ngày $currentDate", 140f, 965f, recordPaint)
 
         // 16. Góc dưới bên phải: Ngày tháng, Viện trưởng & Chữ ký

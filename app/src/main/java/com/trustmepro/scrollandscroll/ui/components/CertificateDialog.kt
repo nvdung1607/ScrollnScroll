@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -52,7 +50,7 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Modal Bằng Khen Danh Dự thuần Vector & Canvas vẽ trực tiếp chuẩn mẫu Giấy Khen Việt Nam
+ * Modal Bằng Khen Danh Dự thuần Vector & Canvas vẽ trực tiếp chuẩn phôi Giấy Khen truyền thống
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,144 +69,137 @@ fun CertificateDialog(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 6.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // ── Khung Giấy Khen Vẽ Thuần Bằng Canvas & Vector (Không bị đè chữ) ────
+            // ── Khung Giấy Khen Vẽ Thuần Canvas Vector ───────────────────────
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.38f)
                     .shadow(16.dp, RoundedCornerShape(8.dp))
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color(0xFFFFFDF2))
             ) {
-                // 1. Lớp Canvas vẽ toàn bộ viền hoa văn đỏ-vàng, góc cổ điển và chìm hoa sen
+                // 1. Lớp Canvas vẽ viền hoa văn đỏ-vàng, 4 góc cổ điển và huy hiệu cờ đỏ
                 TraditionalCertificateBorder(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.matchParentSize()
                 )
 
-                // 2. Lớp Nội dung Text trình bày chuẩn quy cách Giấy Khen
+                // 2. Nội dung Text Giấy Khen căn chỉnh hoàn hảo
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 22.dp, vertical = 10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .fillMaxWidth()
+                        .padding(start = 18.dp, end = 18.dp, top = 28.dp, bottom = 12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Header: Quốc Hiệu & Tiêu Ngữ
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(top = 16.dp)
-                    ) {
-                        Text(
-                            text = "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 8.5.sp,
-                            color = Color(0xFF1A1A1A),
-                            letterSpacing = 0.3.sp
-                        )
-                        Text(
-                            text = "Độc lập – Tự do – Hạnh phúc",
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 8.sp,
-                            color = Color(0xFF1A1A1A)
-                        )
-                        Text(
-                            text = "----------o0o----------",
-                            fontFamily = FontFamily.Serif,
-                            fontSize = 7.sp,
-                            color = Color(0xFF555555),
-                            modifier = Modifier.offset(y = (-2).dp)
-                        )
-                    }
+                    // Header: Quốc Hiệu & Tiêu Ngữ Hài Hước Lái Đi
+                    Text(
+                        text = "CỘNG HÒA VÔ TRI CHIẾN THẦN VIỆT NAM",
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 9.sp,
+                        color = Color(0xFF1A1A1A),
+                        letterSpacing = 0.2.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(1.dp))
+                    Text(
+                        text = "Độc cuộn – Tự do – Hết giấy",
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 8.5.sp,
+                        color = Color(0xFF1A1A1A),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "----------~ 🧻 ~----------",
+                        fontFamily = FontFamily.Serif,
+                        fontSize = 7.5.sp,
+                        color = Color(0xFF666666),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(Modifier.height(4.dp))
 
                     // Tiêu đề lớn GIẤY KHEN
                     Text(
                         text = "GIẤY KHEN",
                         fontFamily = FontFamily.Serif,
                         fontWeight = FontWeight.Black,
-                        fontSize = 20.sp,
+                        fontSize = 21.sp,
                         color = Color(0xFFD32F2F),
-                        letterSpacing = 2.sp
+                        letterSpacing = 2.5.sp
                     )
 
-                    // Dòng thẩm quyền trao tặng
+                    Spacer(Modifier.height(2.dp))
+
+                    // Dòng thẩm quyền ban hành
                     Text(
                         text = "VIỆN TRƯỞNG VIỆN KHOA HỌC VÔ TRI",
                         fontFamily = FontFamily.Serif,
                         fontWeight = FontWeight.Bold,
                         fontSize = 9.5.sp,
                         color = Color(0xFF1A1A1A),
-                        letterSpacing = 0.5.sp
+                        letterSpacing = 0.4.sp
                     )
 
-                    // Khen tặng em / Chiến Thần
+                    Spacer(Modifier.height(4.dp))
+
+                    // Khen tặng Chiến Thần (Bỏ lớp)
                     val displayName = if (nickname.isBlank()) "Chiến Thần Giấu Tên" else nickname
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "Khen tặng: ",
+                            text = "Khen tặng Chiến Thần: ",
                             fontFamily = FontFamily.Serif,
-                            fontSize = 9.5.sp,
+                            fontSize = 10.sp,
                             color = Color(0xFF1A1A1A)
                         )
                         Text(
                             text = displayName,
                             fontFamily = FontFamily.Serif,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 11.5.sp,
+                            fontSize = 12.sp,
                             color = Color(0xFFD32F2F)
-                        )
-                        Text(
-                            text = "   Lớp: ",
-                            fontFamily = FontFamily.Serif,
-                            fontSize = 9.5.sp,
-                            color = Color(0xFF1A1A1A)
-                        )
-                        Text(
-                            text = "Hội Vô Tri Toàn Cầu",
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 9.5.sp,
-                            color = Color(0xFF1A1A1A)
                         )
                     }
 
-                    // Đạt danh hiệu
+                    Spacer(Modifier.height(2.dp))
+
+                    // Đạt danh hiệu & Bổ sung số mét đã cuộn
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
                             text = "Đạt danh hiệu: ",
                             fontFamily = FontFamily.Serif,
-                            fontSize = 9.5.sp,
+                            fontSize = 10.sp,
                             color = Color(0xFF1A1A1A)
                         )
                         Text(
                             text = "${badge.title} ${badge.badgeEmoji}",
                             fontFamily = FontFamily.Serif,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 11.5.sp,
+                            fontSize = 12.sp,
                             color = Color(0xFFD32F2F)
                         )
                     }
 
+                    Spacer(Modifier.height(2.dp))
+
                     // Thành tích số mét cuộn
                     Text(
-                        text = "Thành tích: Đã cuộn ${String.format(Locale.US, "%,.1f", totalMeters)} mét giấy vệ sinh vô tận",
+                        text = "Đã xuất sắc cuộn được: ${String.format(Locale.US, "%,.1f", totalMeters)} mét giấy",
                         fontFamily = FontFamily.Serif,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 9.sp,
+                        fontSize = 9.5.sp,
                         color = Color(0xFF1B5E20)
                     )
+
+                    Spacer(Modifier.height(2.dp))
 
                     // Lời phê / Lời cà khịa
                     Text(
@@ -219,43 +210,46 @@ fun CertificateDialog(
                         color = Color(0xFF4E342E),
                         textAlign = TextAlign.Center,
                         maxLines = 2,
-                        modifier = Modifier.padding(horizontal = 14.dp)
+                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
 
-                    // Dòng ngày tháng và chữ ký / Dấu mộc đáy
+                    Spacer(Modifier.height(6.dp))
+
+                    // Dòng ngày tháng, vào sổ và chữ ký / Con dấu mộc đỏ
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 6.dp),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.Bottom
                     ) {
                         // Góc dưới bên trái: Vào sổ khen thưởng
                         Column {
                             Text(
-                                text = "Vào sổ khen thưởng: Số 3669/QĐ-VOTRI",
+                                text = "Vào sổ: Số 3669/QĐ-VOTRI",
                                 fontFamily = FontFamily.Serif,
                                 fontStyle = FontStyle.Italic,
-                                fontSize = 7.sp,
+                                fontSize = 7.5.sp,
                                 color = Color(0xFF555555)
                             )
                             Text(
                                 text = "Ngày $currentDate",
                                 fontFamily = FontFamily.Serif,
                                 fontStyle = FontStyle.Italic,
-                                fontSize = 7.sp,
+                                fontSize = 7.5.sp,
                                 color = Color(0xFF555555)
                             )
                         }
 
                         // Góc dưới bên phải: Chức vụ, chữ ký & Dấu mộc đỏ
-                        Box(contentAlignment = Alignment.Center) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.padding(end = 4.dp)
+                        ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
                                     text = "Việt Nam, ngày $currentDate",
                                     fontFamily = FontFamily.Serif,
                                     fontStyle = FontStyle.Italic,
-                                    fontSize = 7.sp,
+                                    fontSize = 7.5.sp,
                                     color = Color(0xFF333333)
                                 )
                                 Text(
@@ -265,7 +259,7 @@ fun CertificateDialog(
                                     fontSize = 8.5.sp,
                                     color = Color(0xFF1A1A1A)
                                 )
-                                Spacer(Modifier.height(10.dp))
+                                Spacer(Modifier.height(8.dp))
                                 Text(
                                     text = "Scroll Master",
                                     fontFamily = ComicFontFamily,
@@ -278,8 +272,8 @@ fun CertificateDialog(
                             // Con dấu mộc đỏ tròn 100% Vô Tri đè lên góc chữ ký
                             Box(
                                 modifier = Modifier
-                                    .size(38.dp)
-                                    .offset(x = 6.dp, y = 3.dp)
+                                    .size(40.dp)
+                                    .offset(x = 10.dp, y = 4.dp)
                                     .clip(CircleShape)
                                     .border(1.5.dp, Color(0xFFD32F2F).copy(alpha = 0.85f), CircleShape),
                                 contentAlignment = Alignment.Center
@@ -298,7 +292,7 @@ fun CertificateDialog(
                 }
             }
 
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(12.dp))
 
             // ── Các Nút Hành Động ───────────────────────────────────────────
             Row(
@@ -361,7 +355,7 @@ fun CertificateDialog(
 }
 
 /**
- * Vẽ hoa văn viền Giấy Khen truyền thống đỏ - vàng bằng Compose Canvas
+ * Vẽ hoa văn viền Giấy Khen truyền thống đỏ - vàng chuẩn mẫu bằng Compose Canvas
  */
 @Composable
 private fun TraditionalCertificateBorder(modifier: Modifier = Modifier) {
@@ -384,26 +378,26 @@ private fun TraditionalCertificateBorder(modifier: Modifier = Modifier) {
         // 2. Dải khung hoa văn mạ vàng kép
         drawRect(
             color = goldPrimary,
-            topLeft = Offset(10f, 10f),
-            size = Size(w - 20f, h - 20f),
-            style = Stroke(width = 6f)
+            topLeft = Offset(9f, 9f),
+            size = Size(w - 18f, h - 18f),
+            style = Stroke(width = 5f)
         )
 
         // 3. Viền trong mảnh đỏ
         drawRect(
             color = redPrimary,
-            topLeft = Offset(16f, 16f),
-            size = Size(w - 32f, h - 32f),
+            topLeft = Offset(14f, 14f),
+            size = Size(w - 28f, h - 28f),
             style = Stroke(width = 1.5f)
         )
 
         // 4. Vẽ 4 góc hoa văn góc vuông cổ điển (Chữ Vạn cách điệu)
-        val cornerSize = 28f
+        val cornerSize = 24f
         val corners = listOf(
-            Offset(16f, 16f) to (1f to 1f),
-            Offset(w - 16f, 16f) to (-1f to 1f),
-            Offset(16f, h - 16f) to (1f to -1f),
-            Offset(w - 16f, h - 16f) to (-1f to -1f)
+            Offset(14f, 14f) to (1f to 1f),
+            Offset(w - 14f, 14f) to (-1f to 1f),
+            Offset(14f, h - 14f) to (1f to -1f),
+            Offset(w - 14f, h - 14f) to (-1f to -1f)
         )
 
         corners.forEach { (pos, dir) ->
@@ -412,36 +406,42 @@ private fun TraditionalCertificateBorder(modifier: Modifier = Modifier) {
                 moveTo(pos.x, pos.y + dy * cornerSize)
                 lineTo(pos.x, pos.y)
                 lineTo(pos.x + dx * cornerSize, pos.y)
-                moveTo(pos.x + dx * 8f, pos.y + dy * cornerSize * 0.7f)
-                lineTo(pos.x + dx * 8f, pos.y + dy * 8f)
-                lineTo(pos.x + dx * cornerSize * 0.7f, pos.y + dy * 8f)
+                moveTo(pos.x + dx * 6f, pos.y + dy * cornerSize * 0.7f)
+                lineTo(pos.x + dx * 6f, pos.y + dy * 6f)
+                lineTo(pos.x + dx * cornerSize * 0.7f, pos.y + dy * 6f)
             }
             drawPath(path, redPrimary, style = Stroke(width = 2f))
         }
 
-        // 5. Huy hiệu Quốc Huy / Cờ đỏ sao vàng ở đỉnh trên giữa
+        // 5. Cụm Huy hiệu Cờ Đỏ Sao Vàng xòe quạt chuẩn mẫu ảnh
         val emblemCenterX = w / 2f
-        val emblemCenterY = 12f
-        val emblemRadius = 13f
+        val emblemCenterY = 13f
+        val emblemRadius = 11f
 
-        // Cánh cờ đỏ 2 bên
-        val flagPath = Path().apply {
-            moveTo(emblemCenterX - 36f, 16f)
-            lineTo(emblemCenterX - emblemRadius, 8f)
-            lineTo(emblemCenterX + emblemRadius, 8f)
-            lineTo(emblemCenterX + 36f, 16f)
-            lineTo(emblemCenterX + 28f, 22f)
-            lineTo(emblemCenterX - 28f, 22f)
+        // Cánh cờ đỏ xếp tầng 2 bên
+        val leftFlagPath = Path().apply {
+            moveTo(emblemCenterX - 40f, 15f)
+            lineTo(emblemCenterX - emblemRadius, 7f)
+            lineTo(emblemCenterX - emblemRadius, 19f)
+            lineTo(emblemCenterX - 35f, 21f)
             close()
         }
-        drawPath(flagPath, redPrimary)
+        val rightFlagPath = Path().apply {
+            moveTo(emblemCenterX + 40f, 15f)
+            lineTo(emblemCenterX + emblemRadius, 7f)
+            lineTo(emblemCenterX + emblemRadius, 19f)
+            lineTo(emblemCenterX + 35f, 21f)
+            close()
+        }
+        drawPath(leftFlagPath, redPrimary)
+        drawPath(rightFlagPath, redPrimary)
 
         // Hình tròn đỏ trung tâm viền vàng
-        drawCircle(redPrimary, radius = emblemRadius, center = Offset(emblemCenterX, emblemCenterY + 4f))
-        drawCircle(goldDark, radius = emblemRadius, center = Offset(emblemCenterX, emblemCenterY + 4f), style = Stroke(1.5f))
+        drawCircle(redPrimary, radius = emblemRadius, center = Offset(emblemCenterX, emblemCenterY))
+        drawCircle(goldDark, radius = emblemRadius, center = Offset(emblemCenterX, emblemCenterY), style = Stroke(1.5f))
 
-        // Ngôi sao vàng 5 cánh ở giữa
-        drawCircle(goldPrimary, radius = 5.5f, center = Offset(emblemCenterX, emblemCenterY + 4f))
+        // Ngôi sao vàng ở tâm huy hiệu
+        drawCircle(goldPrimary, radius = 4.5f, center = Offset(emblemCenterX, emblemCenterY))
 
         // 6. Họa tiết hoa sen chìm mờ ở tâm nền giấy khen
         drawCircle(
