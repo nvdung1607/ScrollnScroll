@@ -75,6 +75,13 @@ fun ToiletPaperCanvas(
         label = "flutter"
     )
 
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val patternBitmap = remember(skin.patternDrawableRes) {
+        skin.patternDrawableRes?.let { resId ->
+            android.graphics.BitmapFactory.decodeResource(context.resources, resId)
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -150,7 +157,7 @@ fun ToiletPaperCanvas(
             val leftCapRx = canvasW * 0.088f
             val leftCapRy = canvasW * 0.118f
 
-            // A. Vẽ dải giấy S-Curve uốn lượn liên tục theo màu Skin và họa tiết Emoji trôi nổi
+            // A. Vẽ dải giấy S-Curve uốn lượn liên tục theo màu Skin và họa tiết Emoji/Cờ trôi nổi
             drawContinuousSmoothPaperRibbon(
                 canvasW = canvasW,
                 canvasH = canvasH,
@@ -158,7 +165,8 @@ fun ToiletPaperCanvas(
                 flutterPhase = flutterPhase,
                 velocity = currentVelocity,
                 skin = skin,
-                isOverdrive = isOverdrive
+                isOverdrive = isOverdrive,
+                patternBitmap = patternBitmap
             )
 
             // B. Vẽ Cuộn Giấy Vệ Sinh 3D Đa Chiều khớp với khung gỗ
@@ -170,7 +178,8 @@ fun ToiletPaperCanvas(
                 leftRx = leftCapRx,
                 leftRy = leftCapRy,
                 rotationOffset = rollRotationOffset,
-                skin = skin
+                skin = skin,
+                patternBitmap = patternBitmap
             )
         }
     }
@@ -188,7 +197,8 @@ private fun DrawScope.drawFrameFittedPaperRoll(
     leftRx: Float,
     leftRy: Float,
     rotationOffset: Float,
-    skin: SkinType
+    skin: SkinType,
+    patternBitmap: android.graphics.Bitmap? = null
 ) {
     val isDarkSkin = skin == SkinType.SPACE_GALAXY
     val inkColor = if (isDarkSkin) Color(0xFFE0E0E0) else ComicInkBlack
@@ -262,20 +272,29 @@ private fun DrawScope.drawFrameFittedPaperRoll(
                 style = Stroke(width = 3.2f, pathEffect = dashEffect)
             )
 
-            // In họa tiết Skin xoay tròn trên mặt cuộn giấy
+            // In họa tiết Skin / Lá cờ xoay tròn trên mặt cuộn giấy
             if (frac in 0.20f..0.80f && skin != SkinType.SCHOOL_CANTEEN) {
                 drawIntoCanvas { canvas ->
-                    val paint = AndroidPaint().apply {
-                        textSize = 28f
-                        textAlign = AndroidPaint.Align.CENTER
-                        isAntiAlias = true
+                    val cxPos = cx - curRx * 0.4f
+                    val cyPos = cy + 4f
+                    if (patternBitmap != null) {
+                        val flagW = 56f
+                        val flagH = 37f
+                        val destRect = android.graphics.RectF(cxPos - flagW / 2f, cyPos - flagH / 2f, cxPos + flagW / 2f, cyPos + flagH / 2f)
+                        canvas.nativeCanvas.drawBitmap(patternBitmap, null, destRect, null)
+                    } else {
+                        val paint = AndroidPaint().apply {
+                            textSize = 28f
+                            textAlign = AndroidPaint.Align.CENTER
+                            isAntiAlias = true
+                        }
+                        canvas.nativeCanvas.drawText(
+                            skin.patternEmoji,
+                            cxPos,
+                            cyPos + 8f,
+                            paint
+                        )
                     }
-                    canvas.nativeCanvas.drawText(
-                        skin.patternEmoji,
-                        cx - curRx * 0.4f,
-                        cy + 8f,
-                        paint
-                    )
                 }
             }
         }
@@ -481,7 +500,8 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
     flutterPhase: Float,
     velocity: Float,
     skin: SkinType,
-    isOverdrive: Boolean
+    isOverdrive: Boolean,
+    patternBitmap: android.graphics.Bitmap? = null
 ) {
     val speedFactor = (velocity / 1200f).coerceIn(0f, 2.0f)
     val wave1 = sin(flutterPhase) * (2.0f + speedFactor * 3.5f)
@@ -550,19 +570,8 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
                 pathEffect = dashEffect
             )
 
-            // Con dấu Skin ở giữa đoạn giấy
-            if (skin != SkinType.SCHOOL_CANTEEN) {
-                drawIntoCanvas { canvas ->
-                    val paint = AndroidPaint().apply {
-                        textSize = 36f
-                        textAlign = AndroidPaint.Align.CENTER
-                        isAntiAlias = true
-                    }
-                    val mx = (lx + rx) / 2f
-                    val my = (ly + ry) / 2f
-                    canvas.nativeCanvas.drawText(skin.patternEmoji, mx, my + 10f, paint)
-                }
-            }
+            // Con dấu Skin / Lá cờ ở giữa đoạn giấy
+            drawPanelPatternOrEmoji(lx, ly, rx, ry, skin, patternBitmap)
         }
     }
 
@@ -629,18 +638,7 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
                 pathEffect = dashEffect
             )
 
-            if (skin != SkinType.SCHOOL_CANTEEN) {
-                drawIntoCanvas { canvas ->
-                    val paint = AndroidPaint().apply {
-                        textSize = 38f
-                        textAlign = AndroidPaint.Align.CENTER
-                        isAntiAlias = true
-                    }
-                    val mx = (lx + rx) / 2f
-                    val my = (ly + ry) / 2f
-                    canvas.nativeCanvas.drawText(skin.patternEmoji, mx, my + 12f, paint)
-                }
-            }
+            drawPanelPatternOrEmoji(lx, ly, rx, ry, skin, patternBitmap)
         }
     }
 
@@ -702,18 +700,47 @@ private fun DrawScope.drawContinuousSmoothPaperRibbon(
                 pathEffect = dashEffect
             )
 
-            if (skin != SkinType.SCHOOL_CANTEEN) {
-                drawIntoCanvas { canvas ->
-                    val paint = AndroidPaint().apply {
-                        textSize = 38f
-                        textAlign = AndroidPaint.Align.CENTER
-                        isAntiAlias = true
-                    }
-                    val mx = (lx + rx) / 2f
-                    val my = (ly + ry) / 2f
-                    canvas.nativeCanvas.drawText(skin.patternEmoji, mx, my + 12f, paint)
-                }
+            drawPanelPatternOrEmoji(lx, ly, rx, ry, skin, patternBitmap)
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Vẽ Họa Tiết Lá Cờ (Image Bitmap) Hoặc Icon Emoji Trên Từng Ô Giấy
+// ─────────────────────────────────────────────────────────────────────────────
+
+private fun DrawScope.drawPanelPatternOrEmoji(
+    lx: Float,
+    ly: Float,
+    rx: Float,
+    ry: Float,
+    skin: SkinType,
+    patternBitmap: android.graphics.Bitmap?
+) {
+    if (skin == SkinType.SCHOOL_CANTEEN) return
+
+    val mx = (lx + rx) / 2f
+    val my = (ly + ry) / 2f
+    val angle = kotlin.math.atan2(ry - ly, rx - lx) * (180f / PI.toFloat())
+
+    drawIntoCanvas { canvas ->
+        if (patternBitmap != null) {
+            canvas.save()
+            canvas.translate(mx, my)
+            canvas.rotate(angle)
+            val flagW = 145f
+            val flagH = 95f
+            val destRect = android.graphics.RectF(-flagW / 2f, -flagH / 2f, flagW / 2f, flagH / 2f)
+
+            canvas.nativeCanvas.drawBitmap(patternBitmap, null, destRect, null)
+            canvas.restore()
+        } else {
+            val paint = AndroidPaint().apply {
+                textSize = 38f
+                textAlign = AndroidPaint.Align.CENTER
+                isAntiAlias = true
             }
+            canvas.nativeCanvas.drawText(skin.patternEmoji, mx, my + 12f, paint)
         }
     }
 }

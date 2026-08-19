@@ -101,6 +101,13 @@ fun SkinCard(
                         tint = ComicInkBlack.copy(alpha = 0.5f),
                         modifier = Modifier.size(32.dp)
                     )
+                } else if (skin.patternDrawableRes != null) {
+                    androidx.compose.foundation.Image(
+                        painter = androidx.compose.ui.res.painterResource(id = skin.patternDrawableRes),
+                        contentDescription = skin.displayName,
+                        contentScale = androidx.compose.ui.layout.ContentScale.Fit,
+                        modifier = Modifier.size(56.dp, 40.dp)
+                    )
                 } else {
                     Text(
                         text = skin.patternEmoji,

@@ -80,10 +80,19 @@ fun NewSkinUnlockDialog(
                         .border(3.dp, ComicInkBlack, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = skin.patternEmoji,
-                        fontSize = 46.sp
-                    )
+                    if (skin.patternDrawableRes != null) {
+                        androidx.compose.foundation.Image(
+                            painter = androidx.compose.ui.res.painterResource(id = skin.patternDrawableRes),
+                            contentDescription = skin.displayName,
+                            contentScale = androidx.compose.ui.layout.ContentScale.Fit,
+                            modifier = Modifier.size(76.dp, 52.dp)
+                        )
+                    } else {
+                        Text(
+                            text = skin.patternEmoji,
+                            fontSize = 46.sp
+                        )
+                    }
                 }
 
                 Spacer(Modifier.height(10.dp))

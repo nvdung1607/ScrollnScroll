@@ -1,6 +1,7 @@
 package com.trustmepro.scrollandscroll.data.model
 
 import androidx.compose.ui.graphics.Color
+import com.trustmepro.scrollandscroll.R
 import com.trustmepro.scrollandscroll.ui.theme.Gold24K
 import com.trustmepro.scrollandscroll.ui.theme.PurpleGalaxy
 import com.trustmepro.scrollandscroll.ui.theme.SoftPink
@@ -16,7 +17,8 @@ enum class SkinType(
     val primaryColor: Color,
     val accentColor: Color,
     val patternEmoji: String,
-    val bannerText: String = ""
+    val bannerText: String = "",
+    val patternDrawableRes: Int? = null
 ) {
     SCHOOL_CANTEEN(
         id = "SCHOOL_CANTEEN",
@@ -30,13 +32,14 @@ enum class SkinType(
     ),
     RAU_MA_36(
         id = "RAU_MA_36",
-        displayName = "Giấy Chiết Xuất Rau Má 36",
-        description = "Chiết xuất 100% rau má tươi mát thanh nhiệt, đặc sản 36 trứ danh",
+        displayName = "Giấy Rau Má Thanh Hóa",
+        description = "Chiết xuất 100% rau má tươi mát thanh nhiệt, cờ rau má đường tàu 36 trứ danh",
         requiredMeters = 36.0, // Meme Mốc 1: 36 Rau Má Quê Tôi
         primaryColor = Color(0xFFE8F5E9),
         accentColor = Color(0xFFA5D6A7),
         patternEmoji = "🍃",
-        bannerText = "RAU MÁ 36"
+        bannerText = "36 THANH HÓA",
+        patternDrawableRes = R.drawable.flag_rauma_36
     ),
     COMIC_STRIP(
         id = "COMIC_STRIP",
