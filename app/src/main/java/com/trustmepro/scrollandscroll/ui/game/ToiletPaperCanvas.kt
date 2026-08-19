@@ -88,23 +88,26 @@ fun ToiletPaperCanvas(
                         change.consume()
                         velocityTracker.addPosition(change.uptimeMillis, change.position)
 
-                        val deltaY = dragAmount.y
-                        if (deltaY > 0f) {
-                            rollRotationOffset += deltaY * 0.55f
-                            paperScrollOffset += deltaY
-                            currentVelocity = deltaY * 35f
-                            onScroll(deltaY, currentVelocity)
+                        // Vuốt theo bất kỳ hướng nào (lên, xuống, trái, phải, chéo) đều tính số mét cuộn
+                        val deltaMagnitude = kotlin.math.hypot(dragAmount.x, dragAmount.y)
+                        if (deltaMagnitude > 0f) {
+                            rollRotationOffset += deltaMagnitude * 0.55f
+                            paperScrollOffset += deltaMagnitude
+                            currentVelocity = deltaMagnitude * 35f
+                            onScroll(deltaMagnitude, currentVelocity)
                         }
                     },
                     onDragEnd = {
-                        val velocity = velocityTracker.calculateVelocity().y
-                        currentVelocity = velocity
-                        if (velocity > 250f) {
+                        val vx = velocityTracker.calculateVelocity().x
+                        val vy = velocityTracker.calculateVelocity().y
+                        val velocityMagnitude = kotlin.math.hypot(vx, vy)
+                        currentVelocity = velocityMagnitude
+                        if (velocityMagnitude > 200f) {
                             coroutineScope.launch {
                                 var lastValue = 0f
                                 flingAnim.snapTo(0f)
                                 flingAnim.animateTo(
-                                    targetValue = (velocity * 0.75f).coerceAtMost(3800f),
+                                    targetValue = (velocityMagnitude * 0.75f).coerceAtMost(3800f),
                                     animationSpec = tween(durationMillis = 950, easing = FastOutSlowInEasing)
                                 ) {
                                     val delta = this.value - lastValue

@@ -1,6 +1,7 @@
 package com.trustmepro.scrollandscroll.ui.game
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -10,6 +11,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -146,10 +148,11 @@ fun GameScreen(
             }
         }
 
-        // ── 5. Hướng dẫn cử chỉ vuốt cho tân thủ (Tự ẩn sau 3 lần vuốt) ────
-        TutorialSwipeOverlay(
-            visible = ui.totalSwipes < 3,
-            modifier = Modifier.fillMaxSize()
+        // ── 5. Chỉ dẫn vuốt tự do mọi hướng ở CẠNH BÊN PHẢI màn hình ──────
+        RightEdgeSwipeGuide(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 10.dp)
         )
 
         // ── 6. Hàng điều khiển đáy màn hình: [ASMR] [HUD CARD] [BẰNG KHEN] ──
@@ -211,103 +214,107 @@ fun GameScreen(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Chỉ dẫn vuốt xuống cho người mới chơi
+// Biểu tượng và chữ chỉ dẫn vuốt tự do mọi hướng ở CẠNH BÊN PHẢI màn hình
 // ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
-private fun TutorialSwipeOverlay(
-    visible: Boolean,
+private fun RightEdgeSwipeGuide(
     modifier: Modifier = Modifier
 ) {
-    val infiniteTransition = rememberInfiniteTransition(label = "swipeAnim")
+    val infiniteTransition = rememberInfiniteTransition(label = "swipeGuideAnim")
     val offsetY by infiniteTransition.animateFloat(
-        initialValue = -6f,
-        targetValue = 14f,
+        initialValue = -5f,
+        targetValue = 5f,
         animationSpec = infiniteRepeatable(
-            animation = tween(700),
+            animation = tween(650, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         ),
-        label = "offsetY"
+        label = "bounceY"
+    )
+    val scaleAnim by infiniteTransition.animateFloat(
+        initialValue = 0.95f,
+        targetValue = 1.05f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(800, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "scale"
     )
 
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn(),
-        exit = fadeOut(),
+    Box(
         modifier = modifier
+            .offset(y = offsetY.dp)
+            .shadow(6.dp, RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFFFFF9C4))
+            .border(2.5.dp, ComicInkBlack, RoundedCornerShape(16.dp))
+            .padding(horizontal = 8.dp, vertical = 10.dp)
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            // Bàn tay chỉ ngón 👆 chạm vào cuộn giấy
-            Column(
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Icon Bàn tay & Mũi tên 4 hướng
+            Box(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(x = (-70).dp, y = (-70).dp + offsetY.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .size(34.dp)
+                    .clip(CircleShape)
+                    .background(ComicYellow)
+                    .border(2.dp, ComicInkBlack, CircleShape),
+                contentAlignment = Alignment.Center
             ) {
-                Text(text = "👆", fontSize = 42.sp)
+                Text(
+                    text = "👆",
+                    fontSize = 20.sp
+                )
             }
 
-            // Cụm mũi tên chỉ xuống & chữ SWIPE DOWN chuẩn hoạt hình Ảnh 2
-            Row(
+            Spacer(Modifier.height(4.dp))
+
+            // Mũi tên chỉ đa hướng ⇅ ⇄
+            Text(
+                text = "⇅ ⇄",
+                fontFamily = ComicFontFamily,
+                fontWeight = FontWeight.Black,
+                fontSize = 14.sp,
+                color = Color(0xFFFF5722)
+            )
+
+            Spacer(Modifier.height(2.dp))
+
+            // Chữ VUỐT
+            Text(
+                text = "VUỐT",
+                fontFamily = ComicFontFamily,
+                fontWeight = FontWeight.Black,
+                fontSize = 13.sp,
+                color = ComicInkBlack
+            )
+
+            // Chữ TỰ DO
+            Text(
+                text = "TỰ DO",
+                fontFamily = ComicFontFamily,
+                fontWeight = FontWeight.Black,
+                fontSize = 13.sp,
+                color = ComicInkBlack
+            )
+
+            Spacer(Modifier.height(2.dp))
+
+            // Huy hiệu 360°
+            Box(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(x = 0.dp, y = 75.dp + offsetY.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(Color(0xFFFF5722))
+                    .padding(horizontal = 4.dp, vertical = 1.dp)
             ) {
                 Text(
-                    text = "SWIPE",
+                    text = "360°",
                     fontFamily = ComicFontFamily,
-                    fontWeight = FontWeight.Black,
-                    fontSize = 18.sp,
-                    color = ComicInkBlack,
-                    modifier = Modifier.padding(end = 4.dp)
+                    fontSize = 9.sp,
+                    color = Color.White
                 )
-
-                // Mũi tên hoạt hình trắng viền đen chỉ xuống
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(Color.White)
-                        .border(2.5.dp, ComicInkBlack, RoundedCornerShape(4.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = null,
-                        tint = ComicInkBlack,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(4.dp))
-
-                Text(
-                    text = "DOWN",
-                    fontFamily = ComicFontFamily,
-                    fontWeight = FontWeight.Black,
-                    fontSize = 18.sp,
-                    color = ComicInkBlack,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp)
-                )
-
-                // Mũi tên hoạt hình thứ 2
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(Color.White)
-                        .border(2.5.dp, ComicInkBlack, RoundedCornerShape(4.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = null,
-                        tint = ComicInkBlack,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
             }
         }
     }
