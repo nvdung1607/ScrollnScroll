@@ -85,7 +85,7 @@ import java.util.Locale
 fun GameScreen(
     viewModel: GameViewModel = viewModel(),
     onNavigateToLeaderboard: () -> Unit = {},
-    onNavigateToCabinet: () -> Unit = {},
+    onNavigateToCabinet: (tab: String) -> Unit = {},
     onOpenSettings: () -> Unit = {}
 ) {
     val ui by viewModel.uiState.collectAsState()
@@ -140,7 +140,7 @@ fun GameScreen(
             ComicCircleButton(
                 label = "Tủ Đồ Skin",
                 containerColor = ComicGreen,
-                onClick = onNavigateToCabinet
+                onClick = { onNavigateToCabinet("skins") }
             ) {
                 ComicHangerIcon(modifier = Modifier.fillMaxSize())
             }
@@ -181,11 +181,11 @@ fun GameScreen(
                 ComicOdometerDisplay(meters = ui.totalMeters)
             }
 
-            // Nút Bằng Khen Của Tôi (Góc dưới bên phải - Duy nhất 1 nút nổi bật)
+            // Nút Bằng Khen Của Tôi (Góc dưới bên phải - Mở ngay tab Bằng Khen)
             ComicCircleButton(
                 label = "Bằng Khen\nCủa Tôi",
                 containerColor = ComicOrange,
-                onClick = onNavigateToCabinet,
+                onClick = { onNavigateToCabinet("badges") },
                 size = 56.dp
             ) {
                 ComicScrollCertificateIcon(modifier = Modifier.fillMaxSize())

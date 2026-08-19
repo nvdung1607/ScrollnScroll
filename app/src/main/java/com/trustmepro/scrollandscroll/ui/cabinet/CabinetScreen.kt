@@ -57,10 +57,15 @@ import java.util.Locale
  */
 @Composable
 fun CabinetScreen(
+    initialTab: CabinetTab = CabinetTab.SKINS,
     onBack: () -> Unit,
     viewModel: CabinetViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    androidx.compose.runtime.LaunchedEffect(initialTab) {
+        viewModel.selectTab(initialTab)
+    }
 
     Box(
         modifier = Modifier

@@ -98,8 +98,8 @@ fun AppNavigation(
                 onNavigateToLeaderboard = {
                     navController.navigate(Screen.Leaderboard.route)
                 },
-                onNavigateToCabinet = {
-                    navController.navigate(Screen.Cabinet.route)
+                onNavigateToCabinet = { tab ->
+                    navController.navigate(Screen.Cabinet.createRoute(tab))
                 },
                 onOpenSettings = {
                     showSettingsDialog = true
@@ -115,8 +115,23 @@ fun AppNavigation(
         }
 
         // ── 3. Màn hình Tủ Đồ Skin & Danh Hiệu ──────────────────────────────
-        composable(Screen.Cabinet.route) {
+        composable(
+            route = Screen.Cabinet.route,
+            arguments = listOf(
+                androidx.navigation.navArgument("tab") {
+                    type = androidx.navigation.NavType.StringType
+                    defaultValue = "skins"
+                }
+            )
+        ) { backStackEntry ->
+            val tabStr = backStackEntry.arguments?.getString("tab") ?: "skins"
+            val initialTab = if (tabStr.equals("badges", ignoreCase = true)) {
+                com.trustmepro.scrollandscroll.ui.cabinet.CabinetTab.BADGES
+            } else {
+                com.trustmepro.scrollandscroll.ui.cabinet.CabinetTab.SKINS
+            }
             CabinetScreen(
+                initialTab = initialTab,
                 onBack = { navController.popBackStack() }
             )
         }
