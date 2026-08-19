@@ -378,15 +378,28 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
    - `ui/onboarding/NicknameDialog.kt`: Modal nhập tên tân thủ tích hợp bộ sinh tên ngẫu nhiên xúc xắc 🎲.
    - `ui/settings/SettingsDialog.kt`: Cài đặt âm thanh ASMR, rung Haptic, đổi tên và thông tin phiên bản.
    - `MainActivity.kt`: Khởi chạy Edge-to-Edge và gắn kết `AppNavigation()`.
-6. **Nâng Cấp Gameplay Vuốt Đa Hướng, Mũi Tên Chỉ Dẫn Tinh Tế & Hệ Thống Mốc Meme 1-to-1**:
-   - **8 Mốc Mét Meme Đồng Bộ Giữa 8 Bằng Khen & 8 Skin Mở Khóa**:
-     1. **36m** (*36 Rau Má Quê Tôi*): Bằng Khen `Chiến Thần Rau Má 36 🍃` + Skin `Giấy Chiết Xuất Rau Má 36 🍃`
-     2. **69m** (*69 Tinh Tế*): Bằng Khen `Chiến Thần Giác Ngộ 69 😏` + Skin `Truyện Tranh 4 Khung 📰`
-     3. **168m** (*Nhất Lộc Phát 168*): Bằng Khen `Thần Tài Nhất Lộc Phát 168 👑` + Skin `Dát Vàng 24K 👑`
-     4. **420m** (*420 Siêu Chill*): Bằng Khen `Chúa Tể 420 Siêu Chill 🍜` + Skin `Tô Bún Riêu Cua 🍜`
-     5. **777m** (*Jackpot 777*): Bằng Khen `Đại Gia Nổ Hũ 777 💵` + Skin `Đô La $100 💵`
-     6. **1314m** (*Trọn Đời Trọn Kiếp 1314*): Bằng Khen `Xác Ướp Chung Tình 1314 🏜️` + Skin `Băng Gạc Xác Ướp 🏜️`
-     7. **9999m** (*Tứ Quý 9*): Bằng Khen `Phi Hành Gia Tứ Quý 9 🌌` + Skin `Galaxy Không Gian 🌌`
+6. **Hệ Thống 20 Mốc Thưởng Toàn Diện: "Hành Trình Từ Vô Tri Đến Tâm Thần"**:
+   - **Tích hợp 20 Cột mốc & Ghép cặp 1-1 (1 Bằng Khen + 1 Skin Mới)**:
+     1. **0m**: `Giấy Xám Trọ Sinh Viên` *(Mặc định tân thủ)*
+     2. **36m**: Bằng khen `Đồng Hương Tập Sự 🍃` + Skin `Giấy Rau Má Thanh Hóa`
+     3. **100m**: Bằng khen `Tấm Chiếu Mới Mua 📰` + Skin `Giấy Báo Gói Xôi Xéo`
+     4. **404m**: Bằng khen `Kẻ Mất Tất Cả 🪢` + Skin `Giấy "Còn Cái Nịt"`
+     5. **1,000m**: Bằng khen `Phú Ông Ảo Mộng 💵` + Skin `Giấy Tiền Đô La ($100)`
+     6. **3,000m**: Bằng khen `Kẻ Lụy Tình Vũ Trụ 💔` + Skin `Giấy Iron Man (I love u 3000)`
+     7. **8,386m**: Bằng khen `Trùm Phông Bạt Thổ Cư 🏗️` + Skin `Giấy Sổ Đỏ Phân Lô`
+     8. **15,000m**: Bằng khen `Đại Sứ Ăn Liền 🍜` + Skin `Giấy Mì Tôm Chua Cay`
+     9. **25,000m**: Bằng khen `Đại Sứ Quy Hoạch Đô Thị 🚜` + Skin `Giấy Khoan Cắt Bê Tông`
+     10. **42,000m**: Bằng khen `VĐV Thoái Hóa Cột Sống 🩻` + Skin `Giấy Dán Salonpas`
+     11. **69,420m**: Bằng khen `Kiểm Toán Viên Chạy Pin 🔍` + Skin `Giấy Check VAR Sao Kê`
+     12. **100,000m**: Bằng khen `Nạn Nhân Của Mùa Hè 🧾` + Skin `Giấy Hóa Đơn Tiền Điện`
+     13. **150,000m**: Bằng khen `ATM Di Động Mùa Cưới 💌` + Skin `Giấy Thiệp Cưới Đỏ Chót`
+     14. **222,222m**: Bằng khen `Anh Hùng Chốn Công Sở 💼` + Skin `Giấy Đơn Xin Nghỉ Việc`
+     15. **333,333m**: Bằng khen `Tỷ Phú Cõi Dưới ⚰️` + Skin `Giấy Vàng Mã 500k`
+     16. **500,000m**: Bằng khen `Kẻ Mộng Mơ Lúc 6h30 🎰` + Skin `Giấy Vé Số Chiều Nay`
+     17. **777,777m**: Bằng khen `Khách VVIP Của Chủ Shop 📢` + Skin `Băng Rôn "Xả Kho Nghỉ Bán"`
+     18. **1,000,000m**: Bằng khen `Nạn Nhân Của Bộ Giáo Dục 🎓` + Skin `Giấy Đề Thi Đại Học`
+     19. **5,000,000m**: Bằng khen `Kiếp Nạn Thứ 82 🪬` + Skin `Giấy Bùa Chú Lỗ Ban`
+     20. **10,000,000m**: Bằng khen `Đắc Đạo Vô Tri Nhất Trái Đất 👑` + Skin `Giấy Khám Tâm Thần`
 7. **Tái Thiết Kế Bằng Khen Thuần Canvas Vector, Parody Header & Tải Về Thư Viện**:
    - **Loại bỏ ảnh phôi tĩnh**: Không còn bị lỗi đè chữ cũ hay lệch phông.
    - **Vẽ 100% đồ họa Canvas Vector**: Viền hoa văn đỏ - vàng kim, 4 góc chữ Vạn cổ điển, huy hiệu cờ đỏ sao vàng xòe quạt và hoa sen chìm trang trọng.

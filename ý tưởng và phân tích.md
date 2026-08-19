@@ -93,59 +93,35 @@
 
 ## 3. HỆ THỐNG TIẾN HÓA SKIN, DANH HIỆU & BẰNG KHEN VIRAL
 
-### 3.1. Cây Tiến Hóa Skin Cuộn Giấy (Skin Evolution Tree)
+### 3.1. Cây Tiến Hóa 20 Cấp Độ Skin Cuộn Giấy: "Hành Trình Từ Vô Tri Đến Tâm Thần"
 Mỗi skin không chỉ thay đổi màu sắc mà thay đổi toàn bộ họa tiết dải giấy, hiệu ứng hạt rơi (particles) và âm thanh ASMR riêng biệt:
 
-| Cột mốc Meme | Tên Skin | Hình ảnh & Họa tiết | Hiệu ứng đặc biệt (VFX/SFX) |
-| :--- | :--- | :--- | :--- |
-| **0 m** | **Giấy Căn Tin Trường Học** | Giấy 1 lớp nham nhở màu xám nhạt, 1-PLY | Tiếng sột soạt cơ bản, rơi vụn giấy xám |
-| **36 m** | **Giấy Chiết Xuất Rau Má 36** | Tông xanh lá tươi mát, in hoa văn lá rau má `🍃` | Mát lành thanh nhiệt 36 Quê Tôi trứ danh |
-| **69 m** | **Giấy Truyện Tranh 4 Khung** | In các mẩu truyện cười meme đen trắng `📰` | Mỗi đoạn giấy trôi qua là 1 mẩu truyện vui |
-| **168 m** | **Giấy Dát Vàng Hoàng Gia 24K** | Vàng óng ánh, in vương miện hoàng gia `👑` | Rơi bụi vàng kim, tiếng leng keng quý tộc Nhất Lộc Phát |
-| **420 m** | **Giấy Tô Bún Riêu Cua** | Họa tiết sợi bún, cà chua, gạch cua, hành ớt `🍜` | Rơi giọt ớt cay, âm thanh "xì xụp" siêu chill 420 |
-| **777 m** | **Giấy Tiền Đô La $100** | Dải polyme in hình cọc tiền USD `💵` | Tiếng đếm tiền "xoẹt xoẹt" ngân hàng, nổ hũ Jackpot 777 |
-| **1,314 m** | **Băng Gạc Xác Ướp Ai Cập** | Dải băng cổ xưa quấn xác ướp Pharaoh `🏜️` | Bụi cát sa mạc mịt mù, Trọn Đời Trọn Kiếp 1314 |
-| **9,999 m** | **Giấy Galaxy Không Gian** | Màu vũ trụ đêm huyền ảo, tinh vân `🌌` | Vệt sáng neon phát quang, Tứ Quý 9 Bất Diệt |
-| **69,420 m** | **Giấy Kim Cương Tối Thượng** | Trong suốt lấp lánh như lăng kính pha lê `💎` | Hiệu ứng hào quang thần thánh, Meme Chúa Tối Thượng |
+| Cột mốc Mét | Tên Skin Cuộn Giấy (Chủ Đề) | Thiết Kế Dải Giấy & Hiệu Ứng Rơi (VFX/SFX) | Tên Bằng Khen / Danh Hiệu | Lời Phê Cà Khịa Trào Phúng |
+| :--- | :--- | :--- | :--- | :--- |
+| **0 m** | **Giấy Xám Trọ Sinh Viên** | (Mặc định) Xám xịt, lấm tấm đen, rớt vụn giấy mủn, tiếng sột soạt rẻ tiền. | *(Chưa có)* | *(Chưa có)* |
+| **36 m** | **Giấy Rau Má Thanh Hóa** | Xanh lá dập vân, rớt icon lá rau má `🍃`, tiếng "hút rột rột". | **Đồng Hương Tập Sự 🍃** | *"Vuốt mới được 36 mét đã đòi giải khát. Lo mà cày tiếp đi!"* |
+| **100 m** | **Giấy Báo Gói Xôi Xéo** | Giấy báo ố vàng lốm đốm mỡ, in tin giật gân, rơi hột xôi vàng `🌾`. | **Tấm Chiếu Mới Mua 📰** | *"Hết 100m rồi, đủ thời gian để bạn nhai xong gói xôi 10 ngàn trước cửa công ty đấy."* |
+| **404 m** | **Giấy "Còn Cái Nịt"** | Giấy trong suốt tàng hình, thi thoảng dính 1 sợi dây thun (nịt) vàng/đỏ `🟡`. | **Kẻ Mất Tất Cả 🪢** | *"Lỗi 404: Ý nghĩa cuộc đời Not Found! Tầm này vuốt nữa thì cũng... còn đúng cái nịt!"* |
+| **1,000 m** | **Giấy Tiền Đô La ($100)** | Xanh bạc hà, in hình tờ 100 đô, tiếng máy đếm tiền ngân hàng "tách tách" `💵`. | **Phú Ông Ảo Mộng 💵** | *"Giàu quá! Tiếc là tiền này chỉ mang xuống Âm Phủ mua được bát bún riêu thôi."* |
+| **3,000 m** | **Giấy Iron Man (I love u 3000)** | Đỏ vàng kim loại bóng bẩy, rớt lò phản ứng hồ quang `☢️`, nhạc bi tráng. | **Kẻ Lụy Tình Vũ Trụ 💔** | *"I love you 3000... Nhưng crush của bạn thì love người khác mất rồi. Khóc đi!"* |
+| **8,386 m** | **Giấy Sổ Đỏ Phân Lô** | Đỏ chót, có họa tiết Quốc huy chìm, rớt mấy cái cọc cắm đất "Đã Bán" `📑`. | **Trùm Phông Bạt Thổ Cư 🏗️** | *"Trên mạng thì vuốt sổ đỏ 8386 ầm ầm, check tài khoản ngân hàng thì số dư 45k."* |
+| **15,000 m** | **Giấy Mì Tôm Chua Cay** | Màu hồng cam dập nổi vân vắt mì xoăn, rớt hạt muối Hảo Hảo đỏ rực `🍜`. | **Đại Sứ Ăn Liền 🍜** | *"Vuốt đến mức lòi cả mì tôm ra. Đêm nay lại ăn mì úp nước sôi chứ gì? Khổ thân!"* |
+| **25,000 m** | **Giấy Khoan Cắt Bê Tông** | Tường vàng lở loét in chi chít chữ xanh/đỏ "Rút hầm cầu", "Khoan cắt... 09xx" `🧱`. | **Đại Sứ Quy Hoạch Đô Thị 🚜** | *"Ngón tay bạn đi tới đâu, mĩ quan đô thị bị tàn phá tới đó. Alo rút hầm cầu không?"* |
+| **42,000 m** | **Giấy Dán Salonpas** | Dải giấy cao su màu da người, xanh lợt, tỏa khói the mát (bạc hà) `🩹`. | **VĐV Thoái Hóa Cột Sống 🩻** | *"42km là cự ly Marathon đấy! Kỷ lục gia vuốt điện thoại đến mức đau vai gáy là đây."* |
+| **69,420 m** | **Giấy Check VAR Sao Kê** | Dải A4 trắng tinh, in chi chít số tài khoản dài ngoằng, có vệt bút dạ quang đỏ `📊`. | **Kiểm Toán Viên Chạy Pin 🔍** | *"Vuốt dài thế này đã kiếm ra được trang sao kê của người donate 2 nghìn chưa bạn?"* |
+| **100,000 m** | **Giấy Hóa Đơn Tiền Điện** | Giấy in nhiệt dài dằng dặc, in toàn số tiền tỷ, mép giấy hình răng cưa `⚡`. | **Nạn Nhân Của Mùa Hè 🧾** | *"Càng lướt cái bill càng dài. Giật mình nhớ ra tháng này chưa đóng tiền điện đúng không?"* |
+| **150,000 m** | **Giấy Thiệp Cưới Đỏ Chót** | Đỏ nhung có chữ Hỷ 囍 mạ vàng, rớt phong bì tiền mừng `✉️`. | **ATM Di Động Mùa Cưới 💌** | *"Cuốn giấy này đại diện cho danh sách bạn bè mời cưới tháng này. Tháng này húp mì nhé!"* |
+| **222,222 m** | **Giấy Đơn Xin Nghỉ Việc** | Giấy A4 kẻ ngang, dòng chữ "TÔI QUÁ MỆT MỎI" lặp đi lặp lại `📝`. | **Anh Hùng Chốn Công Sở 💼** | *"Chắc chắn là đang ngồi trong toilet công ty vuốt điện thoại chứ gì. Dũng cảm thì nộp đơn đi!"* |
+| **333,333 m** | **Giấy Vàng Mã 500k** | Màu xám tro viền đỏ âm phủ, rớt ra ngựa giấy và iphone giấy `🕯️`. | **Tỷ Phú Cõi Dưới ⚰️** | *"Chạm mốc tam hoa 3. Ở dưới kia người ta đã xây xong biệt thự giấy chờ bạn xuống rồi."* |
+| **500,000 m** | **Giấy Vé Số Chiều Nay** | Giấy mỏng tanh in dãy số lộn xộn, rớt ra chữ "Trượt" và "Chúc may mắn" `🎟️`. | **Kẻ Mộng Mơ Lúc 6h30 🎰** | *"Xác suất để bạn buông tha cho cuộn giấy này còn thấp hơn cả xác suất bạn trúng độc đắc."* |
+| **777,777 m** | **Băng Rôn "Xả Kho Nghỉ Bán"** | Bạt hiflex vàng/đỏ in "Chỉ 39k, Thanh Lý Toàn Bộ", dính băng dính đen `🏷️`. | **Khách VVIP Của Chủ Shop 📢** | *"Cái tiệm ngoài đầu ngõ treo biển xả kho 5 năm rồi vẫn chưa nghỉ, y như cách bạn vuốt app này."* |
+| **1,000,000 m** | **Giấy Đề Thi Đại Học** | Giấy A4 chi chít công thức Tích phân, rớt ra mấy điểm 0 tròn trĩnh `📐`. | **Nạn Nhân Của Bộ Giáo Dục 🎓** | *"Vuốt được 1 triệu mét kỷ lục nhưng có giải được câu hàm số này không? KHÔNG!"* |
+| **5,000,000 m** | **Giấy Bùa Chú Lỗ Ban** | Giấy vàng chóe bùa đỏ ngoằn ngoèo, rớt tàn nhang lả tả, tiếng gõ mõ tụng kinh `📜`. | **Kiếp Nạn Thứ 82 🪬** | *"Thế lực tâm linh nào đang nhập vào ngón tay của thí chủ vậy? Mau mau dập máy đi ngủ!"* |
+| **10,000,000 m** | **Giấy Khám Tâm Thần** | Bệnh án viện Bạch Mai/Trâu Quỳ, nền trắng vạch đỏ, có dấu "MỨC ĐỘ NẶNG" `🏥`. | **Đắc Đạo Vô Tri Nhất Trái Đất 👑** | *"Viện Y khoa xác nhận: Ngón tay và não bộ của bạn đã chính thức tách rời thực tại. Chúc mừng bệnh nhân số 1 thế giới!"* |
 
 ---
 
-### 3.2. Hệ Thống Danh Hiệu "Cà Khịa" Đỉnh Cao (Satirical Badges)
-Mỗi khi đạt mốc, hệ thống sẽ mở khóa một danh hiệu kèm theo lời nhận xét mang tính trào phúng:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ 🎖️ HỆ THỐNG DANH HIỆU CÀ KHỊA 8 MỐC MEME                    │
-├─────────────────────────────────────────────────────────────┤
-│ • 36m:      [Chiến Thần Rau Má 36 🍃]                       │
-│             "Mới vuốt 36m đã đòi uống sinh tố rau má đậu xanh!"│
-│                                                             │
-│ • 69m:      [Chiến Thần Giác Ngộ 69 😏]                     │
-│             "Kỹ năng vuốt cuộn giấy đã đạt cảnh giới tinh tế 69."│
-│                                                             │
-│ • 168m:     [Thần Tài Nhất Lộc Phát 168 👑]                 │
-│             "Càng cuộn càng phát tài, sếp nhìn cũng phải nể!"│
-│                                                             │
-│ • 420m:     [Chúa Tể 420 Siêu Chill 🍜]                     │
-│             "Vuốt giấy chậm rãi như đang thưởng thức tô mì tôm!"│
-│                                                             │
-│ • 777m:     [Đại Gia Nổ Hũ 777 💵]                          │
-│             "Năng lượng Jackpot tràn trề, tiêu tiền như rải giấy!"│
-│                                                             │
-│ • 1,314m:   [Xác Ướp Chung Tình 1314 🏜️]                   │
-│             "Trọn đời trọn kiếp 1314m, quấn chặt lấy cuộn giấy!"│
-│                                                             │
-│ • 9,999m:   [Phi Hành Gia Tứ Quý 9 🌌]                      │
-│             "Dải giấy vươn tầm vũ trụ, người ngoài hành tinh bái phục!"│
-│                                                             │
-│ • 69,420m:  [Đắc Đạo Meme Chúa 69420 💎]                    │
-│             "Huyền thoại vô tri tối thượng. Bạn có thể tự hào đi ngủ!"│
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-### 3.3. Thiết Kế Bằng Khen Châm Biếm Chia Sẻ Story & Tải Về Thư Viện (Viral Certificate Generator)
+### 3.2. Thiết Kế Bằng Khen Châm Biếm Chia Sẻ Story & Tải Về Thư Viện (Viral Certificate Generator)
 Khi đạt mốc mét mới hoặc bấm vào nút "Xem Bằng Khen", app hiển thị một modal Giấy Khen chuẩn phôi truyền thống Việt Nam được vẽ 100% bằng Canvas Vector:
 
 - **Thiết kế Giấy Khen Vector**:
