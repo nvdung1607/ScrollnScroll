@@ -1,7 +1,7 @@
 package com.trustmepro.scrollandscroll.data.model
 
 /**
- * 8 danh hiệu trào phúng kèm lời nhận xét cà khịa
+ * 8 danh hiệu trào phúng ứng với 8 mốc mét meme hài hước
  */
 enum class BadgeType(
     val id: String,
@@ -10,61 +10,61 @@ enum class BadgeType(
     val requiredMeters: Double,
     val badgeEmoji: String
 ) {
-    BEGINNER_FINGER(
-        id = "BEGINNER_FINGER",
-        title = "Tân Binh Ngón Tay Dẻo",
-        description = "Mới vuốt có tí đã mỏi tay rồi à bạn ơi?",
-        requiredMeters = 100.0,
+    BEGINNER_36(
+        id = "BEGINNER_36",
+        title = "Tân Binh 36 Quê Tôi",
+        description = "Mới vuốt được 36m đã tưởng mình là chiến thần!",
+        requiredMeters = 36.0,
         badgeEmoji = "👶"
     ),
-    SEMI_PRO_ROLLER(
-        id = "SEMI_PRO_ROLLER",
-        title = "Kẻ Tiêu Thụ Giấy Chuyên Nghiệp",
-        description = "Đủ lượng giấy cho một hộ gia đình dùng cả năm trời.",
-        requiredMeters = 1000.0,
-        badgeEmoji = "🧻"
+    MASTER_69(
+        id = "MASTER_69",
+        title = "Chiến Thần Giác Ngộ 69",
+        description = "Kỹ năng vuốt cuộn giấy đã đạt cảnh giới tinh tế 69.",
+        requiredMeters = 69.0,
+        badgeEmoji = "😏"
     ),
-    WORK_HOUR_BURNER(
-        id = "WORK_HOUR_BURNER",
-        title = "Chiến Thần Đốt Giờ Làm",
-        description = "Sếp bạn đang nhìn kìa, nhưng cuộn giấy này cuốn hơn!",
-        requiredMeters = 5000.0,
-        badgeEmoji = "💼"
+    PROSPERITY_168(
+        id = "PROSPERITY_168",
+        title = "Thần Tài Nhất Lộc Phát 168",
+        description = "Càng cuộn càng phát tài, sếp nhìn cũng phải nể!",
+        requiredMeters = 168.0,
+        badgeEmoji = "👑"
     ),
-    SCREEN_DESTROYER(
-        id = "SCREEN_DESTROYER",
-        title = "Kẻ Hủy Diệt Cường Lực Điện Thoại",
-        description = "Miếng dán màn hình của bạn sắp mòn vẹt rồi đấy!",
-        requiredMeters = 20000.0,
-        badgeEmoji = "📱"
+    SUPER_CHILL_420(
+        id = "SUPER_CHILL_420",
+        title = "Chúa Tể 420 Siêu Chill",
+        description = "Vuốt giấy chậm rãi như đang thưởng thức tô mì tôm chua cay.",
+        requiredMeters = 420.0,
+        badgeEmoji = "🍜"
     ),
-    LEGENDARY_UNEMPLOYED(
-        id = "LEGENDARY_UNEMPLOYED",
-        title = "Thất Nghiệp Huyền Thoại",
-        description = "Thời gian bạn vuốt chỗ này đủ để học xong 2 khóa IELTS rồi.",
-        requiredMeters = 50000.0,
-        badgeEmoji = "🛋️"
+    JACKPOT_777(
+        id = "JACKPOT_777",
+        title = "Đại Gia Nổ Hũ 777",
+        description = "Năng lượng Jackpot tràn trề, tiêu tiền như rải giấy vệ sinh.",
+        requiredMeters = 777.0,
+        badgeEmoji = "💵"
     ),
-    NATIONAL_ATHLETE(
-        id = "NATIONAL_ATHLETE",
-        title = "Vận Động Viên Cuộn Giấy Cấp Quốc Gia",
-        description = "Ngón tay trỏ đã to gấp đôi ngón cái sau bao nỗ lực vô tri.",
-        requiredMeters = 100000.0,
-        badgeEmoji = "🥇"
+    ETERNAL_1314(
+        id = "ETERNAL_1314",
+        title = "Xác Ướp Chung Tình 1314",
+        description = "Trọn đời trọn kiếp 1314m, quấn chặt lấy cuộn giấy không rời.",
+        requiredMeters = 1314.0,
+        badgeEmoji = "🏜️"
     ),
-    PEAK_ABSURDITY(
-        id = "PEAK_ABSURDITY",
-        title = "Đỉnh Cao Tiến Hóa Của Sự Vô Tri",
-        description = "Người ngoài hành tinh đang quan sát bạn trong sự kinh ngạc.",
-        requiredMeters = 500000.0,
-        badgeEmoji = "👽"
+    COSMIC_9999(
+        id = "COSMIC_9999",
+        title = "Phi Hành Gia Tứ Quý 9",
+        description = "Dải giấy đã vươn tầm vũ trụ, người ngoài hành tinh cũng xin bái phục.",
+        requiredMeters = 9999.0,
+        badgeEmoji = "🌌"
     ),
-    IMMORTAL_SCROLLER(
-        id = "IMMORTAL_SCROLLER",
-        title = "Đắc Đạo Thành Tiên Cuộn Giấy",
-        description = "Bạn đã hoàn thành trò chơi. Bây giờ hãy đi ngủ đi!",
-        requiredMeters = 999999.0,
-        badgeEmoji = "🧘"
+    ULTIMATE_69420(
+        id = "ULTIMATE_69420",
+        title = "Đắc Đạo Meme Chúa 69420",
+        description = "Huyền thoại vô tri tối thượng của nhân loại. Bạn có thể tự hào đi ngủ rồi!",
+        requiredMeters = 69420.0,
+        badgeEmoji = "💎"
     );
 
     companion object {

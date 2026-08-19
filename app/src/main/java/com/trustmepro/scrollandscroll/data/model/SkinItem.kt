@@ -2,13 +2,11 @@ package com.trustmepro.scrollandscroll.data.model
 
 import androidx.compose.ui.graphics.Color
 import com.trustmepro.scrollandscroll.ui.theme.Gold24K
-import com.trustmepro.scrollandscroll.ui.theme.OverdriveFire
 import com.trustmepro.scrollandscroll.ui.theme.PurpleGalaxy
 import com.trustmepro.scrollandscroll.ui.theme.SoftPink
 
 /**
- * 9 cấp độ Skin cuộn giấy tiến hóa theo số mét cuộn
- * Được cân đối số mét hấp dẫn, dễ mở khóa theo từng mốc chơi
+ * 9 cấp độ Skin cuộn giấy tiến hóa theo các mốc mét meme hài hước
  */
 enum class SkinType(
     val id: String,
@@ -34,7 +32,7 @@ enum class SkinType(
         id = "ROSE_PETAL",
         displayName = "Giấy Hoa Hồng Thơm Ngát",
         description = "Màu hồng phấn êm dịu, in họa tiết cánh hoa rơi",
-        requiredMeters = 25.0,
+        requiredMeters = 36.0, // Meme Mốc 1: 36 Quê Tôi
         primaryColor = Color(0xFFFFE4E9),
         accentColor = Color(0xFFFFB2C9),
         patternEmoji = "🌸",
@@ -44,7 +42,7 @@ enum class SkinType(
         id = "COMIC_STRIP",
         displayName = "Giấy Truyện Tranh 4 Khung",
         description = "Mỗi đoạn giấy trôi qua là một mẩu truyện meme cười vui",
-        requiredMeters = 75.0,
+        requiredMeters = 69.0, // Meme Mốc 2: 69 Tinh Tế
         primaryColor = Color(0xFFFFF9C4),
         accentColor = Color(0xFFFFE082),
         patternEmoji = "📰",
@@ -54,7 +52,7 @@ enum class SkinType(
         id = "ROYAL_GOLD_24K",
         displayName = "Giấy Dát Vàng Hoàng Gia 24K",
         description = "Vàng óng ánh quý tộc, rơi bụi vàng lấp lánh khi vuốt",
-        requiredMeters = 200.0,
+        requiredMeters = 168.0, // Meme Mốc 3: Nhất Lộc Phát 168
         primaryColor = Color(0xFFFFE082),
         accentColor = Color(0xFFFFB300),
         patternEmoji = "👑",
@@ -64,7 +62,7 @@ enum class SkinType(
         id = "NOODLE_SOUP",
         displayName = "Giấy Tô Bún Riêu Cua",
         description = "Họa tiết sợi bún, chả cua, ớt cay, âm thanh xì xụp vui tai",
-        requiredMeters = 500.0,
+        requiredMeters = 420.0, // Meme Mốc 4: 420 Siêu Chill
         primaryColor = Color(0xFFFFE0B2),
         accentColor = Color(0xFFFFB74D),
         patternEmoji = "🍜",
@@ -74,7 +72,7 @@ enum class SkinType(
         id = "DOLLAR_100",
         displayName = "Giấy Tiền Đô La $100",
         description = "Dải polyme in cọc tiền USD, nghe tiếng đếm tiền xoẹt xoẹt",
-        requiredMeters = 1200.0,
+        requiredMeters = 777.0, // Meme Mốc 5: Jackpot 777
         primaryColor = Color(0xFFC8E6C9),
         accentColor = Color(0xFF81C784),
         patternEmoji = "💵",
@@ -84,7 +82,7 @@ enum class SkinType(
         id = "MUMMY_BANDAGE",
         displayName = "Băng Gạc Xác Ướp Ai Cập",
         description = "Băng cổ xưa quấn xác ướp Pharaoh ngàn năm",
-        requiredMeters = 3000.0,
+        requiredMeters = 1314.0, // Meme Mốc 6: Trọn Đời Trọn Kiếp 1314
         primaryColor = Color(0xFFEFEBE9),
         accentColor = Color(0xFFBCAAA4),
         patternEmoji = "🏜️",
@@ -94,7 +92,7 @@ enum class SkinType(
         id = "SPACE_GALAXY",
         displayName = "Giấy Galaxy Không Gian",
         description = "Dải ngân hà tinh vân huyền ảo, vệt sáng neon vũ trụ",
-        requiredMeters = 7500.0,
+        requiredMeters = 9999.0, // Meme Mốc 7: Tứ Quý 9 Bất Diệt
         primaryColor = Color(0xFF281B4B),
         accentColor = Color(0xFF673AB7),
         patternEmoji = "🌌",
@@ -104,7 +102,7 @@ enum class SkinType(
         id = "ULTIMATE_DIAMOND",
         displayName = "Giấy Kim Cương Tối Thượng",
         description = "Trong suốt lấp lánh phát quang, hào quang thiên thần ca",
-        requiredMeters = 20000.0,
+        requiredMeters = 69420.0, // Meme Mốc 8: Chúa Tể Meme 69420
         primaryColor = Color(0xFFE0F7FA),
         accentColor = Color(0xFF00E5FF),
         patternEmoji = "💎",

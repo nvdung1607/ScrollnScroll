@@ -365,7 +365,7 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 ## 📝 NHẬT KÝ THỰC THI (EXECUTION CHANGELOG & AUDIT TRAIL)
 > **Mục này ghi lại lịch sử các bước đã làm để bất kỳ AI Agent nào tiếp quản dự án đều nắm rõ hiện trạng.**
 
-### 📌 [2026-08-19] - Hoàn Tất Toàn Diện Toàn Bộ 8 Giai Đoạn (Phase 0 -> Phase 7):
+### 📌 [2026-08-19] - Hoàn Tất Toàn Diện Toàn Bộ 8 Giai Đoạn (Phase 0 -> Phase 7) & Cập Nhật Mốc Meme Mới:
 1. **Phase 0, 1, 2, 3**: Đã hoàn tất và push lên Git.
 2. **Phase 4 (Hệ Thống Tiến Hóa 9 Skin & Màn Hình Tủ Đồ - ĐÃ HOÀN TẤT)**:
    - `ui/cabinet/components/SkinCard.kt`, `BadgeCard.kt`, `CabinetViewModel.kt`, `CabinetScreen.kt`.
@@ -378,7 +378,19 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
    - `ui/onboarding/NicknameDialog.kt`: Modal nhập tên tân thủ tích hợp bộ sinh tên ngẫu nhiên xúc xắc 🎲.
    - `ui/settings/SettingsDialog.kt`: Cài đặt âm thanh ASMR, rung Haptic, đổi tên và thông tin phiên bản.
    - `MainActivity.kt`: Khởi chạy Edge-to-Edge và gắn kết `AppNavigation()`.
-   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 5s (0 errors, 0 warnings)**.
+6. **Nâng Cấp Gameplay Vuốt Đa Hướng, Mũi Tên Chỉ Dẫn Tinh Tế & Hệ Thống Mốc Meme 1-to-1**:
+   - **8 Mốc Mét Meme Đồng Bộ Giữa 8 Bằng Khen & 8 Skin Mở Khóa**:
+     1. **36m** (*36 Quê Tôi*): Bằng Khen `Tân Binh 36 Quê Tôi 👶` + Skin `Hoa Hồng Thơm Ngát 🌸`
+     2. **69m** (*69 Tinh Tế*): Bằng Khen `Chiến Thần Giác Ngộ 69 😏` + Skin `Truyện Tranh 4 Khung 📰`
+     3. **168m** (*Nhất Lộc Phát 168*): Bằng Khen `Thần Tài Nhất Lộc Phát 168 👑` + Skin `Dát Vàng 24K 👑`
+     4. **420m** (*420 Siêu Chill*): Bằng Khen `Chúa Tể 420 Siêu Chill 🍜` + Skin `Tô Bún Riêu Cua 🍜`
+     5. **777m** (*Jackpot 777*): Bằng Khen `Đại Gia Nổ Hũ 777 💵` + Skin `Đô La $100 💵`
+     6. **1314m** (*Trọn Đời Trọn Kiếp 1314*): Bằng Khen `Xác Ướp Chung Tình 1314 🏜️` + Skin `Băng Gạc Xác Ướp 🏜️`
+     7. **9999m** (*Tứ Quý 9*): Bằng Khen `Phi Hành Gia Tứ Quý 9 🌌` + Skin `Galaxy Không Gian 🌌`
+     8. **69420m** (*Chúa Tể Meme 69420*): Bằng Khen `Đắc Đạo Meme Chúa 69420 💎` + Skin `Kim Cương Tối Thượng 💎`
+   - **Luồng Nhận Thưởng Tuần Tự Mượt Mà**: Khi chạm mốc mét, modal **Bằng Khen (CertificateDialog)** hiện lên trước $\rightarrow$ Khi đóng/chia sẻ xong, modal **Skin Mới Mở Khóa (`NewSkinUnlockDialog`)** hiện lên kế tiếp với nút `[🧻 DÙNG NGAY BÂY GIỜ]` giúp người chơi trang bị skin mới ngay lập tức!
+   - **Chỉ Dẫn Vuốt Cạnh Phải**: Mũi tên 2 đầu dọc ↕ (~2.5cm thực tế), chuyển động nhún êm ái, tối giản, thanh lịch.
+   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 3s (0 errors, 0 warnings)**.
 
 ---
 *Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục phát triển.*

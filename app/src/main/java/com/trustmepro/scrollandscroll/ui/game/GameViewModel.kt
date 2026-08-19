@@ -137,19 +137,35 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         accumulatedSwipes = 0L
 
         val result = repository.addProgress(metersToSave, swipesToSave)
+        val newSkin = result.newSkins.firstOrNull()
 
         if (result.newBadge != null) {
             soundManager.playFanfare()
             hapticManager.heavyPulse()
-            _uiState.update { it.copy(newlyUnlockedBadge = result.newBadge) }
-        } else if (result.newSkins.isNotEmpty()) {
-            soundManager.playPop()
-            hapticManager.click()
+            _uiState.update {
+                it.copy(
+                    newlyUnlockedBadge = result.newBadge,
+                    newlyUnlockedSkin = newSkin ?: it.newlyUnlockedSkin
+                )
+            }
+        } else if (newSkin != null) {
+            soundManager.playFanfare()
+            hapticManager.heavyPulse()
+            _uiState.update { it.copy(newlyUnlockedSkin = newSkin) }
         }
     }
 
     fun dismissBadgeDialog() {
         _uiState.update { it.copy(newlyUnlockedBadge = null) }
+    }
+
+    fun dismissSkinDialog() {
+        _uiState.update { it.copy(newlyUnlockedSkin = null) }
+    }
+
+    fun equipNewlyUnlockedSkin(skin: SkinType) {
+        selectSkin(skin.id)
+        dismissSkinDialog()
     }
 
     fun setNickname(nickname: String) {

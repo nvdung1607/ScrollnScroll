@@ -33,6 +33,7 @@ import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Checkroom
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.MilitaryTech
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.StarRate
@@ -148,11 +149,11 @@ fun GameScreen(
             }
         }
 
-        // ── 5. Chỉ dẫn vuốt tự do mọi hướng ở CẠNH BÊN PHẢI màn hình ──────
+        // ── 5. Chỉ dẫn vuốt lên/xuống ở cạnh phải màn hình (Mũi tên 2 đầu tinh tế ~2.5cm) ──────
         RightEdgeSwipeGuide(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .padding(end = 10.dp)
+                .padding(end = 6.dp)
         )
 
         // ── 6. Hàng điều khiển đáy màn hình: [ASMR] [HUD CARD] [BẰNG KHEN] ──
@@ -195,9 +196,6 @@ fun GameScreen(
             }
         }
 
-
-
-
         // ── 7. Hiệu ứng viền lửa rực rỡ khi vào chế độ Overdrive ───────────
         OverdriveEffect(isOverdrive = ui.isOverdrive)
 
@@ -210,112 +208,80 @@ fun GameScreen(
                 onDismiss = { viewModel.dismissBadgeDialog() }
             )
         }
+
+        // ── 9. Modal Chúc Mừng Mở Khóa Skin Mới (Hiện kế tiếp sau Bằng Khen) ──
+        if (ui.newlyUnlockedBadge == null) {
+            ui.newlyUnlockedSkin?.let { skin ->
+                com.trustmepro.scrollandscroll.ui.components.NewSkinUnlockDialog(
+                    skin = skin,
+                    onEquipNow = { viewModel.equipNewlyUnlockedSkin(skin) },
+                    onDismiss = { viewModel.dismissSkinDialog() }
+                )
+            }
+        }
     }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Biểu tượng và chữ chỉ dẫn vuốt tự do mọi hướng ở CẠNH BÊN PHẢI màn hình
+// Mũi tên 2 đầu chỉ dẫn vuốt lên/xuống ở cạnh phải (~2.5cm, tinh tế, không chói)
 // ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
 private fun RightEdgeSwipeGuide(
     modifier: Modifier = Modifier
 ) {
-    val infiniteTransition = rememberInfiniteTransition(label = "swipeGuideAnim")
+    val infiniteTransition = rememberInfiniteTransition(label = "swipeArrowAnim")
     val offsetY by infiniteTransition.animateFloat(
-        initialValue = -5f,
-        targetValue = 5f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(650, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "bounceY"
-    )
-    val scaleAnim by infiniteTransition.animateFloat(
-        initialValue = 0.95f,
-        targetValue = 1.05f,
+        initialValue = -6f,
+        targetValue = 6f,
         animationSpec = infiniteRepeatable(
             animation = tween(800, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         ),
-        label = "scale"
+        label = "arrowFloat"
     )
 
     Box(
         modifier = modifier
             .offset(y = offsetY.dp)
-            .shadow(6.dp, RoundedCornerShape(16.dp))
-            .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFFFFF9C4))
-            .border(2.5.dp, ComicInkBlack, RoundedCornerShape(16.dp))
-            .padding(horizontal = 8.dp, vertical = 10.dp)
+            .shadow(3.dp, RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color.White.copy(alpha = 0.85f))
+            .border(2.dp, ComicInkBlack, RoundedCornerShape(12.dp))
+            .padding(horizontal = 4.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Icon Bàn tay & Mũi tên 4 hướng
+            // Mũi tên chỉ lên
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowUp,
+                contentDescription = null,
+                tint = ComicInkBlack,
+                modifier = Modifier
+                    .size(20.dp)
+                    .offset(y = 2.dp)
+            )
+
+            // Thân trục dài (khoảng 2.5 - 3cm thực tế trên màn hình)
             Box(
                 modifier = Modifier
-                    .size(34.dp)
-                    .clip(CircleShape)
-                    .background(ComicYellow)
-                    .border(2.dp, ComicInkBlack, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "👆",
-                    fontSize = 20.sp
-                )
-            }
-
-            Spacer(Modifier.height(4.dp))
-
-            // Mũi tên chỉ đa hướng ⇅ ⇄
-            Text(
-                text = "⇅ ⇄",
-                fontFamily = ComicFontFamily,
-                fontWeight = FontWeight.Black,
-                fontSize = 14.sp,
-                color = Color(0xFFFF5722)
+                    .width(3.dp)
+                    .height(48.dp)
+                    .background(ComicInkBlack)
             )
 
-            Spacer(Modifier.height(2.dp))
-
-            // Chữ VUỐT
-            Text(
-                text = "VUỐT",
-                fontFamily = ComicFontFamily,
-                fontWeight = FontWeight.Black,
-                fontSize = 13.sp,
-                color = ComicInkBlack
-            )
-
-            // Chữ TỰ DO
-            Text(
-                text = "TỰ DO",
-                fontFamily = ComicFontFamily,
-                fontWeight = FontWeight.Black,
-                fontSize = 13.sp,
-                color = ComicInkBlack
-            )
-
-            Spacer(Modifier.height(2.dp))
-
-            // Huy hiệu 360°
-            Box(
+            // Mũi tên chỉ xuống
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = null,
+                tint = ComicInkBlack,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(6.dp))
-                    .background(Color(0xFFFF5722))
-                    .padding(horizontal = 4.dp, vertical = 1.dp)
-            ) {
-                Text(
-                    text = "360°",
-                    fontFamily = ComicFontFamily,
-                    fontSize = 9.sp,
-                    color = Color.White
-                )
-            }
+                    .size(20.dp)
+                    .offset(y = (-2).dp)
+            )
         }
     }
 }

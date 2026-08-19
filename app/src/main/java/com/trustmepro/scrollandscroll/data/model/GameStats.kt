@@ -14,7 +14,8 @@ data class GameStats(
     val isHapticEnabled: Boolean = true,
     val unlockedSkinIds: Set<String> = setOf(SkinType.SCHOOL_CANTEEN.id),
     val unlockedBadgeIds: Set<String> = emptySet(),
-    val newlyUnlockedBadge: BadgeType? = null
+    val newlyUnlockedBadge: BadgeType? = null,
+    val newlyUnlockedSkin: SkinType? = null
 ) {
     val selectedSkin: SkinType
         get() = SkinType.getById(selectedSkinId)
