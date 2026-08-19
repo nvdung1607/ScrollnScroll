@@ -349,16 +349,42 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 
 ## 🏁 BẢNG THEO DÕI TIẾN ĐỘ THỰC HIỆN (PROGRESS TRACKER)
 
-| Giai đoạn (Phase) | Nội dung công việc chính | Trạng thái |
-| :--- | :--- | :--- |
-| **Phase 0** | Kiến trúc tổng thể & Cấu trúc thư mục | 🟢 **ĐÃ HOÀN TẤT** |
-| **Phase 1** | Foundation, Design System, ASMR Sound & Haptics | ⚪ *Chờ thực thi* |
-| **Phase 2** | Data Layer, DataStore, Models & GameViewModel | ⚪ *Chờ thực thi* |
-| **Phase 3** | Core Gameplay, Canvas Cuộn Giấy & Overdrive Physics | ⚪ *Chờ thực thi* |
-| **Phase 4** | Hệ thống Tiến Hóa 9 Skin & Tủ Đồ Cabinet | ⚪ *Chờ thực thi* |
-| **Phase 5** | Bằng Khen Vô Tri & Trình Xuất Ảnh Share Story | ⚪ *Chờ thực thi* |
-| **Phase 6** | Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia | ⚪ *Chờ thực thi* |
-| **Phase 7** | App Navigation, Polishing & Build Xuất Xưởng | ⚪ *Chờ thực thi* |
+| Giai đoạn (Phase) | Nội dung công việc chính | Trạng thái | Ghi chú & Đánh giá |
+| :--- | :--- | :--- | :--- |
+| **Phase 0** | Cấu hình hạ tầng, Gradle Libs & Packages | 🟢 **ĐÃ HOÀN TẤT** | Đã cấu hình `libs.versions.toml`, `app/build.gradle.kts`, tạo package structure, build thành công 100%. |
+| **Phase 1** | Foundation, Material Design 3, Sound & Haptics | 🟢 **ĐÃ HOÀN TẤT** | Áp dụng 100% chuẩn Material Design 3 (M3 Color Tokens, M3 Typography 15 cấp độ, M3PrimaryButton, M3ElevatedCard, M3IconButton, SoundManager SoundPool, HapticManager). Build pass 100%. |
+| **Phase 2** | Data Layer, DataStore, Models & GameViewModel | 🟡 **TIẾP THEO (SẴN SÀNG)** | Bước tiếp theo cần triển khai. |
+| **Phase 3** | Core Gameplay, Canvas Cuộn Giấy & Overdrive Physics | ⚪ *Chờ thực thi* | Phụ thuộc Phase 2. |
+| **Phase 4** | Hệ thống Tiến Hóa 9 Skin & Tủ Đồ Cabinet | ⚪ *Chờ thực thi* | Phụ thuộc Phase 3. |
+| **Phase 5** | Bằng Khen Vô Tri & Trình Xuất Ảnh Share Story | ⚪ *Chờ thực thi* | Phụ thuộc Phase 4. |
+| **Phase 6** | Bảng Xếp Hạng Toàn Cầu & Đại Chiến Quốc Gia | ⚪ *Chờ thực thi* | Phụ thuộc Phase 5. |
+| **Phase 7** | App Navigation, Polishing & Build Xuất Xưởng | ⚪ *Chờ thực thi* | Phụ thuộc Phase 6. |
 
 ---
-*Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và thực hiện tuần tự từng Phase.*
+
+## 📝 NHẬT KÝ THỰC THI (EXECUTION CHANGELOG & AUDIT TRAIL)
+> **Mục này ghi lại lịch sử các bước đã làm để bất kỳ AI Agent nào tiếp quản dự án đều nắm rõ hiện trạng.**
+
+### 📌 [2026-08-19] - Hoàn Tất Phase 0 & Phase 1:
+1. **Phase 0 (Infrastructure & Dependencies)**:
+   - Thêm `androidx-navigation-compose` (2.8.8), `androidx-datastore-preferences` (1.1.3), `androidx-compose-material-icons-extended`, `androidx-lifecycle-viewmodel-compose` vào `gradle/libs.versions.toml` và `app/build.gradle.kts`.
+   - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL**.
+   - Git Commit: `8f351e7` đã push lên branch `main`.
+
+2. **Phase 1 (Material Design 3 & Sound/Haptics)**:
+   - Chuyển đổi toàn bộ Theme sang chuẩn **Material Design 3 (Material You)** của Google.
+   - `ui/theme/Color.kt`: Khai báo đầy đủ M3 Tonal Palette (`Primary`, `Secondary`, `Tertiary`, `Surface`, `Background`, `Outline` cho cả Light & Dark theme).
+   - `ui/theme/Type.kt`: Cung cấp 15 cấp độ Typography M3 (`displayLarge`, `headline`, `title`, `body`, `label`).
+   - `ui/theme/Theme.kt`: Cấu hình `MaterialTheme` M3 với Window Insets controller an toàn cho Edge-to-Edge.
+   - `ui/components/M3Components.kt`: Các component tái sử dụng M3 (`M3PrimaryButton`, `M3TonalButton`, `M3OutlinedButton`, `M3ElevatedCard`, `M3IconButton`).
+   - `audio/SoundManager.kt`: Engine âm thanh ASMR độ trễ thấp bằng `SoundPool` với bộ tổng hợp sóng âm PCM (roll, click, pop, fanfare, overdrive).
+   - `util/HapticManager.kt`: Quản lý rung xúc giác nhẹ (Tick, Click, Heavy Pulse).
+   - `ui/components/DesignSystemPreview.kt`: Màn hình Showcase hỗ trợ Preview cả Light & Dark mode trên Android Studio.
+   - `AndroidManifest.xml`: Đã khai báo quyền `VIBRATE`.
+   - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
+
+3. **Hướng dẫn cho AI tiếp theo**:
+   - **Bước tiếp theo là Phase 2**: Tạo các Data Model trong `data/model/`, DataStore Preferences trong `data/preference/GamePreferences.kt`, `data/repository/GameRepository.kt`, và `ui/game/GameViewModel.kt`. Xem chi tiết tại mục [PHASE 2](#phase-2-data-layer--state-management).
+
+---
+*Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục thực hiện.*
