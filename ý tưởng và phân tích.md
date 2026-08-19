@@ -93,7 +93,7 @@
 
 ## 3. HỆ THỐNG TIẾN HÓA SKIN, DANH HIỆU & BẰNG KHEN VIRAL
 
-### 3.1. Cây Tiến Hóa 20 Cấp Độ Skin Cuộn Giấy: "Hành Trình Từ Vô Tri Đến Tâm Thần"
+### 3.1. Cây Tiến Hóa 20 Cấp Độ Skin Cuộn Giấy: "Hành Trình Từ Vô Tri Đến Thiên Đình"
 Mỗi skin không chỉ thay đổi màu sắc mà thay đổi toàn bộ họa tiết dải giấy, hiệu ứng hạt rơi (particles) và âm thanh ASMR riêng biệt:
 
 | Cột mốc Mét | Tên Skin Cuộn Giấy (Chủ Đề) | Thiết Kế Dải Giấy & Hiệu Ứng Rơi (VFX/SFX) | Tên Bằng Khen / Danh Hiệu | Lời Phê Cà Khịa Trào Phúng |
@@ -114,10 +114,10 @@ Mỗi skin không chỉ thay đổi màu sắc mà thay đổi toàn bộ họa 
 | **222,222 m** | **Giấy Đơn Xin Nghỉ Việc** | Giấy A4 kẻ ngang, dòng chữ "TÔI QUÁ MỆT MỎI" lặp đi lặp lại `📝`. | **Anh Hùng Chốn Công Sở 💼** | *"Chắc chắn là đang ngồi trong toilet công ty vuốt điện thoại chứ gì. Dũng cảm thì nộp đơn đi!"* |
 | **333,333 m** | **Giấy Vàng Mã 500k** | Màu xám tro viền đỏ âm phủ, rớt ra ngựa giấy và iphone giấy `🕯️`. | **Tỷ Phú Cõi Dưới ⚰️** | *"Chạm mốc tam hoa 3. Ở dưới kia người ta đã xây xong biệt thự giấy chờ bạn xuống rồi."* |
 | **500,000 m** | **Giấy Vé Số Chiều Nay** | Giấy mỏng tanh in dãy số lộn xộn, rớt ra chữ "Trượt" và "Chúc may mắn" `🎟️`. | **Kẻ Mộng Mơ Lúc 6h30 🎰** | *"Xác suất để bạn buông tha cho cuộn giấy này còn thấp hơn cả xác suất bạn trúng độc đắc."* |
-| **777,777 m** | **Băng Rôn "Xả Kho Nghỉ Bán"** | Bạt hiflex vàng/đỏ in "Chỉ 39k, Thanh Lý Toàn Bộ", dính băng dính đen `🏷️`. | **Khách VVIP Của Chủ Shop 📢** | *"Cái tiệm ngoài đầu ngõ treo biển xả kho 5 năm rồi vẫn chưa nghỉ, y như cách bạn vuốt app này."* |
+| **777,777 m** | **Giấy Dép Tổ Ong 1000 Lỗ** | Màu trắng ngà/vàng nghệ dập lỗ tròn tổ ong huyền thoại, rớt dép bay vèo vèo `🩴`. | **Huyền Thoại Dép Tổ Ong 🩴** | *"Cuộn giấy này bền y như đôi dép tổ ong của ông nội bạn: Rách thế nào cũng không chịu đứt!"* |
 | **1,000,000 m** | **Giấy Đề Thi Đại Học** | Giấy A4 chi chít công thức Tích phân, rớt ra mấy điểm 0 tròn trĩnh `📐`. | **Nạn Nhân Của Bộ Giáo Dục 🎓** | *"Vuốt được 1 triệu mét kỷ lục nhưng có giải được câu hàm số này không? KHÔNG!"* |
-| **5,000,000 m** | **Giấy Bùa Chú Lỗ Ban** | Giấy vàng chóe bùa đỏ ngoằn ngoèo, rớt tàn nhang lả tả, tiếng gõ mõ tụng kinh `📜`. | **Kiếp Nạn Thứ 82 🪬** | *"Thế lực tâm linh nào đang nhập vào ngón tay của thí chủ vậy? Mau mau dập máy đi ngủ!"* |
-| **10,000,000 m** | **Giấy Khám Tâm Thần** | Bệnh án viện Bạch Mai/Trâu Quỳ, nền trắng vạch đỏ, có dấu "MỨC ĐỘ NẶNG" `🏥`. | **Đắc Đạo Vô Tri Nhất Trái Đất 👑** | *"Viện Y khoa xác nhận: Ngón tay và não bộ của bạn đã chính thức tách rời thực tại. Chúc mừng bệnh nhân số 1 thế giới!"* |
+| **5,000,000 m** | **Giấy Tre Trăm Đốt (Khắc Nhập)** | Thân tre xanh ngọc dập đốt vàng óng, rớt lá tre lả tả, âm thanh "Khắc Nhập! Khắc Xuất!" `🎋`. | **Hậu Duệ Cây Tre Trăm Đốt 🎋** | *"Cây tre trăm đốt trong truyện cổ tích cũng phải nối thêm 5 triệu mét mới dài bằng cuộn giấy của bạn!"* |
+| **10,000,000 m** | **Sớ Táo Quân Chầu Trời** | Nền gấm hoàng bào vàng kim thêu rồng phượng, đóng dấu ngọc tỷ đỏ chót `📜👑`. | **Nam Tào Ghi Sổ Thiên Đình 📜👑** | *"Táo Quân bay về trời bẩm báo: 'Dưới trần gian có thí chủ vuốt 10 triệu mét giấy'. Ngọc Hoàng nghe xong liền sắc phong chức Đại Thánh Vô Tri!"* |
 
 ---
 

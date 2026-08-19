@@ -396,10 +396,10 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
      14. **222,222m**: Bằng khen `Anh Hùng Chốn Công Sở 💼` + Skin `Giấy Đơn Xin Nghỉ Việc`
      15. **333,333m**: Bằng khen `Tỷ Phú Cõi Dưới ⚰️` + Skin `Giấy Vàng Mã 500k`
      16. **500,000m**: Bằng khen `Kẻ Mộng Mơ Lúc 6h30 🎰` + Skin `Giấy Vé Số Chiều Nay`
-     17. **777,777m**: Bằng khen `Khách VVIP Của Chủ Shop 📢` + Skin `Băng Rôn "Xả Kho Nghỉ Bán"`
+     17. **777,777m**: Bằng khen `Huyền Thoại Dép Tổ Ong 🩴` + Skin `Giấy Dép Tổ Ong 1000 Lỗ`
      18. **1,000,000m**: Bằng khen `Nạn Nhân Của Bộ Giáo Dục 🎓` + Skin `Giấy Đề Thi Đại Học`
-     19. **5,000,000m**: Bằng khen `Kiếp Nạn Thứ 82 🪬` + Skin `Giấy Bùa Chú Lỗ Ban`
-     20. **10,000,000m**: Bằng khen `Đắc Đạo Vô Tri Nhất Trái Đất 👑` + Skin `Giấy Khám Tâm Thần`
+     19. **5,000,000m**: Bằng khen `Hậu Duệ Cây Tre Trăm Đốt 🎋` + Skin `Giấy Tre Trăm Đốt (Khắc Nhập)`
+     20. **10,000,000m**: Bằng khen `Nam Tào Ghi Sổ Thiên Đình 📜👑` + Skin `Sớ Táo Quân Chầu Trời`
 7. **Tái Thiết Kế Bằng Khen Thuần Canvas Vector, Parody Header & Tải Về Thư Viện**:
    - **Loại bỏ ảnh phôi tĩnh**: Không còn bị lỗi đè chữ cũ hay lệch phông.
    - **Vẽ 100% đồ họa Canvas Vector**: Viền hoa văn đỏ - vàng kim, 4 góc chữ Vạn cổ điển, huy hiệu cờ đỏ sao vàng xòe quạt và hoa sen chìm trang trọng.
