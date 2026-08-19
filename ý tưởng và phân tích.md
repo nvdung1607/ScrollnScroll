@@ -96,17 +96,17 @@
 ### 3.1. Cây Tiến Hóa Skin Cuộn Giấy (Skin Evolution Tree)
 Mỗi skin không chỉ thay đổi màu sắc mà thay đổi toàn bộ họa tiết dải giấy, hiệu ứng hạt rơi (particles) và âm thanh ASMR riêng biệt:
 
-| Cột mốc | Tên Skin | Hình ảnh & Họa tiết | Hiệu ứng đặc biệt (VFX/SFX) |
+| Cột mốc Meme | Tên Skin | Hình ảnh & Họa tiết | Hiệu ứng đặc biệt (VFX/SFX) |
 | :--- | :--- | :--- | :--- |
-| **0 m** | **Giấy Căn Tin Trường Học** | Giấy 1 lớp nham nhở màu xám nhạt | Tiếng sột soạt cơ bản, rơi vụn giấy xám |
-| **500 m** | **Giấy Hoa Hồng Thơm Ngát** | Màu hồng phấn, in họa tiết cánh hoa | Rơi ra cánh hoa rơi lả tả, âm thanh êm ái |
-| **2,000 m** | **Giấy Truyện Tranh 4 Khung** | In các mẩu truyện cười meme đen trắng | Mỗi đoạn giấy trôi qua là 1 mẩu truyện vui |
-| **10,000 m** | **Giấy Dát Vàng Hoàng Gia 24K** | Vàng óng ánh, bóng bẩy phản chiếu | Rơi bụi vàng kim, tiếng leng keng quý tộc |
-| **50,000 m** | **Giấy Tô Bún Riêu Cua** | Họa tiết sợi bún, cà chua, gạch cua, hành lá | Rơi giọt ớt cay, âm thanh "xì xụp" hài hước |
-| **100,000 m** | **Giấy Tiền Đô La $100** | Dải polyme in hình cọc tiền USD | Tiếng đếm tiền "xoẹt xoẹt" của ngân hàng |
-| **250,000 m** | **Băng Gạc Xác Ướp Ai Cập** | Dải băng cổ xưa quấn xác ướp Pharaoh | Bụi cát sa mạc mịt mù, tiếng gió hú cổ mộ |
-| **500,000 m** | **Giấy Galaxy Không Gian** | Màu vũ trụ đêm huyền ảo, sao băng, tinh vân | Vệt sáng neon phát quang, âm thanh laser viễn tưởng |
-| **999,999 m** | **Giấy Kim Cương Tối Thượng** | Trong suốt lấp lánh như lăng kính pha lê | Hiệu ứng hào quang thần thánh, âm thanh thiên thần ca |
+| **0 m** | **Giấy Căn Tin Trường Học** | Giấy 1 lớp nham nhở màu xám nhạt, 1-PLY | Tiếng sột soạt cơ bản, rơi vụn giấy xám |
+| **36 m** | **Giấy Chiết Xuất Rau Má 36** | Tông xanh lá tươi mát, in hoa văn lá rau má `🍃` | Mát lành thanh nhiệt 36 Quê Tôi trứ danh |
+| **69 m** | **Giấy Truyện Tranh 4 Khung** | In các mẩu truyện cười meme đen trắng `📰` | Mỗi đoạn giấy trôi qua là 1 mẩu truyện vui |
+| **168 m** | **Giấy Dát Vàng Hoàng Gia 24K** | Vàng óng ánh, in vương miện hoàng gia `👑` | Rơi bụi vàng kim, tiếng leng keng quý tộc Nhất Lộc Phát |
+| **420 m** | **Giấy Tô Bún Riêu Cua** | Họa tiết sợi bún, cà chua, gạch cua, hành ớt `🍜` | Rơi giọt ớt cay, âm thanh "xì xụp" siêu chill 420 |
+| **777 m** | **Giấy Tiền Đô La $100** | Dải polyme in hình cọc tiền USD `💵` | Tiếng đếm tiền "xoẹt xoẹt" ngân hàng, nổ hũ Jackpot 777 |
+| **1,314 m** | **Băng Gạc Xác Ướp Ai Cập** | Dải băng cổ xưa quấn xác ướp Pharaoh `🏜️` | Bụi cát sa mạc mịt mù, Trọn Đời Trọn Kiếp 1314 |
+| **9,999 m** | **Giấy Galaxy Không Gian** | Màu vũ trụ đêm huyền ảo, tinh vân `🌌` | Vệt sáng neon phát quang, Tứ Quý 9 Bất Diệt |
+| **69,420 m** | **Giấy Kim Cương Tối Thượng** | Trong suốt lấp lánh như lăng kính pha lê `💎` | Hiệu ứng hào quang thần thánh, Meme Chúa Tối Thượng |
 
 ---
 
@@ -115,49 +115,52 @@ Mỗi khi đạt mốc, hệ thống sẽ mở khóa một danh hiệu kèm theo
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ 🎖️ HỆ THỐNG DANH HIỆU CÀ KHỊA                              │
+│ 🎖️ HỆ THỐNG DANH HIỆU CÀ KHỊA 8 MỐC MEME                    │
 ├─────────────────────────────────────────────────────────────┤
-│ • 100m:     [Tân Binh Ngón Tay Dẻo]                         │
-│             "Mới vuốt có tí đã mỏi tay rồi à bạn ơi?"       │
+│ • 36m:      [Chiến Thần Rau Má 36 🍃]                       │
+│             "Mới vuốt 36m đã đòi uống sinh tố rau má đậu xanh!"│
 │                                                             │
-│ • 1,000m:   [Kẻ Tiêu Thụ Giấy Chuyên Nghiệp]                │
-│             "Đủ lượng giấy cho một hộ gia đình dùng cả năm" │
+│ • 69m:      [Chiến Thần Giác Ngộ 69 😏]                     │
+│             "Kỹ năng vuốt cuộn giấy đã đạt cảnh giới tinh tế 69."│
 │                                                             │
-│ • 5,000m:   [Chiến Thần Đốt Giờ Làm]                        │
-│             "Sếp bạn đang nhìn đấy, nhưng cuộn giấy cuốn hơn"│
+│ • 168m:     [Thần Tài Nhất Lộc Phát 168 👑]                 │
+│             "Càng cuộn càng phát tài, sếp nhìn cũng phải nể!"│
 │                                                             │
-│ • 20,000m:  [Kẻ Hủy Diệt Cường Lực Điện Thoại]              │
-│             "Miếng dán màn hình của bạn sắp mòn vẹt rồi đấy" │
+│ • 420m:     [Chúa Tể 420 Siêu Chill 🍜]                     │
+│             "Vuốt giấy chậm rãi như đang thưởng thức tô mì tôm!"│
 │                                                             │
-│ • 50,000m:  [Thất Nghiệp Huyền Thoại]                       │
-│             "Thời gian này bạn học xong 2 khóa IELTS rồi"   │
+│ • 777m:     [Đại Gia Nổ Hũ 777 💵]                          │
+│             "Năng lượng Jackpot tràn trề, tiêu tiền như rải giấy!"│
 │                                                             │
-│ • 100,000m: [Vận Động Viên Cuộn Giấy Cấp Quốc Gia]          │
-│             "Ngón tay trỏ đã to gấp đôi ngón cái"           │
+│ • 1,314m:   [Xác Ướp Chung Tình 1314 🏜️]                   │
+│             "Trọn đời trọn kiếp 1314m, quấn chặt lấy cuộn giấy!"│
 │                                                             │
-│ • 500,000m: [Đỉnh Cao Tiến Hóa Của Sự Vô Tri]               │
-│             "Người ngoài hành tinh đang quan sát bạn kinh ngạc"│
+│ • 9,999m:   [Phi Hành Gia Tứ Quý 9 🌌]                      │
+│             "Dải giấy vươn tầm vũ trụ, người ngoài hành tinh bái phục!"│
 │                                                             │
-│ • 999,999m: [Đắc Đạo Thành Tiên Cuộn Giấy]                  │
-│             "Bạn đã hoàn thành trò chơi. Hãy đi ngủ đi!"    │
+│ • 69,420m:  [Đắc Đạo Meme Chúa 69420 💎]                    │
+│             "Huyền thoại vô tri tối thượng. Bạn có thể tự hào đi ngủ!"│
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### 3.3. Thiết Kế Bằng Khen Châm Biếm Chia Sẻ Story (Viral Certificate Generator)
-Khi đạt danh hiệu mới hoặc người dùng bấm vào nút "Khoe Bằng Khen", app sẽ render ra một tấm thẻ hình ảnh chuẩn tỷ lệ **9:16 (Story format)** và **1:1 (Feed format)**:
+### 3.3. Thiết Kế Bằng Khen Châm Biếm Chia Sẻ Story & Tải Về Thư Viện (Viral Certificate Generator)
+Khi đạt mốc mét mới hoặc bấm vào nút "Xem Bằng Khen", app hiển thị một modal Giấy Khen chuẩn phôi truyền thống Việt Nam được vẽ 100% bằng Canvas Vector:
 
-- **Thiết kế Card**:
-  - Khung viền hoa văn cổ điển mạ vàng trang trọng (như Bằng Khen của Nhà nước hoặc Viện Hàn Lâm).
-  - Quốc hiệu giả tưởng: *"CỘNG HÒA VÔ TRI ĐỘC LẬP - TỰ DO - LƯỚT KHÔNG NGỪNG"*.
-  - Tiêu đề to: **BẰNG CHỨNG NHẬN THÀNH TÍCH VÔ ĐỊCH**.
-  - Tên định danh: Trao tặng đồng chí **[NICKNAME]**.
-  - Lời chứng thực: *"Đã xuất sắc tiêu tốn [X] mét giấy vệ sinh và lãng phí vô ích [Y] phút cuộc đời vào việc vuốt màn hình."*
-  - Con dấu đỏ chói đóng mộc: **"CHỨNG NHẬN VÔ TRI 100% - ĐÃ DUYỆT"**.
-  - Chữ ký giả: *"Chủ tịch Hội đồng Lướt Vọng Tưởng"*.
-  - Footer: Logo `Scroll & Scroll` + Mã QR nhỏ để bạn bè quét cài app.
+- **Thiết kế Giấy Khen Vector**:
+  - Khung viền hoa văn kép đỏ - vàng kim cổ điển, 4 góc chữ Vạn, Cụm huy hiệu cờ đỏ xòe quạt và hoa sen chìm.
+  - Quốc hiệu & Tiêu ngữ hài hước: *"CỘNG HÒA VÔ TRI CHIẾN THẦN VIỆT NAM - Độc cuộn – Tự do – Hết giấy"*.
+  - Tiêu đề to: **GIẤY KHEN** (Serif đỏ đậm).
+  - Đơn vị ban hành: *"VIỆN TRƯỞNG VIỆN KHOA HỌC VÔ TRI"*.
+  - Tên định danh: **Khen tặng Chiến Thần: [NICKNAME]**.
+  - Danh hiệu: **Đạt danh hiệu: [Tên Danh Hiệu] [Emoji]**.
+  - Thành tích: **Đã xuất sắc cuộn được: [X,XXX.X] mét giấy**.
+  - Lời phê: *"\"[Lời Nhận Xét Cà Khịa]\""*.
+  - Góc ký tên & Vào sổ: Số quyết định `Số 3669/QĐ-VOTRI`, chữ ký nghệ thuật `Scroll Master` và con dấu sáp đỏ tròn **"CHỨNG NHẬN 100% VÔ TRI ★★★"**.
 - **Nút tương tác**:
+  - **[📲 CHIA SẺ STORY]**: Xuất ảnh 1600x1160px siêu nét chia sẻ trực tiếp lên Story TikTok / Facebook / Instagram.
+  - **[💾 TẢI VỀ ẢNH]**: Lưu trực tiếp ảnh Giấy Khen vào Thư viện ảnh (Gallery / Pictures / ScrollAndScroll) thông qua MediaStore API.
   - **"Chia sẻ ngay lên Story"** (Gửi thẳng Intent sang Instagram / TikTok / Facebook / Zalo).
   - **"Lưu ảnh HD vào máy"**.
 

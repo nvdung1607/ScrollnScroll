@@ -387,10 +387,14 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
      5. **777m** (*Jackpot 777*): Bằng Khen `Đại Gia Nổ Hũ 777 💵` + Skin `Đô La $100 💵`
      6. **1314m** (*Trọn Đời Trọn Kiếp 1314*): Bằng Khen `Xác Ướp Chung Tình 1314 🏜️` + Skin `Băng Gạc Xác Ướp 🏜️`
      7. **9999m** (*Tứ Quý 9*): Bằng Khen `Phi Hành Gia Tứ Quý 9 🌌` + Skin `Galaxy Không Gian 🌌`
-     8. **69420m** (*Chúa Tể Meme 69420*): Bằng Khen `Đắc Đạo Meme Chúa 69420 💎` + Skin `Kim Cương Tối Thượng 💎`
-   - **Luồng Nhận Thưởng Tuần Tự Mượt Mà**: Khi chạm mốc mét, modal **Bằng Khen (CertificateDialog)** hiện lên trước $\rightarrow$ Khi đóng/chia sẻ xong, modal **Skin Mới Mở Khóa (`NewSkinUnlockDialog`)** hiện lên kế tiếp với nút `[🧻 DÙNG NGAY BÂY GIỜ]` giúp người chơi trang bị skin mới ngay lập tức!
-   - **Chỉ Dẫn Vuốt Cạnh Phải**: Mũi tên 2 đầu dọc ↕ (~2.5cm thực tế), chuyển động nhún êm ái, tối giản, thanh lịch.
-   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 3s (0 errors, 0 warnings)**.
+7. **Tái Thiết Kế Bằng Khen Thuần Canvas Vector, Parody Header & Tải Về Thư Viện**:
+   - **Loại bỏ ảnh phôi tĩnh**: Không còn bị lỗi đè chữ cũ hay lệch phông.
+   - **Vẽ 100% đồ họa Canvas Vector**: Viền hoa văn đỏ - vàng kim, 4 góc chữ Vạn cổ điển, huy hiệu cờ đỏ sao vàng xòe quạt và hoa sen chìm trang trọng.
+   - **Quốc hiệu & Tiêu ngữ Hài Hước**: `CỘNG HÒA VÔ TRI CHIẾN THẦN VIỆT NAM` - `Độc cuộn – Tự do – Hết giấy`.
+   - **Bỏ lớp, hiển thị trực tiếp**: `Khen tặng Chiến Thần: [Tên]`, `Đạt danh hiệu: [Tên Badge] [Emoji]`, `Đã xuất sắc cuộn được: [X.X] mét giấy`.
+   - **Đầy đủ chữ ký & Dấu mộc đỏ**: Chữ ký đỏ `Scroll Master`, số quyết định `Số 3669/QĐ-VOTRI` và dấu mộc sáp đỏ tròn `CHỨNG NHẬN 100% VÔ TRI ★★★`.
+   - **Nút [💾 TẢI VỀ ẢNH]**: Lưu ảnh chất lượng cao vào Thư viện ảnh (Pictures/ScrollAndScroll) thông qua MediaStore API.
+   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 5s (0 errors, 0 warnings)**.
 
 ---
 *Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục phát triển.*
