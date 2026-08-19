@@ -34,6 +34,8 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.MilitaryTech
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -55,16 +57,25 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.trustmepro.scrollandscroll.data.model.BadgeType
 import com.trustmepro.scrollandscroll.ui.components.Comic3DWordmark
 import com.trustmepro.scrollandscroll.ui.components.ComicCard
+import com.trustmepro.scrollandscroll.ui.components.ComicCertificateDocIcon
 import com.trustmepro.scrollandscroll.ui.components.ComicCircleButton
 import com.trustmepro.scrollandscroll.ui.components.ComicCyan
+import com.trustmepro.scrollandscroll.ui.components.ComicGearIcon
 import com.trustmepro.scrollandscroll.ui.components.ComicGreen
+import com.trustmepro.scrollandscroll.ui.components.ComicHangerIcon
 import com.trustmepro.scrollandscroll.ui.components.ComicInkBlack
+import com.trustmepro.scrollandscroll.ui.components.ComicOdometerDisplay
 import com.trustmepro.scrollandscroll.ui.components.ComicOrange
+import com.trustmepro.scrollandscroll.ui.components.ComicScrollCertificateIcon
+import com.trustmepro.scrollandscroll.ui.components.ComicSpeakerIcon
+import com.trustmepro.scrollandscroll.ui.components.ComicTrophyIcon
 import com.trustmepro.scrollandscroll.ui.components.ComicYellow
 import com.trustmepro.scrollandscroll.ui.components.M3PrimaryButton
 import com.trustmepro.scrollandscroll.ui.game.components.OverdriveEffect
 import com.trustmepro.scrollandscroll.ui.game.components.SpsGauge
+import com.trustmepro.scrollandscroll.ui.theme.ComicFontFamily
 import java.util.Locale
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // GameScreen — Màn hình chơi chính chuẩn 100% phong cách Comic Pop-Art
@@ -85,7 +96,7 @@ fun GameScreen(
         ToiletPaperCanvas(
             skin = ui.selectedSkin,
             isOverdrive = ui.isOverdrive,
-            onScroll = { px -> viewModel.onScroll(px) },
+            onScroll = { px, vel -> viewModel.onScroll(px, vel) },
             modifier = Modifier.fillMaxSize()
         )
 
@@ -99,7 +110,6 @@ fun GameScreen(
 
         // ── 3. Nút Setting (Góc trên bên trái) ──────────────────────────────
         ComicCircleButton(
-            icon = Icons.Default.Settings,
             label = "Setting",
             containerColor = ComicCyan,
             onClick = onOpenSettings,
@@ -107,7 +117,9 @@ fun GameScreen(
                 .align(Alignment.TopStart)
                 .statusBarsPadding()
                 .padding(start = 14.dp, top = 8.dp)
-        )
+        ) {
+            ComicGearIcon(modifier = Modifier.fillMaxSize())
+        }
 
         // ── 4. Cụm nút Bảng Xếp Hạng & Tủ Đồ Skin (Góc trên bên phải) ─────
         Column(
@@ -119,17 +131,19 @@ fun GameScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ComicCircleButton(
-                icon = Icons.Default.EmojiEvents,
                 label = "Bảng Xếp Hạng",
                 containerColor = ComicYellow,
                 onClick = onNavigateToLeaderboard
-            )
+            ) {
+                ComicTrophyIcon(modifier = Modifier.fillMaxSize())
+            }
             ComicCircleButton(
-                icon = Icons.Default.Checkroom,
                 label = "Tủ Đồ Skin",
                 containerColor = ComicGreen,
                 onClick = onNavigateToCabinet
-            )
+            ) {
+                ComicHangerIcon(modifier = Modifier.fillMaxSize())
+            }
         }
 
         // ── 5. Hướng dẫn cử chỉ vuốt cho tân thủ (Tự ẩn sau 3 lần vuốt) ────
@@ -143,132 +157,43 @@ fun GameScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
-                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+                .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             // Nút ASMR (Góc dưới bên trái)
             ComicCircleButton(
-                icon = if (ui.isSoundEnabled)
-                    Icons.AutoMirrored.Filled.VolumeUp
-                else
-                    Icons.AutoMirrored.Filled.VolumeOff,
                 label = if (ui.isSoundEnabled) "ASMR: Bật" else "ASMR: Tắt",
                 containerColor = ComicCyan,
-                onClick = { viewModel.toggleSound() }
-            )
+                onClick = { viewModel.toggleSound() },
+                size = 56.dp
+            ) {
+                ComicSpeakerIcon(modifier = Modifier.fillMaxSize())
+            }
 
             // Thẻ HUD Odometer đo khoảng cách trung tâm (Giữa)
             ComicCard(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 6.dp)
+                    .padding(horizontal = 8.dp)
             ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "TỔNG KHOẢNG CÁCH",
-                        fontWeight = FontWeight.Black,
-                        fontSize = 13.sp,
-                        color = ComicInkBlack,
-                        letterSpacing = 0.5.sp
-                    )
-
-                    Spacer(Modifier.height(4.dp))
-
-                    // Hộp lật số cơ học màu đen retro: [ 12,458.6 MET ]
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(ComicInkBlack)
-                            .border(2.dp, ComicInkBlack, RoundedCornerShape(8.dp))
-                            .padding(horizontal = 8.dp, vertical = 3.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "${String.format(Locale.US, "%,.1f", ui.totalMeters)} MET",
-                            fontWeight = FontWeight.Black,
-                            fontFamily = FontFamily.Monospace,
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            letterSpacing = 1.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    // Quy đổi km
-                    Text(
-                        text = String.format(Locale.US, "(~ %.2f km)", ui.totalMeters / 1000.0),
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 11.5.sp,
-                        color = ComicInkBlack.copy(alpha = 0.75f),
-                        modifier = Modifier.padding(top = 2.dp)
-                    )
-
-                    // Thanh đo tốc độ SPS
-                    Spacer(Modifier.height(4.dp))
-                    SpsGauge(sps = ui.currentSps, isOverdrive = ui.isOverdrive)
-
-                    // Thanh tiến độ mở khóa Skin tiếp theo
-                    ui.nextSkin?.let { next ->
-                        Spacer(Modifier.height(4.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Mở khóa ${next.patternEmoji} ${next.displayName}",
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = ComicInkBlack.copy(alpha = 0.85f)
-                            )
-                            Text(
-                                text = String.format(Locale.US, "%.0f%%", ui.nextSkinProgress * 100f),
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Black,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        Spacer(Modifier.height(2.dp))
-                        LinearProgressIndicator(
-                            progress = { ui.nextSkinProgress },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(5.dp)
-                                .clip(CircleShape),
-                            color = MaterialTheme.colorScheme.primary,
-                            trackColor = Color(0xFFEDE7D9)
-                        )
-                    }
-                }
+                ComicOdometerDisplay(meters = ui.totalMeters)
             }
 
-            // Cụm 2 nút Bằng Khen (Góc dưới bên phải)
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+            // Nút Bằng Khen Của Tôi (Góc dưới bên phải - Duy nhất 1 nút nổi bật)
+            ComicCircleButton(
+                label = "Bằng Khen\nCủa Tôi",
+                containerColor = ComicOrange,
+                onClick = onNavigateToCabinet,
+                size = 56.dp
             ) {
-                ComicCircleButton(
-                    icon = Icons.Default.MilitaryTech,
-                    label = "Bằng Khen\nCủa Tôi",
-                    containerColor = ComicOrange,
-                    onClick = onNavigateToCabinet,
-                    size = 50.dp
-                )
-                ComicCircleButton(
-                    icon = Icons.Default.StarRate,
-                    label = "Thành Tích",
-                    containerColor = ComicYellow,
-                    onClick = onNavigateToCabinet,
-                    size = 50.dp
-                )
+                ComicScrollCertificateIcon(modifier = Modifier.fillMaxSize())
             }
         }
+
+
+
 
         // ── 7. Hiệu ứng viền lửa rực rỡ khi vào chế độ Overdrive ───────────
         OverdriveEffect(isOverdrive = ui.isOverdrive)
@@ -294,10 +219,10 @@ private fun TutorialSwipeOverlay(
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "swipeAnim")
     val offsetY by infiniteTransition.animateFloat(
-        initialValue = -8f,
-        targetValue = 16f,
+        initialValue = -6f,
+        targetValue = 14f,
         animationSpec = infiniteRepeatable(
-            animation = tween(600),
+            animation = tween(700),
             repeatMode = RepeatMode.Reverse
         ),
         label = "offsetY"
@@ -310,50 +235,82 @@ private fun TutorialSwipeOverlay(
         modifier = modifier
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            // Bàn tay chỉ ngón 👆 chạm vào giấy trên
+            // Bàn tay chỉ ngón 👆 chạm vào cuộn giấy
             Column(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .offset(x = (-40).dp, y = (-20).dp + offsetY.dp),
+                    .offset(x = (-70).dp, y = (-70).dp + offsetY.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "👆", fontSize = 36.sp)
+                Text(text = "👆", fontSize = 42.sp)
             }
 
-            // Hai mũi tên chỉ xuống kèm chữ SWIPE DOWN
+            // Cụm mũi tên chỉ xuống & chữ SWIPE DOWN chuẩn hoạt hình Ảnh 2
             Row(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .offset(y = 80.dp + offsetY.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(ComicInkBlack.copy(alpha = 0.88f))
-                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                    .offset(x = 0.dp, y = 75.dp + offsetY.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = null,
-                    tint = Color(0xFFFFD54F),
-                    modifier = Modifier.size(18.dp)
-                )
                 Text(
-                    text = "SWIPE  DOWN",
+                    text = "SWIPE",
+                    fontFamily = ComicFontFamily,
                     fontWeight = FontWeight.Black,
-                    fontSize = 12.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(horizontal = 4.dp)
+                    fontSize = 18.sp,
+                    color = ComicInkBlack,
+                    modifier = Modifier.padding(end = 4.dp)
                 )
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = null,
-                    tint = Color(0xFFFFD54F),
-                    modifier = Modifier.size(18.dp)
+
+                // Mũi tên hoạt hình trắng viền đen chỉ xuống
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Color.White)
+                        .border(2.5.dp, ComicInkBlack, RoundedCornerShape(4.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        tint = ComicInkBlack,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(
+                    text = "DOWN",
+                    fontFamily = ComicFontFamily,
+                    fontWeight = FontWeight.Black,
+                    fontSize = 18.sp,
+                    color = ComicInkBlack,
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp)
                 )
+
+                // Mũi tên hoạt hình thứ 2
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Color.White)
+                        .border(2.5.dp, ComicInkBlack, RoundedCornerShape(4.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        tint = ComicInkBlack,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
     }
 }
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Popup chúc mừng mở khóa Bằng Khen mới

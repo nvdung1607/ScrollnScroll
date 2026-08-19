@@ -396,12 +396,15 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
 
 4. **Phase 3 (Core Gameplay, 3D Isometric Toilet Roll & Realistic Dynamic Ribbon - ĐÃ TINH CHỈNH HOÀN MỸ THEO MẪU GỐC)**:
    - `res/drawable/bg_bathroom_game.jpg`: Asset hình nền phòng vệ sinh 2D Comic chất lượng cao, sạch sẽ không có nút hay chữ tĩnh.
+   - `res/font/`: Bổ sung font chữ Comic hoạt hình chính thức (`bangers.ttf`, `lilita_one.ttf`) trong `ui/theme/Type.kt`.
    - `ui/game/ToiletPaperCanvas.kt`:
      - **Cuộn giấy 3D Isometric khớp 100% Khung gỗ**: Mặt tròn bên phải đặt khớp chính xác vào khớp xoay tay đỡ gỗ; đầu trục tròn nhô ra bên trái; thân cuộn có vệt sáng Specular highlight trên đỉnh và các đường nét đứt xé giấy xoay tròn; 3 giọt nước bắn `( ( (` và 2 vệt gió xoay `( (` bên trái.
      - **Dải giấy uốn lượn Catmull-Rom Spline mượt mà liên tục**: Nâng cấp từ Bezier đơn lẻ sang giải thuật **Catmull-Rom Spline** liên tục $C^1$ đảm bảo dải giấy có độ rộng đều, các nếp uốn lượn cong tròn mềm mại (không bị góc nhọn hay thắt nút), kéo dài sâu xuống 81% chiều cao màn hình tiếp đất trọn vẹn vào đống giấy sàn nhà.
-   - `ui/components/ComicComponents.kt`: Component `Comic3DWordmark` (tiêu đề 3D "SCROLL & SCROLL" với chữ "&" tròn lồng ở giữa), `ComicCircleButton` (viền đen 3dp, bóng đổ, nhãn chữ viền kép tương phản) và thẻ `ComicCard`.
+   - `ui/components/ComicComponents.kt`: Hoàn thiện trọn bộ Typography Comic 3D (`ComicTitleWordmark`, `ComicText`, `ComicStrokedText`), `ComicCircleButton` và thẻ `ComicCard`.
+   - `ui/components/OdometerText.kt`: Cơ chế lật số cơ học (Mechanical Split-Flap) với hoạt ảnh trượt số `AnimatedContent` cực mượt.
+   - `audio/SoundManager.kt`: Tinh chỉnh tần số âm thanh ma sát giấy cuộn ASMR êm tai, chân thực.
    - `ui/game/GameScreen.kt`: Bố cục khớp 100% hình mẫu thiết kế (Setting Cyan góc trên trái, Bảng Xếp Hạng Vàng + Tủ Đồ Skin Xanh lá góc trên phải, Hướng dẫn ngón tay 👆 & mũi tên đôi SWIPE DOWN, Hàng dưới gồm ASMR Cyan + Thẻ Odometer lật số đen retro + 2 nút Bằng Khen).
-   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 3s (0 errors, 0 warnings)**.
+   - Kết quả biên dịch: `./gradlew assembleDebug` $\rightarrow$ **BUILD SUCCESSFUL in 2s (0 errors, 0 warnings)**.
 
 5. **Hướng dẫn cho AI tiếp theo**:
    - **Bước tiếp theo là Phase 4: Hệ thống Tiến Hóa 9 Skin & Tủ Đồ (Skins & Badges Cabinet)**:

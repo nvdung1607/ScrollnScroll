@@ -22,7 +22,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -42,85 +41,8 @@ import com.trustmepro.scrollandscroll.data.model.SkinType
 import com.trustmepro.scrollandscroll.ui.components.ComicInkBlack
 import kotlinx.coroutines.launch
 import kotlin.math.PI
-import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.sqrt
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Điểm mẫu trên đường cong Spline liên tục mượt mà (Catmull-Rom Spline)
-// ─────────────────────────────────────────────────────────────────────────────
-
-private data class SplineNode(
-    val pos: Offset,
-    val normal: Offset,
-    val angleDeg: Float
-)
-
-/**
- * Lấy mẫu một dải Catmull-Rom Spline mượt mà liên tục C1 (không góc nhọn, không thắt nút)
- */
-private fun sampleCatmullRomSpline(
-    controlPoints: List<Offset>,
-    samplesPerSegment: Int = 20
-): List<SplineNode> {
-    if (controlPoints.size < 4) return emptyList()
-
-    val nodes = ArrayList<SplineNode>()
-
-    for (i in 0 until controlPoints.size - 3) {
-        val p0 = controlPoints[i]
-        val p1 = controlPoints[i + 1]
-        val p2 = controlPoints[i + 2]
-        val p3 = controlPoints[i + 3]
-
-        for (step in 0..samplesPerSegment) {
-            if (i > 0 && step == 0) continue // tránh trùng điểm nối
-
-            val t = step.toFloat() / samplesPerSegment
-            val t2 = t * t
-            val t3 = t2 * t
-
-            // Tọa độ điểm theo công thức Catmull-Rom
-            val x = 0.5f * (
-                    (2f * p1.x) +
-                    (-p0.x + p2.x) * t +
-                    (2f * p0.x - 5f * p1.x + 4f * p2.x - p3.x) * t2 +
-                    (-p0.x + 3f * p1.x - 3f * p2.x + p3.x) * t3
-            )
-            val y = 0.5f * (
-                    (2f * p1.y) +
-                    (-p0.y + p2.y) * t +
-                    (2f * p0.y - 5f * p1.y + 4f * p2.y - p3.y) * t2 +
-                    (-p0.y + 3f * p1.y - 3f * p2.y + p3.y) * t3
-            )
-            val pos = Offset(x, y)
-
-            // Đạo hàm bậc 1 (tiếp tuyến tangent)
-            val tx = 0.5f * (
-                    (-p0.x + p2.x) +
-                    2f * (2f * p0.x - 5f * p1.x + 4f * p2.x - p3.x) * t +
-                    3f * (-p0.x + 3f * p1.x - 3f * p2.x + p3.x) * t2
-            )
-            val ty = 0.5f * (
-                    (-p0.y + p2.y) +
-                    2f * (2f * p0.y - 5f * p1.y + 4f * p2.y - p3.y) * t +
-                    3f * (-p0.y + 3f * p1.y - 3f * p2.y + p3.y) * t2
-            )
-
-            val tLen = sqrt(tx * tx + ty * ty).coerceAtLeast(0.0001f)
-            val unitTx = tx / tLen
-            val unitTy = ty / tLen
-
-            // Vector pháp tuyến vuông góc hướng sang phải
-            val normal = Offset(-unitTy, unitTx)
-            val angleDeg = (atan2(ty.toDouble(), tx.toDouble()) * 180.0 / PI).toFloat()
-
-            nodes.add(SplineNode(pos, normal, angleDeg))
-        }
-    }
-    return nodes
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ToiletPaperCanvas — Màn hình cuộn giấy 3D Isometric & Dải giấy uốn lượn sống động
@@ -130,7 +52,7 @@ private fun sampleCatmullRomSpline(
 fun ToiletPaperCanvas(
     skin: SkinType,
     isOverdrive: Boolean,
-    onScroll: (pixels: Float) -> Unit,
+    onScroll: (pixels: Float, velocity: Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -146,7 +68,7 @@ fun ToiletPaperCanvas(
         initialValue = 0f,
         targetValue = (2 * PI).toFloat(),
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1600, easing = LinearEasing),
+            animation = tween(durationMillis = 1800, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         ),
         label = "flutter"
@@ -169,8 +91,8 @@ fun ToiletPaperCanvas(
                         if (deltaY > 0f) {
                             rollRotationOffset += deltaY * 0.55f
                             paperScrollOffset += deltaY
-                            currentVelocity = deltaY * 30f
-                            onScroll(deltaY)
+                            currentVelocity = deltaY * 35f
+                            onScroll(deltaY, currentVelocity)
                         }
                     },
                     onDragEnd = {
@@ -189,7 +111,7 @@ fun ToiletPaperCanvas(
                                         rollRotationOffset += delta * 0.55f
                                         paperScrollOffset += delta
                                         currentVelocity = (targetValue - this.value) * 1.3f
-                                        onScroll(delta)
+                                        onScroll(delta, currentVelocity)
                                     }
                                     lastValue = this.value
                                 }
@@ -202,7 +124,7 @@ fun ToiletPaperCanvas(
                 )
             }
     ) {
-        // 1. Hình nền nhà vệ sinh hoạt hình 2D Comic sạch sẽ
+        // 1. Hình nền nhà vệ sinh hoạt hình 2D Comic
         Image(
             painter = painterResource(id = R.drawable.bg_bathroom_game),
             contentDescription = null,
@@ -215,22 +137,19 @@ fun ToiletPaperCanvas(
             val canvasW = size.width
             val canvasH = size.height
 
-            // ── TỌA ĐỘ TRỤC CUỘN GIẤY 3D KHỚP CHÍNH XÁC VỚI KHUNG GỖ TRÊN NỀN ──
-            // Mặt elip tròn bên phải: khớp ngay khớp nối trục tay gỗ
-            val rightCapCenter = Offset(canvasW * 0.625f, canvasH * 0.380f)
+            // Tọa độ trục cuộn giấy 3D khớp giá gỗ
+            val rightCapCenter = Offset(canvasW * 0.630f, canvasH * 0.380f)
             val rightCapRx = canvasW * 0.115f
             val rightCapRy = canvasW * 0.126f
 
-            // Đầu bên trái của cuộn giấy: kéo dài theo thanh đỡ gỗ
             val leftEndCenter = Offset(canvasW * 0.385f, canvasH * 0.392f)
             val leftCapRx = canvasW * 0.088f
             val leftCapRy = canvasW * 0.118f
 
-            // A. Vẽ dải giấy S-Curve uốn lượn dài, mềm mại, không góc nhọn, đổ vào sàn nhà
-            drawSmoothFlowingPaperRibbon(
+            // A. Vẽ dải giấy S-Curve uốn lượn liên tục, mềm mại, trắng đặc chuẩn Ảnh 2
+            drawContinuousSmoothPaperRibbon(
                 canvasW = canvasW,
                 canvasH = canvasH,
-                startPoint = Offset(leftEndCenter.x + leftCapRx * 0.35f, leftEndCenter.y + leftCapRy * 0.70f),
                 scrollOffset = paperScrollOffset,
                 flutterPhase = flutterPhase,
                 velocity = currentVelocity,
@@ -238,7 +157,7 @@ fun ToiletPaperCanvas(
                 isOverdrive = isOverdrive
             )
 
-            // B. Vẽ Cuộn Giấy Vệ Sinh 3D Đa Chiều khớp 100% với khung gỗ
+            // B. Vẽ Cuộn Giấy Vệ Sinh 3D Đa Chiều khớp với khung gỗ
             drawFrameFittedPaperRoll(
                 rightCenter = rightCapCenter,
                 rightRx = rightCapRx,
@@ -254,7 +173,7 @@ fun ToiletPaperCanvas(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Vẽ Cuộn Giấy 3D Khớp Hoàn Hảo Với Khung Gỗ
+// Vẽ Cuộn Giấy 3D Khớp Hoàn Hảo Với Khung Gỗ (Đường Kẻ Cong Elip Mặt Trụ Chuẩn)
 // ─────────────────────────────────────────────────────────────────────────────
 
 private fun DrawScope.drawFrameFittedPaperRoll(
@@ -270,79 +189,75 @@ private fun DrawScope.drawFrameFittedPaperRoll(
     // 1. Bóng đổ mềm dưới cuộn giấy lên tường gạch
     val shadowPath = Path().apply {
         moveTo(leftCenter.x - leftRx + 4f, leftCenter.y + 6f)
-        lineTo(rightCenter.x + rightRx + 12f, rightCenter.y + 10f)
-        lineTo(rightCenter.x + rightRx + 12f, rightCenter.y + rightRy + 18f)
-        lineTo(leftCenter.x - leftRx + 4f, leftCenter.y + leftRy + 16f)
+        lineTo(rightCenter.x + rightRx + 8f, rightCenter.y + 8f)
+        lineTo(rightCenter.x + rightRx + 8f, rightCenter.y + rightRy + 16f)
+        lineTo(leftCenter.x - leftRx + 4f, leftCenter.y + leftRy + 14f)
         close()
     }
-    drawPath(shadowPath, color = ComicInkBlack.copy(alpha = 0.20f))
+    drawPath(shadowPath, color = ComicInkBlack.copy(alpha = 0.22f))
 
-    // 2. Thân cuộn giấy hình trụ 3D (Cylinder Body)
+    // 2. Thân cuộn giấy hình trụ 3D trắng đục đặc (Cylinder Body)
     val bodyPath = Path().apply {
-        // Cạnh trên từ trái sang phải
         moveTo(leftCenter.x, leftCenter.y - leftRy)
         lineTo(rightCenter.x, rightCenter.y - rightRy)
-        // Cung elip bên phải (nửa trước)
         cubicTo(
-            rightCenter.x + rightRx * 1.33f, rightCenter.y - rightRy * 0.5f,
-            rightCenter.x + rightRx * 1.33f, rightCenter.y + rightRy * 0.5f,
+            rightCenter.x + rightRx * 1.25f, rightCenter.y - rightRy * 0.5f,
+            rightCenter.x + rightRx * 1.25f, rightCenter.y + rightRy * 0.5f,
             rightCenter.x, rightCenter.y + rightRy
         )
-        // Cạnh dưới từ phải về trái
         lineTo(leftCenter.x, leftCenter.y + leftRy)
-        // Cung elip bên trái
         cubicTo(
-            leftCenter.x - leftRx * 1.33f, leftCenter.y + leftRy * 0.5f,
-            leftCenter.x - leftRx * 1.33f, leftCenter.y - leftRy * 0.5f,
+            leftCenter.x - leftRx * 1.25f, leftCenter.y + leftRy * 0.5f,
+            leftCenter.x - leftRx * 1.25f, leftCenter.y - leftRy * 0.5f,
             leftCenter.x, leftCenter.y - leftRy
         )
         close()
     }
 
-    // Gradient thân giấy
     val bodyBrush = Brush.verticalGradient(
         colors = listOf(
-            Color.White.copy(alpha = 0.98f),
-            skin.primaryColor,
-            skin.primaryColor,
-            skin.accentColor.copy(alpha = 0.38f),
-            skin.primaryColor.copy(alpha = 0.85f)
+            Color.White,
+            Color(0xFFFCFCFC),
+            Color(0xFFF0F0F0),
+            Color(0xFFE2E2E2)
         ),
         startY = leftCenter.y - leftRy,
         endY = leftCenter.y + leftRy
     )
     drawPath(bodyPath, brush = bodyBrush)
 
-    // 3. Đường nét đứt chia tờ giấy trên thân cuộn xoay tròn
-    val seamSpacing = 48f
+    // 3. ĐƯỜNG KẺ NÉT ĐỨT CONG ELIP CHUẨN XÁC THEO MẶT TRỤ 3D CUỘN GIẤY
+    val seamSpacing = 55f
+    val totalWidth = (rightCenter.x - leftCenter.x)
     val normRot = (rotationOffset % seamSpacing)
-    val dashEffect = PathEffect.dashPathEffect(floatArrayOf(8f, 7f), 0f)
+    val dashEffect = PathEffect.dashPathEffect(floatArrayOf(9f, 8f), 0f)
 
     for (k in -1..6) {
-        val frac = ((k * seamSpacing + normRot) / (rightCenter.x - leftCenter.x + rightRx)).coerceIn(0f, 1f)
-        if (frac in 0.05f..0.94f) {
-            val topX = leftCenter.x + (rightCenter.x - leftCenter.x) * frac
-            val topY = (leftCenter.y - leftRy) + ((rightCenter.y - rightRy) - (leftCenter.y - leftRy)) * frac
-            val botX = leftCenter.x + (rightCenter.x - leftCenter.x) * frac
-            val botY = (leftCenter.y + leftRy) + ((rightCenter.y + rightRy) - (leftCenter.y + leftRy)) * frac
+        val frac = ((k * seamSpacing + normRot) / totalWidth).coerceIn(-0.2f, 1.2f)
+        if (frac in 0.04f..0.92f) {
+            val cx = leftCenter.x + (rightCenter.x - leftCenter.x) * frac
+            val cy = leftCenter.y + (rightCenter.y - leftCenter.y) * frac
+            val curRx = leftRx + (rightRx - leftRx) * frac
+            val curRy = leftRy + (rightRy - leftRy) * frac
 
-            val linePath = Path().apply {
-                moveTo(topX, topY)
+            // Cung elip cong tròn theo mặt trụ thân cuộn
+            val arcPath = Path().apply {
+                moveTo(cx, cy - curRy)
                 cubicTo(
-                    topX - 6f, topY + (botY - topY) * 0.35f,
-                    topX - 6f, topY + (botY - topY) * 0.65f,
-                    botX, botY
+                    cx - curRx * 1.25f, cy - curRy * 0.5f,
+                    cx - curRx * 1.25f, cy + curRy * 0.5f,
+                    cx, cy + curRy
                 )
             }
             drawPath(
-                path = linePath,
-                color = ComicInkBlack.copy(alpha = 0.38f),
-                style = Stroke(width = 2.5f, pathEffect = dashEffect)
+                path = arcPath,
+                color = ComicInkBlack.copy(alpha = 0.55f),
+                style = Stroke(width = 3.2f, pathEffect = dashEffect)
             )
         }
     }
 
-    // 4. Viền mực đen Comic cho mép trên & mép dưới thân cuộn
+    // 4. Viền mực đen Comic cho mép trên, mép dưới và mép trái thân cuộn
     val bodyOutlineTop = Path().apply {
         moveTo(leftCenter.x, leftCenter.y - leftRy)
         lineTo(rightCenter.x, rightCenter.y - rightRy)
@@ -351,29 +266,19 @@ private fun DrawScope.drawFrameFittedPaperRoll(
         moveTo(leftCenter.x, leftCenter.y + leftRy)
         lineTo(rightCenter.x, rightCenter.y + rightRy)
     }
+    val bodyOutlineLeft = Path().apply {
+        moveTo(leftCenter.x, leftCenter.y - leftRy)
+        cubicTo(
+            leftCenter.x - leftRx * 1.25f, leftCenter.y - leftRy * 0.5f,
+            leftCenter.x - leftRx * 1.25f, leftCenter.y + leftRy * 0.5f,
+            leftCenter.x, leftCenter.y + leftRy
+        )
+    }
     drawPath(bodyOutlineTop, color = ComicInkBlack, style = Stroke(width = 4.5f, cap = StrokeCap.Round))
     drawPath(bodyOutlineBot, color = ComicInkBlack, style = Stroke(width = 4.5f, cap = StrokeCap.Round))
+    drawPath(bodyOutlineLeft, color = ComicInkBlack, style = Stroke(width = 4.5f, cap = StrokeCap.Round))
 
-    // 5. Đầu thanh trục gỗ nhô ra bên trái
-    val woodenTipCenter = Offset(leftCenter.x - leftRx * 0.68f, leftCenter.y)
-    val tipRadius = leftRy * 0.32f
-    drawCircle(
-        brush = Brush.radialGradient(
-            colors = listOf(Color(0xFFD7CCC8), Color(0xFF8D6E63), Color(0xFF5D4037)),
-            center = woodenTipCenter,
-            radius = tipRadius
-        ),
-        radius = tipRadius,
-        center = woodenTipCenter
-    )
-    drawCircle(
-        color = ComicInkBlack,
-        radius = tipRadius,
-        center = woodenTipCenter,
-        style = Stroke(width = 3.5f)
-    )
-
-    // 6. Mặt tròn bên phải cuộn giấy (Right Ellipse Cap)
+    // 5. Mặt tròn bên phải cuộn giấy (Right Ellipse Cap)
     val rightCapPath = Path().apply {
         moveTo(rightCenter.x, rightCenter.y - rightRy)
         cubicTo(
@@ -392,9 +297,9 @@ private fun DrawScope.drawFrameFittedPaperRoll(
         path = rightCapPath,
         brush = Brush.radialGradient(
             colors = listOf(
-                skin.primaryColor.copy(alpha = 0.98f),
-                skin.accentColor.copy(alpha = 0.30f),
-                skin.primaryColor
+                Color.White,
+                Color(0xFFEEEEEE),
+                Color(0xFFE0E0E0)
             ),
             center = rightCenter,
             radius = rightRy
@@ -404,7 +309,7 @@ private fun DrawScope.drawFrameFittedPaperRoll(
     // A. Các vòng xoắn đồng tâm thể hiện nhiều lớp giấy quấn
     val numRings = 4
     for (r in 1..numRings) {
-        val ringFraction = 0.32f + (r.toFloat() / (numRings + 1)) * 0.62f
+        val ringFraction = 0.35f + (r.toFloat() / (numRings + 1)) * 0.58f
         val rx = rightRx * ringFraction
         val ry = rightRy * ringFraction
         val ringPath = Path().apply {
@@ -423,14 +328,14 @@ private fun DrawScope.drawFrameFittedPaperRoll(
         }
         drawPath(
             path = ringPath,
-            color = ComicInkBlack.copy(alpha = 0.28f),
-            style = Stroke(width = 1.8f)
+            color = ComicInkBlack.copy(alpha = 0.35f),
+            style = Stroke(width = 2.0f)
         )
     }
 
     // B. Lõi bìa carton ở tâm
-    val coreRx = rightRx * 0.32f
-    val coreRy = rightRy * 0.32f
+    val coreRx = rightRx * 0.35f
+    val coreRy = rightRy * 0.35f
     val corePath = Path().apply {
         moveTo(rightCenter.x, rightCenter.y - coreRy)
         cubicTo(
@@ -477,7 +382,7 @@ private fun DrawScope.drawFrameFittedPaperRoll(
     // D. Viền đen đậm bao quanh toàn bộ mặt tròn bên phải
     drawPath(path = rightCapPath, color = ComicInkBlack, style = Stroke(width = 4.5f))
 
-    // 7. Vệt sáng phản chiếu Specular Highlight trên đỉnh cuộn giấy
+    // 6. Vệt sáng phản chiếu Specular Highlight trên đỉnh cuộn giấy
     val specPath = Path().apply {
         moveTo(leftCenter.x + 8f, leftCenter.y - leftRy + 4f)
         lineTo(rightCenter.x - 8f, rightCenter.y - rightRy + 4f)
@@ -485,9 +390,9 @@ private fun DrawScope.drawFrameFittedPaperRoll(
         lineTo(leftCenter.x + 8f, leftCenter.y - leftRy + 14f)
         close()
     }
-    drawPath(specPath, color = Color.White.copy(alpha = 0.65f))
+    drawPath(specPath, color = Color.White.copy(alpha = 0.75f))
 
-    // 8. 3 giọt nước bắn cong & 2 vệt gió xoay quanh cuộn giấy
+    // 7. 3 giọt nước bắn cong & 2 vệt gió xoay quanh cuộn giấy
     drawActionDropsAndLines(leftCenter = leftCenter, leftRx = leftRx, leftRy = leftRy)
 }
 
@@ -504,9 +409,9 @@ private fun DrawScope.drawActionDropsAndLines(
     val dropOutline = ComicInkBlack
 
     val dropPositions = listOf(
-        Offset(leftCenter.x - leftRx * 0.75f, leftCenter.y - leftRy * 1.15f) to 14f,
-        Offset(leftCenter.x - leftRx * 0.40f, leftCenter.y - leftRy * 1.38f) to 18f,
-        Offset(leftCenter.x + leftRx * 0.05f, leftCenter.y - leftRy * 1.48f) to 12f
+        Offset(leftCenter.x - leftRx * 0.65f, leftCenter.y - leftRy * 1.10f) to 14f,
+        Offset(leftCenter.x - leftRx * 0.30f, leftCenter.y - leftRy * 1.35f) to 18f,
+        Offset(leftCenter.x + leftRx * 0.15f, leftCenter.y - leftRy * 1.45f) to 12f
     )
 
     for ((pos, sz) in dropPositions) {
@@ -517,23 +422,23 @@ private fun DrawScope.drawActionDropsAndLines(
             close()
         }
         drawPath(dropPath, color = dropColor)
-        drawPath(dropPath, color = dropOutline, style = Stroke(width = 2.5f))
+        drawPath(dropPath, color = dropOutline, style = Stroke(width = 2.8f))
     }
 
     val arcPath1 = Path().apply {
-        moveTo(leftCenter.x - leftRx * 1.25f, leftCenter.y - leftRy * 0.45f)
+        moveTo(leftCenter.x - leftRx * 1.15f, leftCenter.y - leftRy * 0.40f)
         cubicTo(
-            leftCenter.x - leftRx * 1.45f, leftCenter.y,
-            leftCenter.x - leftRx * 1.45f, leftCenter.y + leftRy * 0.35f,
-            leftCenter.x - leftRx * 1.22f, leftCenter.y + leftRy * 0.65f
+            leftCenter.x - leftRx * 1.35f, leftCenter.y,
+            leftCenter.x - leftRx * 1.35f, leftCenter.y + leftRy * 0.35f,
+            leftCenter.x - leftRx * 1.12f, leftCenter.y + leftRy * 0.60f
         )
     }
     val arcPath2 = Path().apply {
-        moveTo(leftCenter.x - leftRx * 1.40f, leftCenter.y - leftRy * 0.25f)
+        moveTo(leftCenter.x - leftRx * 1.30f, leftCenter.y - leftRy * 0.20f)
         cubicTo(
-            leftCenter.x - leftRx * 1.62f, leftCenter.y + leftRy * 0.1f,
-            leftCenter.x - leftRx * 1.62f, leftCenter.y + leftRy * 0.35f,
-            leftCenter.x - leftRx * 1.38f, leftCenter.y + leftRy * 0.55f
+            leftCenter.x - leftRx * 1.52f, leftCenter.y + leftRy * 0.1f,
+            leftCenter.x - leftRx * 1.52f, leftCenter.y + leftRy * 0.35f,
+            leftCenter.x - leftRx * 1.28f, leftCenter.y + leftRy * 0.50f
         )
     }
 
@@ -542,181 +447,212 @@ private fun DrawScope.drawActionDropsAndLines(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Vẽ Dải Giấy Uốn Lượn Mềm Mại, Dài, Không Góc Nhọn (Catmull-Rom Ribbon)
+// Vẽ Dải Giấy Uốn Lượn 3D Mềm Mại Xếp Lớp (Chuẩn Tuyệt Đối Theo Ảnh 2)
 // ─────────────────────────────────────────────────────────────────────────────
 
-private fun DrawScope.drawSmoothFlowingPaperRibbon(
+private fun DrawScope.drawContinuousSmoothPaperRibbon(
     canvasW: Float,
     canvasH: Float,
-    startPoint: Offset,
     scrollOffset: Float,
     flutterPhase: Float,
     velocity: Float,
     skin: SkinType,
     isOverdrive: Boolean
 ) {
-    val ribbonWidth = canvasW * 0.32f
-    val halfWidth = ribbonWidth / 2f
+    val speedFactor = (velocity / 1200f).coerceIn(0f, 2.0f)
+    val wave1 = sin(flutterPhase) * (2.0f + speedFactor * 3.5f)
+    val wave2 = cos(flutterPhase + 1.2f) * (2.0f + speedFactor * 4f)
 
-    // Biên độ vẫy giấy nhịp nhàng theo tốc độ vuốt
-    val speedFactor = (velocity / 1200f).coerceIn(0f, 2.5f)
-    val wave1 = sin(flutterPhase) * (5f + speedFactor * 10f)
-    val wave2 = cos(flutterPhase + 1.2f) * (6f + speedFactor * 12f)
-    val wave3 = sin(flutterPhase + 2.4f) * (4f + speedFactor * 8f)
+    val strokeWidth = 4.5f
+    val dashEffect = PathEffect.dashPathEffect(floatArrayOf(12f, 9f), 0f)
+    val paperColor = Color.White
+    val foldColor = if (isOverdrive) Color(0xFFFFE082) else Color(0xFFF2F4F7)
 
-    // ── DANH SÁCH ĐIỂM DẪN ĐƯỜNG CONG MỀM MẠI UỐN LƯỢN CHỮ S DÀI XUỐNG SÀN ──
-    // Sử dụng Catmull-Rom Spline để nối mượt mà từ cuộn giấy -> vòng qua trái -> lượn qua phải -> đổ sâu vào sàn
-    val guidePoints = listOf(
-        // Điểm mở rộng ngoài biên để tính tiếp tuyến ban đầu
-        Offset(startPoint.x + 30f, startPoint.y - 20f),
+    // ── CÁC TỌA ĐỘ ĐIỂM CHỐT LIỀN MẠCH GIỮA 3 ĐOẠN ──
+    val p0_L = Offset(canvasW * 0.44f, canvasH * 0.445f)
+    val p0_R = Offset(canvasW * 0.60f, canvasH * 0.440f)
 
-        // P0: Xuất phát từ cuộn giấy
-        startPoint,
+    val p1_top = Offset(canvasW * 0.38f + wave1, canvasH * 0.580f)
+    val p1_bot = Offset(canvasW * 0.22f + wave1, canvasH * 0.635f)
 
-        // P1: Bắt đầu cong sang trái
-        Offset(canvasW * 0.34f, canvasH * 0.50f),
+    val p2_top = Offset(canvasW * 0.72f + wave2, canvasH * 0.635f)
+    val p2_bot = Offset(canvasW * 0.56f + wave2, canvasH * 0.705f)
 
-        // P2: Vòng cung trái rộng, bo tròn hoàn hảo (ngang cửa sổ)
-        Offset(canvasW * 0.22f + wave1, canvasH * 0.58f),
+    val p3_bot = Offset(canvasW * 0.25f, canvasH * 0.790f)
+    val p3_top = Offset(canvasW * 0.50f, canvasH * 0.810f)
 
-        // P3: Chuyển hướng cắt qua tâm
-        Offset(canvasW * 0.33f, canvasH * 0.64f),
-
-        // P4: Đang uốn sang phải
-        Offset(canvasW * 0.54f + wave2, canvasH * 0.67f),
-
-        // P5: Vòng cung phải rộng, bo tròn hoàn hảo
-        Offset(canvasW * 0.70f + wave3, canvasH * 0.70f),
-
-        // P6: Uốn xuống dưới về phía sàn
-        Offset(canvasW * 0.56f, canvasH * 0.75f),
-
-        // P7: Tiếp đất sâu vào giữa đống giấy ở sàn nhà (Kéo dài xuống 81% chiều cao)
-        Offset(canvasW * 0.42f, canvasH * 0.81f),
-
-        // Điểm mở rộng tiếp đất
-        Offset(canvasW * 0.36f, canvasH * 0.86f)
-    )
-
-    // Lấy mẫu mịn đường cong Spline
-    val sampledNodes = sampleCatmullRomSpline(guidePoints, samplesPerSegment = 18)
-    if (sampledNodes.size < 6) return
-
-    val leftEdge = ArrayList<Offset>(sampledNodes.size)
-    val rightEdge = ArrayList<Offset>(sampledNodes.size)
-
-    for (node in sampledNodes) {
-        val nx = node.normal.x
-        val ny = node.normal.y
-        leftEdge.add(Offset(node.pos.x - nx * halfWidth, node.pos.y - ny * halfWidth))
-        rightEdge.add(Offset(node.pos.x + nx * halfWidth, node.pos.y + ny * halfWidth))
-    }
-
-    // Đa giác dải giấy hoàn chỉnh
-    val ribbonPoly = Path().apply {
-        moveTo(leftEdge[0].x, leftEdge[0].y)
-        for (i in 1 until leftEdge.size) lineTo(leftEdge[i].x, leftEdge[i].y)
-        for (i in rightEdge.indices.reversed()) lineTo(rightEdge[i].x, rightEdge[i].y)
+    // ── 1. ĐOẠN 3 (LỚP ĐÁY: TỪ KHÚC UỐN PHẢI ĐỔ VÀO ĐỐNG GIẤY SÀN) ──
+    val shadow3 = Path().apply {
+        moveTo(p2_top.x + 8f, p2_top.y + 10f)
+        cubicTo(canvasW * 0.65f + 8f, canvasH * 0.73f + 10f, canvasW * 0.58f + 8f, canvasH * 0.78f + 10f, p3_top.x + 8f, p3_top.y + 10f)
+        lineTo(p3_bot.x + 8f, p3_bot.y + 10f)
+        cubicTo(canvasW * 0.36f + 8f, canvasH * 0.75f + 10f, canvasW * 0.44f + 8f, canvasH * 0.72f + 10f, p2_bot.x + 8f, p2_bot.y + 10f)
         close()
     }
+    drawPath(shadow3, color = ComicInkBlack.copy(alpha = 0.14f))
 
-    // 1. Bóng đổ dải giấy lên tường gạch xanh
-    val shadowPoly = Path().apply {
-        moveTo(leftEdge[0].x + 12f, leftEdge[0].y + 14f)
-        for (i in 1 until leftEdge.size) lineTo(leftEdge[i].x + 12f, leftEdge[i].y + 14f)
-        for (i in rightEdge.indices.reversed()) lineTo(rightEdge[i].x + 12f, rightEdge[i].y + 14f)
+    val seg3Path = Path().apply {
+        moveTo(p2_top.x, p2_top.y)
+        cubicTo(canvasW * 0.65f + wave2, canvasH * 0.730f, canvasW * 0.58f, canvasH * 0.780f, p3_top.x, p3_top.y)
+        lineTo(p3_bot.x, p3_bot.y)
+        cubicTo(canvasW * 0.36f, canvasH * 0.750f, canvasW * 0.44f + wave2, canvasH * 0.720f, p2_bot.x, p2_bot.y)
+        cubicTo(
+            p2_bot.x + (p2_top.x - p2_bot.x) * 0.35f, p2_bot.y - 8f,
+            p2_bot.x + (p2_top.x - p2_bot.x) * 0.75f, p2_top.y + 12f,
+            p2_top.x, p2_top.y
+        )
         close()
     }
-    drawPath(shadowPoly, color = ComicInkBlack.copy(alpha = 0.20f))
+    drawPath(seg3Path, color = paperColor)
+    drawPath(seg3Path, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round, cap = StrokeCap.Round))
 
-    // 2. Nền dải giấy mềm mại
-    val ribbonGradient = if (isOverdrive) {
-        Brush.verticalGradient(
-            colors = listOf(
-                skin.primaryColor,
-                Color(0xFFFF7043),
-                Color(0xFFFFD54F),
-                skin.primaryColor
-            ),
-            startY = startPoint.y,
-            endY = canvasH * 0.81f
-        )
-    } else {
-        Brush.verticalGradient(
-            colors = listOf(
-                skin.primaryColor,
-                skin.primaryColor.copy(alpha = 0.96f),
-                skin.accentColor.copy(alpha = 0.32f),
-                skin.primaryColor
-            ),
-            startY = startPoint.y,
-            endY = canvasH * 0.81f
-        )
-    }
-    drawPath(ribbonPoly, brush = ribbonGradient)
-
-    // 3. Bóng nếp gấp nội khối (Crease Shading)
-    val innerFoldShade = Path().apply {
-        val midStart = (sampledNodes.size * 0.35f).toInt()
-        val midEnd = (sampledNodes.size * 0.65f).toInt()
-        moveTo(leftEdge[midStart].x, leftEdge[midStart].y)
-        for (k in midStart..midEnd) lineTo(leftEdge[k].x, leftEdge[k].y)
-        for (k in midEnd downTo midStart) {
-            val cx = (leftEdge[k].x + rightEdge[k].x) / 2f
-            val cy = (leftEdge[k].y + rightEdge[k].y) / 2f
-            lineTo(cx, cy)
+    // Đường nét đứt chia đều đoạn 3
+    val seg3Dash = (scrollOffset % 120f) / 120f
+    for (k in 0..1) {
+        val t = (seg3Dash + k * 0.50f) % 1.0f
+        if (t in 0.10f..0.90f) {
+            val lx = p2_bot.x + (p3_bot.x - p2_bot.x) * t
+            val ly = p2_bot.y + (p3_bot.y - p2_bot.y) * t
+            val rx = p2_top.x + (p3_top.x - p2_top.x) * t
+            val ry = p2_top.y + (p3_top.y - p2_top.y) * t
+            drawLine(
+                color = ComicInkBlack.copy(alpha = 0.65f),
+                start = Offset(lx, ly),
+                end = Offset(rx, ry),
+                strokeWidth = 3f,
+                pathEffect = dashEffect
+            )
         }
+    }
+
+    // ── 2. ĐOẠN 2 (LỚP GIỮA: TỪ KHÚC UỐN TRÁI QUÉT QUA KHÚC UỐN PHẢI) ──
+    // Khúc bo tròn U-turn bên phải mềm mại (Right Loop Turnaround)
+    val rightLoop = Path().apply {
+        moveTo(p2_top.x, p2_top.y)
+        cubicTo(
+            p2_top.x + 22f, p2_top.y + 16f,
+            p2_bot.x + 28f, p2_bot.y - 8f,
+            p2_bot.x, p2_bot.y
+        )
+        cubicTo(
+            p2_bot.x + (p2_top.x - p2_bot.x) * 0.35f, p2_bot.y - 8f,
+            p2_bot.x + (p2_top.x - p2_bot.x) * 0.75f, p2_top.y + 12f,
+            p2_top.x, p2_top.y
+        )
         close()
     }
-    drawPath(innerFoldShade, color = ComicInkBlack.copy(alpha = 0.08f))
+    drawPath(rightLoop, color = foldColor)
+    drawPath(rightLoop, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round))
 
-    // 4. Viền đen đậm Comic bao quanh toàn bộ dải giấy (bo tròn StrokeJoin.Round)
-    drawPath(
-        path = ribbonPoly,
-        color = ComicInkBlack,
-        style = Stroke(width = 4.5f, join = StrokeJoin.Round, cap = StrokeCap.Round)
-    )
+    // Bóng đổ đoạn 2
+    val shadow2 = Path().apply {
+        moveTo(p1_top.x + 8f, p1_top.y + 10f)
+        cubicTo(canvasW * 0.50f + 8f, canvasH * 0.57f + 10f, canvasW * 0.62f + 8f, canvasH * 0.59f + 10f, p2_top.x + 8f, p2_top.y + 10f)
+        lineTo(p2_bot.x + 8f, p2_bot.y + 10f)
+        cubicTo(canvasW * 0.44f + 8f, canvasH * 0.69f + 10f, canvasW * 0.32f + 8f, canvasH * 0.66f + 10f, p1_bot.x + 8f, p1_bot.y + 10f)
+        close()
+    }
+    drawPath(shadow2, color = ComicInkBlack.copy(alpha = 0.14f))
 
-    // 5. Đường nét đứt xé giấy (Perforated lines) và Icon Emoji xoay theo tiếp tuyến
-    val sheetSpacing = 16
-    val dashEffect = PathEffect.dashPathEffect(floatArrayOf(11f, 8f), 0f)
-    val scrollPhase = ((scrollOffset % 480f) / 480f * sheetSpacing).toInt()
-
-    var ptIdx = scrollPhase
-    while (ptIdx < sampledNodes.size - 2) {
-        val idx = ptIdx.coerceIn(0, sampledNodes.size - 1)
-        val L = leftEdge[idx]
-        val R = rightEdge[idx]
-
-        // Đường đứt đoạn xé giấy
-        drawLine(
-            color = ComicInkBlack.copy(alpha = 0.50f),
-            start = Offset(L.x + (R.x - L.x) * 0.04f, L.y + (R.y - L.y) * 0.04f),
-            end = Offset(L.x + (R.x - L.x) * 0.96f, L.y + (R.y - L.y) * 0.96f),
-            strokeWidth = 3f,
-            pathEffect = dashEffect
+    // Thân đoạn 2
+    val seg2Path = Path().apply {
+        moveTo(p1_top.x, p1_top.y)
+        cubicTo(canvasW * 0.50f + wave2, canvasH * 0.575f, canvasW * 0.62f + wave2, canvasH * 0.595f, p2_top.x, p2_top.y)
+        cubicTo(
+            p2_top.x + (p2_bot.x - p2_top.x) * 0.25f, p2_top.y + 12f,
+            p2_top.x + (p2_bot.x - p2_top.x) * 0.65f, p2_bot.y - 8f,
+            p2_bot.x, p2_bot.y
         )
+        cubicTo(canvasW * 0.44f + wave2, canvasH * 0.695f, canvasW * 0.32f + wave1, canvasH * 0.660f, p1_bot.x, p1_bot.y)
+        cubicTo(
+            p1_bot.x + (p1_top.x - p1_bot.x) * 0.35f, p1_bot.y - 8f,
+            p1_bot.x + (p1_top.x - p1_bot.x) * 0.75f, p1_top.y + 10f,
+            p1_top.x, p1_top.y
+        )
+        close()
+    }
+    drawPath(seg2Path, color = paperColor)
+    drawPath(seg2Path, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round, cap = StrokeCap.Round))
 
-        // Họa tiết Emoji in trên từng tờ giấy
-        val midIdx = (ptIdx + sheetSpacing / 2).coerceIn(0, sampledNodes.size - 1)
-        val midL = leftEdge[midIdx]
-        val midR = rightEdge[midIdx]
-        val emojiX = (midL.x + midR.x) / 2f
-        val emojiY = (midL.y + midR.y) / 2f
-        val node = sampledNodes[midIdx]
-
-        drawIntoCanvas { canvas ->
-            canvas.nativeCanvas.save()
-            canvas.nativeCanvas.rotate(node.angleDeg - 90f, emojiX, emojiY)
-            val paint = AndroidPaint().apply {
-                textSize = 40f
-                textAlign = AndroidPaint.Align.CENTER
-                isAntiAlias = true
-            }
-            canvas.nativeCanvas.drawText(skin.patternEmoji, emojiX, emojiY + 14f, paint)
-            canvas.nativeCanvas.restore()
+    // Đường nét đứt chia đều đoạn 2
+    val seg2Dash = ((scrollOffset + 60f) % 130f) / 130f
+    for (k in 0..1) {
+        val t = (seg2Dash + k * 0.50f) % 1.0f
+        if (t in 0.10f..0.90f) {
+            val lx = p1_bot.x + (p2_bot.x - p1_bot.x) * t
+            val ly = p1_bot.y + (p2_bot.y - p1_bot.y) * t
+            val rx = p1_top.x + (p2_top.x - p1_top.x) * t
+            val ry = p1_top.y + (p2_top.y - p1_top.y) * t
+            drawLine(
+                color = ComicInkBlack.copy(alpha = 0.65f),
+                start = Offset(lx, ly),
+                end = Offset(rx, ry),
+                strokeWidth = 3f,
+                pathEffect = dashEffect
+            )
         }
+    }
 
-        ptIdx += sheetSpacing
+    // ── 3. ĐOẠN 1 (LỚP ĐỈNH: TỪ CUỘN GIẤY TRÊN GIÁ ĐỔ XUỐNG BÊN TRÁI) ──
+    // Khúc bo tròn U-turn bên trái mềm mại (Left Loop Turnaround)
+    val leftLoop = Path().apply {
+        moveTo(p1_top.x, p1_top.y)
+        cubicTo(
+            p1_bot.x - 26f, p1_top.y + 10f,
+            p1_bot.x - 26f, p1_bot.y - 6f,
+            p1_bot.x, p1_bot.y
+        )
+        cubicTo(
+            p1_bot.x + (p1_top.x - p1_bot.x) * 0.35f, p1_bot.y - 8f,
+            p1_bot.x + (p1_top.x - p1_bot.x) * 0.75f, p1_top.y + 10f,
+            p1_top.x, p1_top.y
+        )
+        close()
+    }
+    drawPath(leftLoop, color = foldColor)
+    drawPath(leftLoop, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round))
+
+    // Bóng đổ đoạn 1
+    val shadow1 = Path().apply {
+        moveTo(p0_L.x + 8f, p0_L.y + 10f)
+        cubicTo(canvasW * 0.30f + 8f, canvasH * 0.48f + 10f, canvasW * 0.18f + 8f, canvasH * 0.54f + 10f, p1_bot.x + 8f, p1_bot.y + 10f)
+        lineTo(p1_top.x + 8f, p1_top.y + 10f)
+        cubicTo(canvasW * 0.46f + 8f, canvasH * 0.49f + 10f, canvasW * 0.52f + 8f, canvasH * 0.46f + 10f, p0_R.x + 8f, p0_R.y + 10f)
+        close()
+    }
+    drawPath(shadow1, color = ComicInkBlack.copy(alpha = 0.14f))
+
+    // Thân đoạn 1
+    val seg1Path = Path().apply {
+        moveTo(p0_L.x, p0_L.y)
+        cubicTo(canvasW * 0.30f, canvasH * 0.485f, canvasW * 0.18f + wave1, canvasH * 0.545f, p1_bot.x, p1_bot.y)
+        cubicTo(
+            p1_bot.x + (p1_top.x - p1_bot.x) * 0.35f, p1_bot.y - 8f,
+            p1_bot.x + (p1_top.x - p1_bot.x) * 0.75f, p1_top.y + 10f,
+            p1_top.x, p1_top.y
+        )
+        cubicTo(canvasW * 0.46f + wave1, canvasH * 0.495f, canvasW * 0.52f, canvasH * 0.460f, p0_R.x, p0_R.y)
+        close()
+    }
+    drawPath(seg1Path, color = paperColor)
+    drawPath(seg1Path, color = ComicInkBlack, style = Stroke(width = strokeWidth, join = StrokeJoin.Round, cap = StrokeCap.Round))
+
+    // Đường nét đứt chia đều đoạn 1
+    val seg1Dash = ((scrollOffset + 120f) % 120f) / 120f
+    for (k in 0..1) {
+        val t = (seg1Dash + k * 0.50f) % 1.0f
+        if (t in 0.10f..0.90f) {
+            val lx = p0_L.x + (p1_bot.x - p0_L.x) * t
+            val ly = p0_L.y + (p1_bot.y - p0_L.y) * t
+            val rx = p0_R.x + (p1_top.x - p0_R.x) * t
+            val ry = p0_R.y + (p1_top.y - p0_R.y) * t
+            drawLine(
+                color = ComicInkBlack.copy(alpha = 0.65f),
+                start = Offset(lx, ly),
+                end = Offset(rx, ry),
+                strokeWidth = 3f,
+                pathEffect = dashEffect
+            )
+        }
     }
 }

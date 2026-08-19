@@ -67,10 +67,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * Process scroll action from Canvas gestures
+     * Process scroll action from Canvas gestures with velocity
      * @param rawPixels distance scrolled in pixels
+     * @param velocity current scrolling velocity in px/s
      */
-    fun onScroll(rawPixels: Float) {
+    fun onScroll(rawPixels: Float, velocity: Float = 0f) {
         if (rawPixels <= 0f) return
 
         val now = System.currentTimeMillis()
@@ -91,14 +92,15 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
 
-        // ASMR Sound & Haptic
-        val pitch = 0.8f + (_uiState.value.currentSps * 0.08f).coerceAtMost(1.2f)
-        soundManager.playRoll(pitch)
+        // ASMR Sound & Haptic điều biến theo tốc độ vuốt và nhịp SPS
+        val effectiveVelocity = if (velocity > 0f) velocity else rawPixels * 35f
+        soundManager.playRoll(velocity = effectiveVelocity, sps = _uiState.value.currentSps)
         hapticManager.tick()
 
         updateSps()
         scheduleDebouncedSave()
     }
+
 
     private fun updateSps() {
         val now = System.currentTimeMillis()

@@ -2,12 +2,18 @@ package com.trustmepro.scrollandscroll.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.trustmepro.scrollandscroll.R
 
-// The device Sans Serif family keeps the app offline-friendly. Heavy weights and tight leading
-// provide the comic-title energy without bundling a network font.
+val ComicFontFamily = FontFamily(
+    Font(R.font.lilita_one, FontWeight.Normal),
+    Font(R.font.lilita_one, FontWeight.Bold),
+    Font(R.font.lilita_one, FontWeight.Black)
+)
+
 
 val Typography = Typography(
     // Display styles (large hero numbers, scores)

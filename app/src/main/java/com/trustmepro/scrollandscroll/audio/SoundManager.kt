@@ -7,12 +7,19 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.PI
 import kotlin.math.exp
+import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.random.Random
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SoundManager — Hệ thống âm thanh ASMR cuộn giấy chân thực và sinh động
+// ─────────────────────────────────────────────────────────────────────────────
 
 class SoundManager(private val context: Context) {
 
     private var soundPool: SoundPool? = null
-    private var rollSoundId: Int = 0
+    private val rollSoundIds = mutableListOf<Int>()
+    private var spinSoundId: Int = 0
     private var clickSoundId: Int = 0
     private var popSoundId: Int = 0
     private var fanfareSoundId: Int = 0
@@ -20,8 +27,8 @@ class SoundManager(private val context: Context) {
 
     var isSoundEnabled: Boolean = true
 
-    // Rate limiting to prevent ear fatigue
     private var lastRollTime = 0L
+    private var soundIndex = 0
 
     init {
         initSoundPool()
@@ -34,7 +41,7 @@ class SoundManager(private val context: Context) {
             .build()
 
         soundPool = SoundPool.Builder()
-            .setMaxStreams(6)
+            .setMaxStreams(10)
             .setAudioAttributes(audioAttributes)
             .build()
 
@@ -45,43 +52,79 @@ class SoundManager(private val context: Context) {
         try {
             val cacheDir = context.cacheDir
 
-            // Bright paper flick: tactile, but short enough to feel like an animated game.
-            val rollFile = File(cacheDir, "sfx_comic_paper_flick.wav")
-            writeWavFile(rollFile, generateComicPaperFlick(durationMs = 45))
-            rollSoundId = soundPool?.load(rollFile.absolutePath, 1) ?: 0
+            // 1. Ba biến thể âm thanh cuộn giấy sột soạt (ASMR Paper Rustle / Swish)
+            val swish1 = File(cacheDir, "sfx_asmr_swish_1.wav")
+            writeWavFile(swish1, generateAsmrPaperSwish(durationMs = 60, seed = 101))
+            val id1 = soundPool?.load(swish1.absolutePath, 1) ?: 0
+            if (id1 != 0) rollSoundIds.add(id1)
 
-            // Snappy UI tap
+            val swish2 = File(cacheDir, "sfx_asmr_swish_2.wav")
+            writeWavFile(swish2, generateAsmrPaperSwish(durationMs = 50, seed = 202))
+            val id2 = soundPool?.load(swish2.absolutePath, 1) ?: 0
+            if (id2 != 0) rollSoundIds.add(id2)
+
+            val swish3 = File(cacheDir, "sfx_asmr_swish_3.wav")
+            writeWavFile(swish3, generateAsmrPaperSwish(durationMs = 70, seed = 303))
+            val id3 = soundPool?.load(swish3.absolutePath, 1) ?: 0
+            if (id3 != 0) rollSoundIds.add(id3)
+
+            // 2. Tiếng trục quay lách cách / rít gió khi vuốt nhanh
+            val spinFile = File(cacheDir, "sfx_asmr_core_spin.wav")
+            writeWavFile(spinFile, generateAsmrCoreSpin(durationMs = 85))
+            spinSoundId = soundPool?.load(spinFile.absolutePath, 1) ?: 0
+
+            // 3. Tiếng gõ nút UI
             val clickFile = File(cacheDir, "sfx_comic_click.wav")
-            writeWavFile(clickFile, generateComicClick(durationMs = 28))
+            writeWavFile(clickFile, generateComicClick(durationMs = 30))
             clickSoundId = soundPool?.load(clickFile.absolutePath, 1) ?: 0
 
-            // Reward pop for selecting an item or skin
+            // 4. Tiếng chọn Skin Pop
             val popFile = File(cacheDir, "sfx_comic_pop.wav")
             writeWavFile(popFile, generateComicPop(durationMs = 70))
             popSoundId = soundPool?.load(popFile.absolutePath, 1) ?: 0
 
-            // Compact major-key unlock fanfare
+            // 5. Tiếng kèn Fanfare mở khóa Bằng khen
             val fanfareFile = File(cacheDir, "sfx_comic_fanfare.wav")
-            writeWavFile(fanfareFile, generateComicFanfare(durationMs = 500))
+            writeWavFile(fanfareFile, generateComicFanfare(durationMs = 550))
             fanfareSoundId = soundPool?.load(fanfareFile.absolutePath, 1) ?: 0
 
-            // Cartoon zip when the speed lines appear
+            // 6. Tiếng hiệu ứng Overdrive
             val overdriveFile = File(cacheDir, "sfx_comic_overdrive.wav")
-            writeWavFile(overdriveFile, generateComicOverdriveZip(durationMs = 150))
+            writeWavFile(overdriveFile, generateComicOverdriveZip(durationMs = 180))
             overdriveSoundId = soundPool?.load(overdriveFile.absolutePath, 1) ?: 0
         } catch (_: Exception) {
             // Graceful fallback
         }
     }
 
-    fun playRoll(pitch: Float = 1.0f) {
-        if (!isSoundEnabled || rollSoundId == 0) return
+    /**
+     * Phát âm thanh cuộn giấy với tốc độ (velocity) và nhịp SPS thực tế
+     */
+    fun playRoll(velocity: Float = 500f, sps: Float = 2.0f) {
+        if (!isSoundEnabled || rollSoundIds.isEmpty()) return
+
         val now = System.currentTimeMillis()
-        if (now - lastRollTime < 75L) return // Throttle to prevent ear fatigue
+        // Nhịp độ giãn cách âm thanh tỷ lệ nghịch với tốc độ vuốt (càng nhanh thì âm càng dồn dập)
+        val minInterval = (90L - (velocity / 45f).toLong()).coerceIn(28L, 95L)
+        if (now - lastRollTime < minInterval) return
         lastRollTime = now
 
-        val clampedPitch = pitch.coerceIn(0.85f, 1.4f)
-        soundPool?.play(rollSoundId, 0.22f, 0.22f, 1, 0, clampedPitch)
+        // Cao độ (pitch): kéo nhanh thì âm cao hơn, kéo chậm thì âm trầm êm ái
+        val basePitch = 0.88f + (sps * 0.05f) + (velocity / 5000f) * 0.35f
+        val clampedPitch = basePitch.coerceIn(0.80f, 1.65f)
+
+        // Âm lượng (volume): tỷ lệ thuận với lực kéo
+        val volume = (0.22f + (velocity / 3500f) * 0.28f).coerceIn(0.20f, 0.60f)
+
+        // Luân phiên các biến thể âm thanh ngẫu nhiên để không bị lặp lại đơn điệu
+        val soundId = if (velocity > 1800f && spinSoundId != 0 && Random.nextFloat() > 0.4f) {
+            spinSoundId
+        } else {
+            rollSoundIds[soundIndex % rollSoundIds.size]
+        }
+        soundIndex++
+
+        soundPool?.play(soundId, volume, volume, 1, 0, clampedPitch)
     }
 
     fun playClick() {
@@ -101,32 +144,47 @@ class SoundManager(private val context: Context) {
 
     fun playOverdrive() {
         if (!isSoundEnabled || overdriveSoundId == 0) return
-        soundPool?.play(overdriveSoundId, 0.3f, 0.3f, 3, 0, 1.1f)
+        soundPool?.play(overdriveSoundId, 0.35f, 0.35f, 3, 0, 1.1f)
     }
 
     fun release() {
         soundPool?.release()
         soundPool = null
+        rollSoundIds.clear()
     }
 
-    // --- Lightweight procedural comic-game synthesis (no external audio assets required). ---
+    // ─────────────────────────────────────────────────────────────────────────
+    // TỔNG HỢP ÂM THANH ASMR PCM 44.1kHz CHÂN THỰC
+    // ─────────────────────────────────────────────────────────────────────────
 
-    private fun generateComicPaperFlick(durationMs: Int): ByteArray {
-        val sampleRate = 22050
+    /**
+     * Tạo âm thanh sột soạt ma sát giấy lụa nhiều lớp (ASMR Paper Rustle)
+     */
+    private fun generateAsmrPaperSwish(durationMs: Int, seed: Long): ByteArray {
+        val sampleRate = 44100
         val numSamples = (sampleRate * (durationMs / 1000.0)).toInt()
         val buffer = ByteArray(numSamples * 2)
+        val rng = Random(seed)
 
-        var lastSample = 0.0
+        var b0 = 0.0
+        var b1 = 0.0
+        var b2 = 0.0
+
         for (i in 0 until numSamples) {
             val t = i.toDouble() / numSamples
-            val envelope = (1.0 - t) * exp(-t * 3.6)
+            // Đường cong biên độ: tấn công nhanh, ngân êm
+            val envelope = sin(t * PI).pow(0.8) * exp(-t * 2.5)
 
-            // Filtered paper noise with a tiny animated flick at the attack.
-            val whiteNoise = Math.random() * 2.0 - 1.0
-            lastSample = (lastSample * 0.7) + (whiteNoise * 0.3) // Low-pass filter
+            // Bộ lọc Pink Noise tạo tiếng sột soạt mềm của giấy
+            val white = rng.nextDouble() * 2.0 - 1.0
+            b0 = 0.99886 * b0 + white * 0.0555179
+            b1 = 0.99332 * b1 + white * 0.0750759
+            b2 = 0.96900 * b2 + white * 0.1538520
+            val pinkNoise = b0 + b1 + b2 + white * 0.5362
 
-            val frictionSine = sin(2.0 * PI * 235.0 * (i.toDouble() / sampleRate)) * 0.23
-            val combined = (lastSample * 0.72 + frictionSine) * envelope * 9800.0
+            // Tiếng ma sát bề mặt giấy
+            val frictionTone = sin(2.0 * PI * 420.0 * (i.toDouble() / sampleRate)) * 0.18
+            val combined = (pinkNoise * 0.82 + frictionTone) * envelope * 16500.0
 
             val sample = combined.toInt().coerceIn(-32767, 32767).toShort()
             buffer[i * 2] = (sample.toInt() and 0xFF).toByte()
@@ -135,16 +193,40 @@ class SoundManager(private val context: Context) {
         return createWavHeader(buffer.size, sampleRate) + buffer
     }
 
-    private fun generateComicClick(durationMs: Int): ByteArray {
-        val sampleRate = 22050
+    /**
+     * Tạo tiếng trục lõi carton quay lách cách khi cuộn nhanh
+     */
+    private fun generateAsmrCoreSpin(durationMs: Int): ByteArray {
+        val sampleRate = 44100
         val numSamples = (sampleRate * (durationMs / 1000.0)).toInt()
         val buffer = ByteArray(numSamples * 2)
 
         for (i in 0 until numSamples) {
             val t = i.toDouble() / numSamples
-            val envelope = exp(-t * 13.0)
-            val tone = sin(2.0 * PI * 760.0 * (i.toDouble() / sampleRate))
-            val sample = (tone * envelope * 14500.0).toInt().toShort()
+            val envelope = sin(t * PI) * exp(-t * 1.8)
+
+            // Tiếng gõ trục xoay lách cách (Spindle rattle click)
+            val woodClick = sin(2.0 * PI * 180.0 * (i.toDouble() / sampleRate)) * 0.45 +
+                    sin(2.0 * PI * 340.0 * (i.toDouble() / sampleRate)) * 0.35
+            val airWhoosh = (Math.random() * 2.0 - 1.0) * 0.35
+
+            val sample = ((woodClick + airWhoosh) * envelope * 17000.0).toInt().coerceIn(-32767, 32767).toShort()
+            buffer[i * 2] = (sample.toInt() and 0xFF).toByte()
+            buffer[i * 2 + 1] = ((sample.toInt() shr 8) and 0xFF).toByte()
+        }
+        return createWavHeader(buffer.size, sampleRate) + buffer
+    }
+
+    private fun generateComicClick(durationMs: Int): ByteArray {
+        val sampleRate = 44100
+        val numSamples = (sampleRate * (durationMs / 1000.0)).toInt()
+        val buffer = ByteArray(numSamples * 2)
+
+        for (i in 0 until numSamples) {
+            val t = i.toDouble() / numSamples
+            val envelope = exp(-t * 14.0)
+            val tone = sin(2.0 * PI * 820.0 * (i.toDouble() / sampleRate))
+            val sample = (tone * envelope * 15500.0).toInt().toShort()
             buffer[i * 2] = (sample.toInt() and 0xFF).toByte()
             buffer[i * 2 + 1] = ((sample.toInt() shr 8) and 0xFF).toByte()
         }
@@ -152,16 +234,16 @@ class SoundManager(private val context: Context) {
     }
 
     private fun generateComicPop(durationMs: Int): ByteArray {
-        val sampleRate = 22050
+        val sampleRate = 44100
         val numSamples = (sampleRate * (durationMs / 1000.0)).toInt()
         val buffer = ByteArray(numSamples * 2)
 
         for (i in 0 until numSamples) {
             val t = i.toDouble() / numSamples
-            val freq = 520.0 + t * 420.0
+            val freq = 540.0 + t * 450.0
             val envelope = sin(t * PI) * exp(-t * 4.0)
             val tone = sin(2.0 * PI * freq * (i.toDouble() / sampleRate))
-            val sample = (tone * envelope * 16000.0).toInt().toShort()
+            val sample = (tone * envelope * 17000.0).toInt().toShort()
             buffer[i * 2] = (sample.toInt() and 0xFF).toByte()
             buffer[i * 2 + 1] = ((sample.toInt() shr 8) and 0xFF).toByte()
         }
@@ -169,21 +251,20 @@ class SoundManager(private val context: Context) {
     }
 
     private fun generateComicFanfare(durationMs: Int): ByteArray {
-        val sampleRate = 22050
+        val sampleRate = 44100
         val numSamples = (sampleRate * (durationMs / 1000.0)).toInt()
         val buffer = ByteArray(numSamples * 2)
 
         for (i in 0 until numSamples) {
             val time = i.toDouble() / sampleRate
             val t = i.toDouble() / numSamples
-            val envelope = (1.0 - t) * exp(-t * 2.0)
+            val envelope = (1.0 - t) * exp(-t * 1.8)
 
-            // Crisp major chord (C5 + E5 + G5)
             val chord = sin(2.0 * PI * 523.25 * time) * 0.4 +
                     sin(2.0 * PI * 659.25 * time) * 0.35 +
                     sin(2.0 * PI * 783.99 * time) * 0.25
 
-            val sample = (chord * envelope * 18000.0).toInt().toShort()
+            val sample = (chord * envelope * 19000.0).toInt().toShort()
             buffer[i * 2] = (sample.toInt() and 0xFF).toByte()
             buffer[i * 2 + 1] = ((sample.toInt() shr 8) and 0xFF).toByte()
         }
@@ -191,15 +272,15 @@ class SoundManager(private val context: Context) {
     }
 
     private fun generateComicOverdriveZip(durationMs: Int): ByteArray {
-        val sampleRate = 22050
+        val sampleRate = 44100
         val numSamples = (sampleRate * (durationMs / 1000.0)).toInt()
         val buffer = ByteArray(numSamples * 2)
 
         for (i in 0 until numSamples) {
             val t = i.toDouble() / numSamples
             val envelope = sin(t * PI)
-            val tone = sin(2.0 * PI * (400.0 + t * 400.0) * (i.toDouble() / sampleRate))
-            val sample = (tone * envelope * 12000.0).toInt().toShort()
+            val tone = sin(2.0 * PI * (380.0 + t * 480.0) * (i.toDouble() / sampleRate))
+            val sample = (tone * envelope * 14000.0).toInt().toShort()
             buffer[i * 2] = (sample.toInt() and 0xFF).toByte()
             buffer[i * 2 + 1] = ((sample.toInt() shr 8) and 0xFF).toByte()
         }
@@ -234,3 +315,4 @@ class SoundManager(private val context: Context) {
         FileOutputStream(file).use { it.write(bytes) }
     }
 }
+
