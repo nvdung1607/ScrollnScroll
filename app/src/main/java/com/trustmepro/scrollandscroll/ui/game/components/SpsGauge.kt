@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Speed
@@ -60,9 +59,7 @@ fun SpsGauge(
     )
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -75,13 +72,13 @@ fun SpsGauge(
                     imageVector = if (isOverdrive) Icons.Default.LocalFireDepartment else Icons.Default.Speed,
                     contentDescription = null,
                     tint = gaugeColor,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = if (isOverdrive) "BURNING OVERDRIVE x1.5" else "TỐC ĐỘ VUỐT (SPS)",
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.ExtraBold,
+                    text = if (isOverdrive) "BURNING OVERDRIVE x1.5" else "TỐC ĐỘ VUỐT",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
                     color = gaugeColor,
                     letterSpacing = 0.5.sp
                 )
@@ -89,19 +86,19 @@ fun SpsGauge(
 
             Text(
                 text = String.format(Locale.US, "%.1f vuốt/s", sps),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Black,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
                 color = if (isOverdrive) OverdriveFire else MaterialTheme.colorScheme.onSurface
             )
         }
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         // Progress Bar
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(10.dp)
+                .height(8.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
         ) {

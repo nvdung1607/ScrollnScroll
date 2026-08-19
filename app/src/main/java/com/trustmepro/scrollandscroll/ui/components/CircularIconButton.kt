@@ -17,7 +17,7 @@ fun CircularIconButton(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    size: Dp = 48.dp,
+    size: Dp = 44.dp,
     enabled: Boolean = true,
     content: @Composable () -> Unit
 ) {

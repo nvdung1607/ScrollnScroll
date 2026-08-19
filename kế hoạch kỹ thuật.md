@@ -394,21 +394,24 @@ Hãy triển khai PHASE 7: NAVIGATION & HOÀN THIỆN DỰ ÁN cho "Scroll & Scr
    - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
    - Git Commit: `a443ee6` đã push lên branch `main`.
 
-4. **Phase 3 (Core Gameplay & Overdrive Physics)**:
-   - `ui/components/OdometerText.kt`: Đồng hồ số lật phong cách cơ học hiển thị tổng số mét/km mượt mà.
-   - `ui/game/components/SpsGauge.kt`: Thanh đo tốc độ vuốt thời gian thực đổi màu theo mức độ nhiệt huyết.
-   - `ui/game/components/OverdriveEffect.kt`: Hiệu ứng viền bốc lửa rực rỡ khi vào trạng thái Overdrive.
-   - `ui/game/ToiletPaperCanvas.kt`: Trái tim trò chơi! Vẽ trục cuộn kim loại, cuộn giấy hình trụ xoay tròn và dải giấy rủ xuống uốn lượn có đường xé đứt đoạn và hoa văn emoji. Bắt cử chỉ Drag 1:1 và Fling quán tính cực nhạy.
-   - `ui/game/GameScreen.kt`: Màn hình Game chính tích hợp Odometer, thanh tiến độ skin tiếp theo, SpsGauge, Canvas cuộn giấy, hiệu ứng Overdrive và Dialog chúc mừng khi mở khóa danh hiệu mới.
-   - `MainActivity.kt`: Gán `GameScreen()` làm màn hình chính của ứng dụng.
-   - Kết quả biên dịch: `./gradlew compileDebugSources` $\rightarrow$ **BUILD SUCCESSFUL (0 errors, 0 warnings)**.
+4. **Phase 3 (Core Gameplay, 3D Isometric Toilet Roll & Realistic Dynamic Ribbon - ĐÃ HOÀN THIỆN)**:
+   - `res/drawable/bg_bathroom_game.jpg`: Asset hình nền phòng vệ sinh hoạt hình 2D Comic chất lượng cao, sạch sẽ không có nút hay chữ tĩnh.
+   - `ui/game/ToiletPaperCanvas.kt`:
+     - **Cuộn giấy 3D Isometric**: Dựng hình trụ đa chiều nhìn nghiêng (isometric cylinder) với mặt bên trái hình elip gồm các vòng xoắn lớp giấy đồng tâm, ống lõi carton màu nâu và lỗ rỗng sâu ở giữa khớp trục gỗ; vệt sáng Specular highlight trên đỉnh; các đường nét đứt chia tờ xoay tròn sinh động theo cử chỉ vuốt; hiệu ứng hoạt hình giọt nước bắn và vệt gió xoay `) )` khi cuộn.
+     - **Dải giấy uốn lượn S-Curve mềm mại tự nhiên**: Dựng trên đường cong Cubic Bezier với vector pháp tuyến đa giác ribbon, hiệu ứng bóng nếp gấp nội khối (crease shading), nhịp rung vẫy tự nhiên trong không khí `paperFlutter` theo tốc độ vuốt (`currentVelocity`), và họa tiết Emoji của Skin được xoay đúng góc nghiêng tiếp tuyến của đường cong.
+     - **Cử chỉ mượt mà**: Nhận diện vuốt Drag $1:1$ và Fling quán tính giảm tốc có ma sát chân thực.
+   - `ui/game/GameScreen.kt`: Bố cục thống nhất chuẩn Comic Pop-Art (Tiêu đề 3D "SCROLL & SCROLL", cụm nút tròn 4 góc, thẻ HUD Odometer cơ học, thanh SPS và hướng dẫn vuốt cho tân thủ).
+   - `ui/components/ComicComponents.kt`: Design system đồng bộ cho toàn bộ ứng dụng.
+   - Kết quả biên dịch: `./gradlew compileDebugKotlin` $\rightarrow$ **BUILD SUCCESSFUL in 3s (0 errors, 0 warnings)**.
 
 5. **Hướng dẫn cho AI tiếp theo**:
    - **Bước tiếp theo là Phase 4: Hệ thống Tiến Hóa 9 Skin & Tủ Đồ (Skins & Badges Cabinet)**:
      - Tạo `ui/cabinet/components/SkinCard.kt` (thẻ hiển thị skin 3 trạng thái: Đang Dùng, Sử Dụng, Đang Khóa kèm thanh % tiến độ).
      - Tạo `ui/cabinet/components/BadgeCard.kt` (thẻ danh hiệu trào phúng).
      - Tạo `ui/cabinet/CabinetViewModel.kt` và `ui/cabinet/CabinetScreen.kt`.
+     - Sử dụng hệ thống thiết kế Comic Pop-Art (`ComicComponents.kt`) để đảm bảo giao diện đồng bộ 100% với màn hình chơi game chính.
      - Xem chi tiết tại mục [PHASE 4](#phase-4-hệ-thống-tiến-hóa-skin--tủ-đồ).
 
 ---
 *Tài liệu Kế hoạch Kỹ thuật dự án Scroll & Scroll. Bất kỳ AI Agent nào cũng có thể đọc tài liệu này và tiếp tục thực hiện.*
+

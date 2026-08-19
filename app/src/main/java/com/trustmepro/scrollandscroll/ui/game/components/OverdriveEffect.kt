@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.trustmepro.scrollandscroll.ui.theme.Gold24K
 import com.trustmepro.scrollandscroll.ui.theme.OverdriveFire
@@ -55,7 +55,7 @@ fun OverdriveEffect(
                             OverdriveFire.copy(alpha = borderAlpha)
                         )
                     ),
-                    shape = androidx.compose.ui.graphics.RectangleShape
+                    shape = RectangleShape
                 )
         )
     }
