@@ -1,5 +1,6 @@
 package com.trustmepro.scrollandscroll.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -7,8 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,19 +31,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.trustmepro.scrollandscroll.R
 import com.trustmepro.scrollandscroll.data.model.BadgeType
 import com.trustmepro.scrollandscroll.ui.theme.ComicFontFamily
 import com.trustmepro.scrollandscroll.util.ShareHelper
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 /**
- * Modal Bằng Khen Danh Dự Vô Tri với nút Chia sẻ Story và lưu trữ
+ * Modal Bằng Khen Danh Dự chuẩn phôi Giấy Khen Việt Nam truyền thống
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,169 +59,239 @@ fun CertificateDialog(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
+    val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
 
     BasicAlertDialog(
         onDismissRequest = onDismiss
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(16.dp, RoundedCornerShape(24.dp))
-                .clip(RoundedCornerShape(24.dp))
-                .background(Color(0xFFFFFDF0)) // Màu giấy chứng nhận cổ điển
-                .border(width = 4.dp, color = ComicInkBlack, shape = RoundedCornerShape(24.dp))
-                .padding(20.dp)
+                .padding(vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            // ── Khung Bằng Khen Giấy Khen Chuẩn Mẫu ──────────────────────────
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.36f) // Tỷ lệ chuẩn phôi Giấy Khen Việt Nam
+                    .shadow(16.dp, RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color(0xFFFFFDF5))
+                    .border(2.5.dp, Color(0xFFD32F2F), RoundedCornerShape(12.dp))
             ) {
-                // 1. Quốc hiệu
-                Text(
-                    text = "VIỆN HÀN LÂM KHOA HỌC VÔ TRI",
-                    fontFamily = ComicFontFamily,
-                    fontSize = 14.sp,
-                    color = ComicInkBlack,
-                    letterSpacing = 0.5.sp
-                )
-                Text(
-                    text = "« Cuộn Bất Tận - Vô Tri Bất Diệt »",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontStyle = FontStyle.Italic,
-                    color = Color(0xFF5D4037)
+                // 1. Ảnh phôi giấy khen hoa văn viền đỏ vàng
+                Image(
+                    painter = painterResource(id = R.drawable.bg_certificate_template),
+                    contentDescription = "Giấy Khen Template",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier.fillMaxSize()
                 )
 
-                Spacer(Modifier.height(8.dp))
-
-                // Đường viền vàng phân cách
-                Box(
+                // 2. Nội dung text điền trực tiếp vào các dòng phôi giấy khen
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(0.6f)
-                        .height(2.dp)
-                        .background(ComicGold)
-                )
-
-                Spacer(Modifier.height(10.dp))
-
-                // 2. Tiêu đề Bằng Khen
-                Text(
-                    text = "BẰNG KHEN DANH DỰ",
-                    fontFamily = ComicFontFamily,
-                    fontSize = 24.sp,
-                    color = Color(0xFFFF5722)
-                )
-
-                Spacer(Modifier.height(4.dp))
-
-                Text(
-                    text = "Trân trọng trao tặng cho Chiến Thần:",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = ComicInkBlack.copy(alpha = 0.7f)
-                )
-
-                val displayName = if (nickname.isBlank()) "Chiến Thần Giấu Tên" else nickname
-                Text(
-                    text = "★ $displayName ★",
-                    fontFamily = ComicFontFamily,
-                    fontSize = 20.sp,
-                    color = ComicInkBlack
-                )
-
-                Spacer(Modifier.height(10.dp))
-
-                // 3. Emoji Huân Chương
-                Text(
-                    text = badge.badgeEmoji,
-                    fontSize = 54.sp
-                )
-
-                Spacer(Modifier.height(6.dp))
-
-                // 4. Tên Danh hiệu
-                Text(
-                    text = "[ ${badge.title} ]",
-                    fontFamily = ComicFontFamily,
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(Modifier.height(4.dp))
-
-                // 5. Lời cà khịa
-                Text(
-                    text = "\"${badge.description}\"",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontStyle = FontStyle.Italic,
-                    textAlign = TextAlign.Center,
-                    color = Color(0xFF37474F),
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
-
-                Spacer(Modifier.height(12.dp))
-
-                // 6. Khung thống kê mét
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(ComicInkBlack)
-                        .padding(vertical = 8.dp, horizontal = 12.dp),
-                    contentAlignment = Alignment.Center
+                        .fillMaxSize()
+                        .padding(horizontal = 24.dp, vertical = 8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    // Khoảng trống đỉnh đầu cho Quốc Huy & Quốc Hiệu
+                    Spacer(Modifier.height(34.dp))
+
+                    // Dòng tiêu đề hiệu trưởng / Viện trưởng
+                    Text(
+                        text = "VIỆN TRƯỞNG VIỆN KHOA HỌC VÔ TRI",
+                        fontFamily = ComicFontFamily,
+                        fontSize = 11.sp,
+                        color = Color(0xFF1E1B18),
+                        letterSpacing = 0.5.sp
+                    )
+
+                    // Khen tặng em / Chiến Thần
+                    val displayName = if (nickname.isBlank()) "Chiến Thần Giấu Tên" else nickname
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         Text(
-                            text = "ĐÃ TIÊU TỐN TỔNG CỘNG",
+                            text = "Khen tặng: ",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
-                            color = ComicYellow
+                            fontSize = 10.sp,
+                            color = Color(0xFF1E1B18)
                         )
                         Text(
-                            text = "${String.format(Locale.US, "%,.1f", totalMeters)} MÉT GIẤY",
+                            text = displayName,
                             fontFamily = ComicFontFamily,
-                            fontSize = 20.sp,
-                            color = Color.White
+                            fontSize = 13.sp,
+                            color = Color(0xFFD32F2F)
+                        )
+                        Text(
+                            text = "  - Lớp: ",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 10.sp,
+                            color = Color(0xFF1E1B18)
+                        )
+                        Text(
+                            text = "Hội Vô Tri Toàn Cầu",
+                            fontFamily = ComicFontFamily,
+                            fontSize = 11.sp,
+                            color = Color(0xFF1E1B18)
                         )
                     }
-                }
 
-                Spacer(Modifier.height(16.dp))
+                    // Đạt danh hiệu
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Đạt danh hiệu: ",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 10.sp,
+                            color = Color(0xFF1E1B18)
+                        )
+                        Text(
+                            text = "${badge.title} ${badge.badgeEmoji}",
+                            fontFamily = ComicFontFamily,
+                            fontSize = 13.sp,
+                            color = Color(0xFFD32F2F)
+                        )
+                    }
 
-                // 7. Nút [📲 CHIA SẺ STORY]
-                M3PrimaryButton(
-                    onClick = {
-                        ShareHelper.shareCertificate(context, badge, nickname, totalMeters)
-                    },
-                    containerColor = ComicOrange,
-                    contentColor = Color.White,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(Modifier.width(8.dp))
+                    // Thành tích số mét cuộn
                     Text(
-                        text = "📲 CHIA SẺ LÊN STORY",
-                        fontFamily = ComicFontFamily,
-                        fontSize = 15.sp
+                        text = "Thành tích: Đã cuộn ${String.format(Locale.US, "%,.1f", totalMeters)} mét giấy vệ sinh vô tận",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 9.5.sp,
+                        color = Color(0xFF2E7D32)
                     )
-                }
 
-                Spacer(Modifier.height(8.dp))
-
-                // 8. Nút [TIẾP TỤC CUỘN]
-                M3TonalButton(
-                    onClick = onDismiss,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
+                    // Lời phê / Lời cà khịa
                     Text(
-                        text = "TIẾP TỤC CUỘN",
-                        fontFamily = ComicFontFamily,
-                        fontSize = 14.sp
+                        text = "\"${badge.description}\"",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontStyle = FontStyle.Italic,
+                        fontSize = 9.sp,
+                        color = Color(0xFF5D4037),
+                        textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
+
+                    // Dòng ngày tháng và chữ ký / Dấu mộc đáy
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 6.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        // Góc dưới bên trái: Vào sổ khen thưởng
+                        Column {
+                            Text(
+                                text = "Vào sổ khen thưởng: Số 3669/QĐ-VOTRI",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontSize = 7.5.sp,
+                                color = Color(0xFF555555)
+                            )
+                            Text(
+                                text = "Ngày $currentDate",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontSize = 7.5.sp,
+                                color = Color(0xFF555555)
+                            )
+                        }
+
+                        // Góc dưới bên phải: Chức vụ & Dấu mộc đỏ
+                        Box(contentAlignment = Alignment.Center) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    text = "Việt Nam, ngày $currentDate",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = 7.5.sp,
+                                    fontStyle = FontStyle.Italic,
+                                    color = Color(0xFF333333)
+                                )
+                                Text(
+                                    text = "Viện Trưởng",
+                                    fontFamily = ComicFontFamily,
+                                    fontSize = 9.sp,
+                                    color = Color(0xFF1E1B18)
+                                )
+                                Spacer(Modifier.height(14.dp))
+                                Text(
+                                    text = "Scroll Master",
+                                    fontFamily = ComicFontFamily,
+                                    fontSize = 8.5.sp,
+                                    color = Color(0xFFD32F2F)
+                                )
+                            }
+
+                            // Con dấu mộc đỏ tròn 100% Vô Tri đè lên chữ ký
+                            Box(
+                                modifier = Modifier
+                                    .size(42.dp)
+                                    .offset(x = 8.dp, y = 4.dp)
+                                    .clip(CircleShape)
+                                    .border(1.5.dp, Color(0xFFD32F2F).copy(alpha = 0.85f), CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "CHỨNG NHẬN\n100% VÔ TRI",
+                                    fontSize = 5.sp,
+                                    fontWeight = FontWeight.Black,
+                                    color = Color(0xFFD32F2F),
+                                    textAlign = TextAlign.Center,
+                                    lineHeight = 6.sp
+                                )
+                            }
+                        }
+                    }
                 }
+            }
+
+            Spacer(Modifier.height(14.dp))
+
+            // ── Các Nút Hành Động ───────────────────────────────────────────
+            M3PrimaryButton(
+                onClick = {
+                    ShareHelper.shareCertificate(context, badge, nickname, totalMeters)
+                },
+                containerColor = Color(0xFFD32F2F),
+                contentColor = Color.White,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = "📲 CHIA SẺ GIẤY KHEN LÊN STORY",
+                    fontFamily = ComicFontFamily,
+                    fontSize = 15.sp
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            M3TonalButton(
+                onClick = onDismiss,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "TIẾP TỤC CUỘN",
+                    fontFamily = ComicFontFamily,
+                    fontSize = 14.sp
+                )
             }
         }
     }

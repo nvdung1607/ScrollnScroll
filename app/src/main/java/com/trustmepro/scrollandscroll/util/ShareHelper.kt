@@ -3,20 +3,25 @@ package com.trustmepro.scrollandscroll.util
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Typeface
 import androidx.core.content.FileProvider
+import com.trustmepro.scrollandscroll.R
 import com.trustmepro.scrollandscroll.data.model.BadgeType
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 object ShareHelper {
 
     /**
-     * Tạo hình ảnh Bằng Khen tỷ lệ 9:16 chất lượng cao dạng Bitmap và bắn Intent chia sẻ Story
+     * Tạo hình ảnh Giấy Khen chuẩn phôi Việt Nam chất lượng cao dạng Bitmap và bắn Intent chia sẻ Story
      */
     fun shareCertificate(
         context: Context,
@@ -30,11 +35,11 @@ object ShareHelper {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "image/png"
             putExtra(Intent.EXTRA_STREAM, uri)
-            putExtra(Intent.EXTRA_TEXT, "🔥 Tôi vừa đạt danh hiệu '${badge.title}' trong game Scroll & Scroll! Đã cuộn ${String.format(Locale.US, "%,.1f", totalMeters)} mét giấy vệ sinh vô tri!")
+            putExtra(Intent.EXTRA_TEXT, "🔥 Tôi vừa nhận Giấy Khen danh hiệu '${badge.title}' trong game Scroll & Scroll! Đã cuộn ${String.format(Locale.US, "%,.1f", totalMeters)} mét giấy vệ sinh vô tri!")
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        val chooser = Intent.createChooser(intent, "Chia sẻ Bằng Khen Lên Story").apply {
+        val chooser = Intent.createChooser(intent, "Chia sẻ Giấy Khen Lên Story").apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(chooser)
@@ -46,171 +51,136 @@ object ShareHelper {
         nickname: String,
         totalMeters: Double
     ): Bitmap {
-        val width = 1080
-        val height = 1920
+        // Tải phôi ảnh giấy khen mẫu
+        val templateBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bg_certificate_template)
+        val width = templateBitmap.width
+        val height = templateBitmap.height
+
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
-        // 1. Nền vàng kem ấm áp
-        canvas.drawColor(android.graphics.Color.parseColor("#FFFDF0"))
+        // 1. Vẽ hình nền phôi giấy khen
+        canvas.drawBitmap(templateBitmap, 0f, 0f, null)
 
-        // 2. Viền hoa văn đôi mạ vàng & đen đậm
-        val borderPaint = Paint().apply {
+        val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        val displayName = if (nickname.isBlank()) "Chiến Thần Giấu Tên" else nickname
+
+        // 2. Dòng chức danh người ban hành
+        val authorityPaint = Paint().apply {
             color = android.graphics.Color.parseColor("#1E1B18")
-            style = Paint.Style.STROKE
-            strokeWidth = 14f
-            isAntiAlias = true
-        }
-        val goldBorderPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#FFD54F")
-            style = Paint.Style.STROKE
-            strokeWidth = 24f
-            isAntiAlias = true
-        }
-        canvas.drawRoundRect(RectF(40f, 40f, width - 40f, height - 40f), 36f, 36f, goldBorderPaint)
-        canvas.drawRoundRect(RectF(60f, 60f, width - 60f, height - 60f), 24f, 24f, borderPaint)
-
-        // 3. Quốc hiệu trào phúng
-        val subHeaderPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#1E1B18")
-            textSize = 34f
+            textSize = width * 0.026f
             textAlign = Paint.Align.CENTER
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
             isAntiAlias = true
         }
-        canvas.drawText("VIỆN HÀN LÂM KHOA HỌC VÔ TRI", width / 2f, 160f, subHeaderPaint)
+        canvas.drawText("VIỆN TRƯỞNG VIỆN KHOA HỌC VÔ TRI", width / 2f, height * 0.495f, authorityPaint)
 
-        val mottoPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#5D4037")
-            textSize = 28f
-            textAlign = Paint.Align.CENTER
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
-            isAntiAlias = true
-        }
-        canvas.drawText("« Cuộn Bất Tận - Vô Tri Bất Diệt »", width / 2f, 210f, mottoPaint)
-
-        // Đường kẻ phân cách
-        val linePaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#1E1B18")
-            strokeWidth = 4f
-        }
-        canvas.drawLine(width * 0.25f, 250f, width * 0.75f, 250f, linePaint)
-
-        // 4. Tiêu đề BẰNG KHEN CHỨNG NHẬN
-        val certTitlePaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#FF5722")
-            textSize = 76f
-            textAlign = Paint.Align.CENTER
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-            isAntiAlias = true
-        }
-        canvas.drawText("BẰNG KHEN DANH DỰ", width / 2f, 370f, certTitlePaint)
-
-        // 5. Tên người nhận
-        val certifyPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#1E1B18")
-            textSize = 36f
-            textAlign = Paint.Align.CENTER
-            isAntiAlias = true
-        }
-        canvas.drawText("Trân trọng trao tặng cho Chiến Thần:", width / 2f, 470f, certifyPaint)
-
+        // 3. Khen tặng Chiến Thần
         val namePaint = Paint().apply {
             color = android.graphics.Color.parseColor("#1E1B18")
-            textSize = 68f
+            textSize = width * 0.028f
+            textAlign = Paint.Align.CENTER
+            typeface = Typeface.create(Typeface.SERIF, Typeface.NORMAL)
+            isAntiAlias = true
+        }
+        val redHighlightPaint = Paint().apply {
+            color = android.graphics.Color.parseColor("#D32F2F")
+            textSize = width * 0.032f
+            textAlign = Paint.Align.CENTER
+            typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
+            isAntiAlias = true
+        }
+        canvas.drawText("Khen tặng: $displayName   - Lớp: Hội Vô Tri Toàn Cầu", width / 2f, height * 0.560f, namePaint)
+
+        // 4. Đạt danh hiệu
+        val badgeTitleText = "Đạt danh hiệu: ${badge.title} ${badge.badgeEmoji}"
+        canvas.drawText(badgeTitleText, width / 2f, height * 0.625f, redHighlightPaint)
+
+        // 5. Thành tích số mét cuộn
+        val statsPaint = Paint().apply {
+            color = android.graphics.Color.parseColor("#2E7D32")
+            textSize = width * 0.024f
             textAlign = Paint.Align.CENTER
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             isAntiAlias = true
         }
-        val displayName = if (nickname.isBlank()) "Chiến Thần Giấu Tên" else nickname
-        canvas.drawText("★ $displayName ★", width / 2f, 560f, namePaint)
+        canvas.drawText("Thành tích: Đã cuộn ${String.format(Locale.US, "%,.1f", totalMeters)} mét giấy vệ sinh vô tận", width / 2f, height * 0.680f, statsPaint)
 
-        // 6. Icon Emoji to ở giữa
-        val emojiPaint = Paint().apply {
-            textSize = 180f
-            textAlign = Paint.Align.CENTER
-            isAntiAlias = true
-        }
-        canvas.drawText(badge.badgeEmoji, width / 2f, 800f, emojiPaint)
-
-        // 7. Danh hiệu đạt được
-        val badgeTitlePaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#E65100")
-            textSize = 54f
-            textAlign = Paint.Align.CENTER
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-            isAntiAlias = true
-        }
-        canvas.drawText("[ ${badge.title} ]", width / 2f, 940f, badgeTitlePaint)
-
-        // 8. Lời cà khịa
+        // 6. Lời khen / Lời cà khịa
         val quotePaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#37474F")
-            textSize = 36f
+            color = android.graphics.Color.parseColor("#5D4037")
+            textSize = width * 0.022f
             textAlign = Paint.Align.CENTER
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
+            typeface = Typeface.create(Typeface.SERIF, Typeface.ITALIC)
             isAntiAlias = true
         }
-        canvas.drawText("\"${badge.description}\"", width / 2f, 1030f, quotePaint)
+        canvas.drawText("\"${badge.description}\"", width / 2f, height * 0.730f, quotePaint)
 
-        // 9. Thống kê số mét tiêu hao
-        val statsBox = RectF(width * 0.15f, 1120f, width * 0.85f, 1300f)
-        val statsBgPaint = Paint().apply {
+        // 7. Góc dưới bên trái: Vào sổ khen thưởng
+        val recordPaint = Paint().apply {
+            color = android.graphics.Color.parseColor("#444444")
+            textSize = width * 0.019f
+            textAlign = Paint.Align.LEFT
+            typeface = Typeface.create(Typeface.SERIF, Typeface.ITALIC)
+            isAntiAlias = true
+        }
+        canvas.drawText("Vào sổ khen thưởng: Số 3669/QĐ-VOTRI", width * 0.16f, height * 0.795f, recordPaint)
+        canvas.drawText("Ngày $currentDate", width * 0.16f, height * 0.835f, recordPaint)
+
+        // 8. Góc dưới bên phải: Ngày tháng, Viện trưởng & Chữ ký
+        val dateSignPaint = Paint().apply {
+            color = android.graphics.Color.parseColor("#333333")
+            textSize = width * 0.020f
+            textAlign = Paint.Align.CENTER
+            typeface = Typeface.create(Typeface.SERIF, Typeface.ITALIC)
+            isAntiAlias = true
+        }
+        val rightColX = width * 0.72f
+        canvas.drawText("Việt Nam, ngày $currentDate", rightColX, height * 0.735f, dateSignPaint)
+
+        val titleSignPaint = Paint().apply {
             color = android.graphics.Color.parseColor("#1E1B18")
-        }
-        canvas.drawRoundRect(statsBox, 28f, 28f, statsBgPaint)
-
-        val statsLabelPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#FFD54F")
-            textSize = 30f
+            textSize = width * 0.024f
             textAlign = Paint.Align.CENTER
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
             isAntiAlias = true
         }
-        canvas.drawText("TỔNG KHOẢNG CÁCH ĐÃ CUỘN", width / 2f, 1180f, statsLabelPaint)
+        canvas.drawText("Viện Trưởng", rightColX, height * 0.775f, titleSignPaint)
 
-        val statsNumberPaint = Paint().apply {
-            color = android.graphics.Color.WHITE
-            textSize = 58f
+        // Chữ ký bay bổng
+        val signaturePaint = Paint().apply {
+            color = android.graphics.Color.parseColor("#D32F2F")
+            textSize = width * 0.024f
             textAlign = Paint.Align.CENTER
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC)
             isAntiAlias = true
         }
-        canvas.drawText("${String.format(Locale.US, "%,.1f", totalMeters)} MÉT", width / 2f, 1260f, statsNumberPaint)
+        canvas.drawText("Scroll Master", rightColX, height * 0.845f, signaturePaint)
 
-        // 10. Con dấu đỏ 100% Vô Tri
-        val stampCenterX = width * 0.75f
-        val stampCenterY = 1540f
-        val stampRadius = 140f
+        // 9. Con dấu mộc đỏ tròn "CHỨNG NHẬN 100% VÔ TRI"
+        val stampCenterX = rightColX + width * 0.04f
+        val stampCenterY = height * 0.805f
+        val stampRadius = width * 0.055f
+
         val stampPaint = Paint().apply {
             color = android.graphics.Color.parseColor("#D32F2F")
             style = Paint.Style.STROKE
-            strokeWidth = 8f
+            strokeWidth = width * 0.0035f
             isAntiAlias = true
         }
         canvas.drawCircle(stampCenterX, stampCenterY, stampRadius, stampPaint)
-        canvas.drawCircle(stampCenterX, stampCenterY, stampRadius - 16f, stampPaint)
+        canvas.drawCircle(stampCenterX, stampCenterY, stampRadius * 0.88f, stampPaint)
 
         val stampTextPaint = Paint().apply {
             color = android.graphics.Color.parseColor("#D32F2F")
-            textSize = 28f
+            textSize = width * 0.013f
             textAlign = Paint.Align.CENTER
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             isAntiAlias = true
         }
-        canvas.drawText("CHỨNG NHẬN", stampCenterX, stampCenterY - 30f, stampTextPaint)
-        canvas.drawText("100% VÔ TRI", stampCenterX, stampCenterY + 15f, stampTextPaint)
-        canvas.drawText("★ ★ ★", stampCenterX, stampCenterY + 55f, stampTextPaint)
-
-        // 11. Footer Game Branding
-        val footerPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#757575")
-            textSize = 26f
-            textAlign = Paint.Align.CENTER
-            isAntiAlias = true
-        }
-        canvas.drawText("Game: Scroll & Scroll - Cuộn Giấy Vệ Sinh Vô Tận", width / 2f, 1800f, footerPaint)
-        canvas.drawText("Tải ngay trên Google Play Store để thử thách ngón tay!", width / 2f, 1840f, footerPaint)
+        canvas.drawText("CHỨNG NHẬN", stampCenterX, stampCenterY - stampRadius * 0.22f, stampTextPaint)
+        canvas.drawText("100% VÔ TRI", stampCenterX, stampCenterY + stampRadius * 0.15f, stampTextPaint)
+        canvas.drawText("★ ★ ★", stampCenterX, stampCenterY + stampRadius * 0.48f, stampTextPaint)
 
         return bitmap
     }
@@ -218,7 +188,7 @@ object ShareHelper {
     private fun saveBitmapToCache(context: Context, bitmap: Bitmap): android.net.Uri? {
         return try {
             val cachePath = File(context.cacheDir, "images").apply { mkdirs() }
-            val file = File(cachePath, "certificate_${System.currentTimeMillis()}.png")
+            val file = File(cachePath, "giay_khen_${System.currentTimeMillis()}.png")
             val stream = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             stream.close()
